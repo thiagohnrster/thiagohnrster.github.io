@@ -229,7 +229,7 @@ nav li a.is-active:before {
 
 .hero .main-title {
 	font-family: 'plus_jakarta_sansextrabold', sans-serif;
-	font-size: 46px;
+	font-size: 56px;
 	color: #455a6d;
 	margin: 0 0 55px 0;
 }
@@ -291,7 +291,7 @@ nav li a.is-active:before {
 
 .main-title {
 	font-family: 'plus_jakarta_sansextrabold', sans-serif;
-	font-size: 46px;
+	font-size: 56px;
 	margin: 0 0 55px 0;
 	will-change: transform, opacity;
 }
@@ -329,7 +329,7 @@ nav li a.is-active:before {
 
 .container {
 	width: 100%;
-	max-width: 1200px;
+	max-width: 1480px;
 	min-width: 960px;
 	padding-inline: 30px;
 	margin: 0 auto;
@@ -387,9 +387,10 @@ nav li a.is-active:before {
 .cards .card {
 	display: inline-flex;
 	position: relative;
+	min-width: 25%;
 	flex-basis: 25%;
-  	max-width: 25%;
-	padding: 20px;
+  	padding: 20px;
+  	aspect-ratio: 1 / 1;
 }
 
 .cards .card .card-wrapper {
@@ -399,7 +400,7 @@ nav li a.is-active:before {
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	min-height: 255px;
+	padding: clamp(59px, 100vw, 3.2433rem) 0;
 }
 
 .cards .card .card-wrapper .card-surface {
@@ -427,7 +428,7 @@ nav li a.is-active:before {
     left: 0;
     content: '';
     width: 100%;
-    height: 35rem;
+    height: 80rem;
     background: #1f8efe;
     transform: skewY(135deg);
     transition: all .4s ease-in-out;
@@ -462,20 +463,34 @@ nav li a.is-active:before {
 .recent-works-cards .card {
 	flex-basis: 33.3333%;
     max-width: 33.3333%;
+    aspect-ratio: auto;
 }
 
 .recent-works-cards .card-wrapper {
+	padding: 0 !important;
 	overflow: hidden;
 	border-radius: 20px;
-	background: #000000;
+	box-shadow: 0px 0px 0px 1px #001833;
 }
 
 .recent-works-cards .card-wrapper .card-picture {
 	position: relative;
+	display: block;
 	width: 100%;
 	height: 320px;
 	overflow: hidden;
-	background: #455a6d;
+}
+
+.recent-works-cards .card-wrapper .card-picture img {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	object-fit: cover;
+	transform-origin: center;
 }
 
 .recent-works-cards .card-wrapper .card-picture,
@@ -489,16 +504,16 @@ nav li a.is-active:before {
 	align-items: center;
 	justify-content: center;
 	gap: 10px;
-	top: 100%;
+	top: 0;
 	left: 0;
+	z-index: 2;
 	width: 100%;
-	height: 100%;
+	height: 320px;
 	opacity: 0;
-	background: rgba(0, 0, 0, .6);
+	background: rgba(0, 0, 0, .85);
 }
 
 .recent-works-cards .card-wrapper:hover .card-picture-reveal {
-	top: 0;
 	opacity: 1;
 }
 
@@ -511,6 +526,10 @@ nav li a.is-active:before {
 	opacity: 1;
 }
 
+.recent-works-cards .card-wrapper:hover .card-picture img {
+	transform: scale(1.03);
+}
+
 .recent-works-cards .card-wrapper .card-picture-reveal .icon,
 .recent-works-cards .card-wrapper:hover .card-picture-reveal .icon {
 	font-size: 34px;
@@ -518,21 +537,29 @@ nav li a.is-active:before {
 }
 
 .recent-works-cards .card-wrapper .card-picture:before {
-	display: block;
+	display: flex;
 	position: absolute;
 	font-family: 'tabler-icons';
 	font-size: 54px;
 	color: #31404e;
+	align-items: center;
+	justify-content: center;
 	top: 50%;
 	left: 50%;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
 	content: '\fa4a';
 	transform: translate(-50%, -50%);
+	background: #455a6d;
 }
 
 .recent-works-cards .card-wrapper .card-content {
 	position: relative;
 	width: 100%;
 	padding: 20px;
+	overflow: hidden;
+	background: #000000;
 }
 
 .recent-works-cards .card .card-title,
@@ -577,7 +604,9 @@ nav li a.is-active:before {
 
 .contact-list {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
+	gap: 40px;
 	margin: 0;
 	padding: 0;
 	list-style: none;

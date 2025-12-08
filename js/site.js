@@ -462,7 +462,7 @@ gsap.ticker.lagSmoothing(0);
 
     ScrollTrigger.create({
         trigger: '.content-skills',
-        start: 'top 50%',
+        start: 'top 45%',
         end: 'bottom 10%',
 
         onEnter() {
@@ -560,7 +560,7 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.recent-works-section', {
         scrollTrigger: {
             trigger: '.recent-works-section',
-            start: 'top 50%',
+            start: 'top 45%',
             end: 'bottom 50%',
             toggleActions: 'play reverse play reverse'
         },
@@ -632,7 +632,7 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.contact-section', {
         scrollTrigger: {
             trigger: '.contact-section',
-            start: 'top 50%',
+            start: 'top 75%',
             end: 'bottom 50%',
             toggleActions: 'play reverse play reverse'
         },
