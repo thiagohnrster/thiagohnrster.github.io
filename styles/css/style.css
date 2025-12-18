@@ -375,6 +375,70 @@ nav li a.is-active:before {
 	background: #001023;
 }
 
+.content-stats {
+	padding-top: 55px;
+}
+
+.stats {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.stats > li {
+	margin: 0 0 55px 0;
+}
+
+.progress {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.progress .progress-label {
+	position: relative;
+	display: block;
+	font-family: 'plus_jakarta_sanssemibold';
+	font-size: 16px;
+	color: #ffffff;
+	line-height: 1.35;
+	z-index: 1;
+	padding: 4px 16px;
+}
+
+.progress .progress-number {
+	display: inline-flex;
+	font-family: 'plus_jakarta_sansbold', sans-serif;
+	color: #ffffff;
+	margin-left: auto;
+}
+
+progress {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: -webkit-fill-available;
+	width: fill-available;
+	height: 100%;
+	overflow: hidden;
+	border-radius: 100px;
+	margin-inline-end: 60px;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #455a6d;
+}
+
+progress::-webkit-progress-value {
+  background-color: #2cb4ff;
+  border-radius: 100px;
+}
+
+progress::-moz-progress-bar {
+  background-color: #455a6d;
+}
+
 .cards {
 	display: flex;
 	flex-wrap: wrap;
