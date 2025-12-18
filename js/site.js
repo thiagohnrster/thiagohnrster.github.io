@@ -499,6 +499,56 @@ gsap.ticker.lagSmoothing(0);
     });
 })();
 
+(function skillBarsFillAnimate () {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', skillBarsFillAnimate);
+        return;
+    }
+
+    const items = gsap.utils.toArray(".stats li");
+
+    items.forEach((li, i) => {
+        const item = li;
+        const bar = li.querySelector(".progress-bar");
+        const pct = li.querySelector(".progress-number");
+        const finalValue = Number(bar.value);
+        
+        gsap.set(item, { opacity: 0 });
+
+        bar.value = 0;
+        pct.textContent = "0%";
+
+        gsap.to(item, {
+            opacity: 1,
+            duration: 1.4,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: li,      // anima cada linha quando entrar
+                start: "top 95%",
+                end: "bottom 10%",
+                toggleActions: 'play reverse play reverse'
+            }
+        });
+
+        gsap.to(bar, {
+            value: finalValue,
+            duration: 1.4,
+            ease: "power3.out",
+            delay: i * 0.08, // “stagger” simples por item
+            onUpdate: () => {
+                const v = Math.round(bar.value);
+                pct.textContent = `${v}%`;
+            },
+            scrollTrigger: {
+                trigger: li,      // anima cada linha quando entrar
+                start: "top 95%",
+                end: "bottom 10%",
+                toggleActions: 'play reverse play reverse'
+            }
+        });
+    });
+})();
+
 (function skillCardsAnimate() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', skillCardsAnimate);
