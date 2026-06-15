@@ -124,7 +124,7 @@ header .navigation {
 header nav ul {
 	display: flex;
 	position: absolute;
-	gap: 40px;
+	gap: 60px;
 	top: 50%;
 	left: 50%;
 	margin: 0;
@@ -138,7 +138,7 @@ nav li a {
 	position: relative;
 	font-family: 'plus_jakarta_sanssemibold';
 	font-size: 16px;
-	color: #ffffff;
+	color: #455a6d;
 	text-decoration: none;
 	align-items: center;
 	justify-content: center;
@@ -150,24 +150,38 @@ nav li a:hover {
 }
 
 nav li a:before {
-	display: block;
+	display: inline-flex;
 	position: absolute;
 	content: '';
-	left: 50%;
-	bottom: -10px;
-	width: 0;
-	height: 5px;
-	border-radius: 5px;
-	transform: translateX(-50%);
+	left: calc(0px - 20px);
+	top: 50%;
+	width: 10px;
+	height: 10px;
+	scale: 0;
+	-webkit-transform-origin-y: center;
+	-ms-transform-origin-y: center;
+	border-radius: 100px;
+	transform: translateY(calc(-50% + 2px));
 	transition: all .3s ease-in-out;
 }
 
+nav li a.is-active {
+	color: #ffffff;
+}
+
 nav li a.is-active:before {
-	width: 100%;
+	scale: 1;
+	border: 1px solid #2cb4ff;
 	background: #2cb4ff;
 }
 
+nav li a span {
+	display: inline-flex;
+	line-height: normal;
+}
+
 .navigation .btn-contact {
+	font-size: 16px;
 	color: #ffffff;
 	margin: 0 0 0 auto !important;
 	padding: 15px 36px;
@@ -747,6 +761,7 @@ progress::-moz-progress-bar {
 	display: inline-flex;
 	position: relative;
 	font-family: 'plus_jakarta_sanssemibold', sans-serif;
+	font-size: 18px;
 	color: #ffffff;
 	text-decoration: none;
 	padding: 18px 36px;
