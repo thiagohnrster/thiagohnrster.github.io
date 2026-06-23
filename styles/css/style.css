@@ -152,16 +152,15 @@ nav li a:hover {
 nav li a:before {
 	display: inline-flex;
 	position: absolute;
-	content: '';
-	left: calc(0px - 20px);
-	top: 50%;
-	width: 10px;
-	height: 10px;
+	font-family: 'tabler-icons';
+	font-size: 24px;
+	color: #2cb4ff;
+	content: '\f698';
+	line-height: 20px;
+	left: calc(0px - 28px);
 	scale: 0;
 	-webkit-transform-origin-y: center;
 	-ms-transform-origin-y: center;
-	border-radius: 100px;
-	transform: translateY(calc(-50% + 2px));
 	transition: all .3s ease-in-out;
 }
 
@@ -171,8 +170,6 @@ nav li a.is-active {
 
 nav li a.is-active:before {
 	scale: 1;
-	border: 1px solid #2cb4ff;
-	background: #2cb4ff;
 }
 
 nav li a span {
