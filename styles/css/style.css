@@ -542,6 +542,7 @@ progress::-moz-progress-bar {
 }
 
 .recent-works-cards .card-wrapper {
+	cursor: pointer;
 	padding: 0 !important;
 	overflow: hidden;
 	border-radius: 20px;
@@ -846,6 +847,141 @@ progress::-moz-progress-bar {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(2px); }
   100% { transform: translateY(0); }
+}
+
+.jc-dialog-title {
+	font-family: 'plus_jakarta_sansextrabold';
+	font-size: 28px;
+	color: #2cb4ff;
+	margin: 0px 0px 20px 0px;
+}
+
+.jc-dialog-subtitle {
+	font-family: 'plus_jakarta_sansbold';
+	font-size: 18px;
+	color: #ffffff;
+	margin: 0px 0px 20px 0px;
+}
+
+.jc-dialog-text {
+	margin: 0px 0px 10px 0px;
+}
+
+.jc-dialog-text:last-child {
+	margin: 0;
+}
+
+.jc-dialog-flexbox-container {
+	display: flex;
+	align-items: flex-start;
+}
+
+.jc-dialog-content-left {
+	position: relative;
+	width: 45%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+}
+
+.jc-dialog-content-right {
+	flex: 1;
+	margin-left: 40px;
+}
+
+.jc-dialog-video {
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+	background-color: #000000;
+}
+
+.jc-dialog-content-left::before {
+	display: inline-block;
+	position: absolute;
+	font-family: 'tabler-icons';
+	font-size: 64px;
+	color: #455a6d;
+	content: '\ed22';
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.jc-dialog-block {
+	margin: 0px 0px 30px 0px;
+}
+
+.jc-dialog-ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.jc-dialog-ul li {
+	display: flex;
+	align-items: baseline;
+	margin: 0px 0px 10px 0px;
+}
+
+.jc-dialog-ul li::before {
+	display: block;
+	font-family: 'tabler-icons';
+	font-size: 16px;
+	color: #2cb4ff;
+	content: '\ea5e';
+	margin-right: 10px;
+}
+
+.jc-dialog-ul li:last-child {
+	margin: 0;
+}
+
+.jc-dialog-links {
+	display: flex;
+	margin-top: 30px;
+}
+
+.jc-dialog-links .link {
+	display: inline-flex;
+	font-family: 'plus_jakarta_sansbold';
+	font-size: 14px;
+	color: #ffffff;
+	line-height: 20px;
+	text-decoration: none;
+	border-radius: 64px;
+	padding: 10px 16px 10px 0px;
+	background: #03588c;
+	transition: all .2s ease-in-out;
+}
+
+.jc-dialog-links .link:active {
+	scale: 0.95;
+}
+
+.jc-dialog-links .link:hover {
+	background: #0367a6;
+}
+
+.jc-dialog-links .link .ti {
+	display: inline-flex;
+	font-size: 20px;
+	justify-content: center;
+	width: 46px;
+}
+
+.jc-dialog-text-note {
+	display: flex;
+	font-size: 14px;
+	color: #2cb4ff;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.jc-dialog-text-note .ti {
+	display: inline-flex;
+	font-size: 20px;
+	margin-right: 10px;
 }
 
 .ui-tooltip {
