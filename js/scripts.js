@@ -3,6 +3,46 @@ $(function () {
         history.replaceState('', document.title, window.location.origin + window.location.pathname + window.location.search);
     }, 5);
 
+    $('.recent-works-cards #card_1').on('click', function () {
+        $.dialog({
+            title: '',
+            content: 'url:/modals/hdc-eventos.html',
+            closeIconClass: 'ti ti-x',
+            animateFromElement: false,
+            animationSpeed: 200
+        });
+    });
+
+    $('.recent-works-cards #card_2').on('click', function () {
+        $.dialog({
+            title: '',
+            content: 'url:/modals/rubrum-site-v2.html',
+            closeIconClass: 'ti ti-x',
+            animateFromElement: false,
+            animationSpeed: 200
+        });
+    });
+
+    $('.recent-works-cards #card_3').on('click', function () {
+        $.dialog({
+            title: '',
+            content: 'url:/modals/rubrum-site-v1.html',
+            closeIconClass: 'ti ti-x',
+            animateFromElement: false,
+            animationSpeed: 200
+        });
+    });
+
+    $('.recent-works-cards #card_4').on('click', function () {
+        $.dialog({
+            title: '',
+            content: 'url:/modals/rubrum.html',
+            closeIconClass: 'ti ti-x',
+            animateFromElement: false,
+            animationSpeed: 200
+        });
+    });
+
     function stickyNavigation() {
         var offset = $('.header').offset(),
             navParent = $('.header'),
