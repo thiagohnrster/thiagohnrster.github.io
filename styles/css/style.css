@@ -152,12 +152,12 @@ nav li a:hover {
 nav li a:before {
 	display: inline-flex;
 	position: absolute;
-	font-family: 'tabler-icons';
-	font-size: 24px;
+	font-family: 'boxicons-filled';
+	font-size: 12px;
 	color: #2cb4ff;
-	content: '\f698';
-	line-height: 20px;
-	left: calc(0px - 28px);
+	content: '\f305';
+	top: 5px;
+	left: calc(0px - 24px);
 	scale: 0;
 	-webkit-transform-origin-y: center;
 	-ms-transform-origin-y: center;
@@ -180,8 +180,10 @@ nav li a span {
 .navigation .btn-contact {
 	font-size: 16px;
 	color: #ffffff;
+	justify-content: center;
+	min-width: 200px;
 	margin: 0 0 0 auto !important;
-	padding: 15px 36px;
+	padding: 15px 30px;
 	background: #03588c;
 }
 
@@ -239,8 +241,9 @@ nav li a span {
 
 .hero .main-title {
 	font-family: 'plus_jakarta_sansextrabold', sans-serif;
-	font-size: 56px;
+	font-size: 68px;
 	color: #455a6d;
+	width: auto;
 	margin: 0 0 55px 0;
 }
 
@@ -248,7 +251,7 @@ nav li a span {
 	display: flex;
 	position: absolute;
 	gap: 20px;
-	bottom: 50px;
+	bottom: 80px;
 	list-style: none;
 }
 
@@ -276,6 +279,12 @@ nav li a span {
     padding: 5px;
 }
 
+.pre-title > span > .accent {
+	display: inline-block;
+	color: #2cb4ff;
+	margin-right: 5px;
+}
+
 .pre-title > span:before {
 	display: block;
 	position: absolute;
@@ -301,7 +310,8 @@ nav li a span {
 
 .main-title {
 	font-family: 'plus_jakarta_sansextrabold', sans-serif;
-	font-size: 56px;
+	font-size: 68px;
+	width: clamp(290px, 100%, 880px);
 	margin: 0 0 55px 0;
 	will-change: transform, opacity;
 }
@@ -359,7 +369,7 @@ nav li a span {
 }
 
 .content p {
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 }
 
 .content p:last-child {
@@ -386,8 +396,16 @@ nav li a span {
 	background: #001023;
 }
 
-.content-stats {
-	padding-top: 55px;
+.about-section .about-content-flex {
+	display: flex;
+	margin: 0 -45px;
+}
+
+.about-section .about-content-flex .about-column-flex {
+	display: inline-flex;
+	flex-direction: column;
+	flex: 1;
+	padding: 0 45px;
 }
 
 .stats {
@@ -397,30 +415,40 @@ nav li a span {
 }
 
 .stats > li {
-	margin: 0 0 55px 0;
+	margin: 0 0 40px 0;
+}
+
+.stats > li:last-child {
+	margin: 0;
 }
 
 .progress {
 	position: relative;
 	display: flex;
 	align-items: center;
+	height: 25px;
 }
 
 .progress .progress-label {
-	position: relative;
-	display: block;
+	position: absolute;
+	display: inline-flex;
 	font-family: 'plus_jakarta_sanssemibold';
 	font-size: 16px;
 	color: #ffffff;
-	line-height: 1.35;
+	line-height: 1.563;
+	align-items: center;
+	top: 0;
+	left: 0;
 	z-index: 1;
-	padding: 4px 16px;
+	padding: 0px 16px;
 }
 
 .progress .progress-number {
 	display: inline-flex;
-	font-family: 'plus_jakarta_sansbold', sans-serif;
+	font-family: 'plus_jakarta_sanssemibold', sans-serif;
+	font-size: 16px;
 	color: #ffffff;
+	line-height: 1.563;
 	margin-left: auto;
 }
 
@@ -465,6 +493,11 @@ progress::-moz-progress-bar {
 	flex-basis: 25%;
   	padding: 20px;
   	aspect-ratio: 1 / 1;
+}
+
+.cards-skills .card {
+	min-width: 20%;
+	flex-basis: 20%;
 }
 
 .cards .card .card-wrapper {
@@ -512,7 +545,10 @@ progress::-moz-progress-bar {
 	top: -10rem;
 }
 
-.cards .card .ti {
+.cards .card .ti,
+.cards .card .bx,
+.cards .card .bxf,
+.cards .card .bxl {
 	font-size: 64px;
 	color: #455a6d;
 	margin-bottom: 20px;
@@ -525,6 +561,9 @@ progress::-moz-progress-bar {
 }
 
 .cards .card .card-wrapper:hover .ti,
+.cards .card .card-wrapper:hover .bx,
+.cards .card .card-wrapper:hover .bxf,
+.cards .card .card-wrapper:hover .bxl,
 .cards .card .card-wrapper:hover .card-title {
 	color: #ffffff;
 }
@@ -612,7 +651,7 @@ progress::-moz-progress-bar {
 	color: #1f8efe;
 }
 
-.recent-works-cards .card-wrapper .card-picture:before {
+/*.recent-works-cards .card-wrapper .card-picture:before {
 	display: flex;
 	position: absolute;
 	font-family: 'tabler-icons';
@@ -628,7 +667,7 @@ progress::-moz-progress-bar {
 	content: '\fa4a';
 	transform: translate(-50%, -50%);
 	background: #455a6d;
-}
+}*/
 
 .recent-works-cards .card-wrapper .card-content {
 	position: relative;
@@ -730,7 +769,10 @@ progress::-moz-progress-bar {
 	color: #ffffff;
 }
 
-.contact-list li a .ti {
+.contact-list li a .ti,
+.contact-list li a .bx,
+.contact-list li a .bxf,
+.contact-list li a .bxl {
 	font-size: 36px;
 	margin: 0 10px 0 0;
 }
@@ -762,7 +804,7 @@ progress::-moz-progress-bar {
 	font-size: 18px;
 	color: #ffffff;
 	text-decoration: none;
-	padding: 18px 36px;
+	padding: 18px 28px 18px 30px;
 	border-radius: calc(infinity * 1px);
 	background: #000000;
 	margin: 0 30px 0 0;
@@ -787,7 +829,9 @@ progress::-moz-progress-bar {
 	z-index: 1;
 }
 
-.btn > .label > .ti {
+.btn > .label > .ti,
+.btn > .label > .bx,
+.btn > .label > .bxf {
 	display: inline-flex;
 	font-size: 26px;
 	align-items: center;
@@ -835,7 +879,9 @@ progress::-moz-progress-bar {
 	width: 150%;
 }
 
-.btn-descubra > .label > .ti:before {
+.btn-descubra > .label > .ti:before,
+.btn-descubra > .label > .bx:before, 
+.btn-descubra > .label > .bxf:before {
 	animation: arrow-bounce 0.4s ease-in-out infinite;
 }
 
@@ -899,10 +945,10 @@ progress::-moz-progress-bar {
 .jc-dialog-content-left::before {
 	display: inline-block;
 	position: absolute;
-	font-family: 'tabler-icons';
-	font-size: 64px;
+	font-family: 'boxicons-filled';
+	font-size: 100px;
 	color: #455a6d;
-	content: '\ed22';
+	content: '\f5e5';
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -910,6 +956,10 @@ progress::-moz-progress-bar {
 
 .jc-dialog-block {
 	margin: 0px 0px 30px 0px;
+}
+
+.jc-dialog-block:last-child {
+	margin: 0px;
 }
 
 .jc-dialog-ul {
@@ -920,16 +970,16 @@ progress::-moz-progress-bar {
 
 .jc-dialog-ul li {
 	display: flex;
-	align-items: baseline;
-	margin: 0px 0px 10px 0px;
+	line-height: 18px;
+	margin: 0px 0px 15px 0px;
 }
 
 .jc-dialog-ul li::before {
-	display: block;
-	font-family: 'tabler-icons';
-	font-size: 16px;
+	display: inline-flex;
+	font-family: 'boxicons';
+	font-size: 20px;
 	color: #2cb4ff;
-	content: '\ea5e';
+	content: '\f2d2';
 	margin-right: 10px;
 }
 
@@ -963,7 +1013,10 @@ progress::-moz-progress-bar {
 	background: #0367a6;
 }
 
-.jc-dialog-links .link .ti {
+.jc-dialog-links .link .ti,
+.jc-dialog-links .link .bx,
+.jc-dialog-links .link .bxf,
+.jc-dialog-links .link .bxl {
 	display: inline-flex;
 	font-size: 20px;
 	justify-content: center;
@@ -978,7 +1031,9 @@ progress::-moz-progress-bar {
 	margin-top: 20px;
 }
 
-.jc-dialog-text-note .ti {
+.jc-dialog-text-note .ti,
+.jc-dialog-text-note .bx,
+.jc-dialog-text-note .bxf {
 	display: inline-flex;
 	font-size: 20px;
 	margin-right: 10px;
