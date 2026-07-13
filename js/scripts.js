@@ -7,7 +7,7 @@ $(function () {
         $.dialog({
             title: '',
             content: 'url:/modals/hdc-eventos.html',
-            closeIconClass: 'ti ti-x',
+            closeIconClass: 'bx bx-x',
             animateFromElement: false,
             animationSpeed: 200
         });
@@ -17,7 +17,7 @@ $(function () {
         $.dialog({
             title: '',
             content: 'url:/modals/rubrum-site-v2.html',
-            closeIconClass: 'ti ti-x',
+            closeIconClass: 'bx bx-x',
             animateFromElement: false,
             animationSpeed: 200
         });
@@ -27,7 +27,7 @@ $(function () {
         $.dialog({
             title: '',
             content: 'url:/modals/rubrum-site-v1.html',
-            closeIconClass: 'ti ti-x',
+            closeIconClass: 'bx bx-x',
             animateFromElement: false,
             animationSpeed: 200
         });
@@ -37,7 +37,7 @@ $(function () {
         $.dialog({
             title: '',
             content: 'url:/modals/rubrum.html',
-            closeIconClass: 'ti ti-x',
+            closeIconClass: 'bx bx-x',
             animateFromElement: false,
             animationSpeed: 200
         });

@@ -13,7 +13,7 @@
     border-radius: 4px;
     position: relative;
     outline: 0;
-    padding: 48px 48px 0;
+    padding: 50px 50px 0;
     overflow: hidden;
     margin-left: auto;
     margin-right: auto;
@@ -23,7 +23,7 @@
 .jconfirm.jconfirm-light .jconfirm-box {
     -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    border-radius: 30px;
 }
 
 .jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
@@ -31,7 +31,7 @@
 }
 
 .jconfirm .jconfirm-box div.jconfirm-content-pane {
-    margin-bottom: 40px;
+    margin-bottom: 46px;
 }
 
 .jconfirm .jconfirm-box.loading {
@@ -74,14 +74,12 @@
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     opacity: 1;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 22px !important;
-    line-height: 34px !important;
     display: none;
     z-index: 1;
     overflow: hidden;
@@ -90,7 +88,12 @@
 }
 
 .jconfirm .jconfirm-box div.jconfirm-closeIcon > i {
-    text-align: center;
+    display: inline-flex;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
 }
 
 .jconfirm .jconfirm-box div.jconfirm-closeIcon::after {
