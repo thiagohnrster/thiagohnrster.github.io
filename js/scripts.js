@@ -67,13 +67,20 @@ $(function () {
         $('.scroll-to').on('click', function (e) {
 
             var targetHref = $(this).attr('href'),
-                headerHeight = $('header').outerHeight();
+                headerHeight = $('header').outerHeight(),
+                $target = $(targetHref);
 
-            $('html, body').animate({
-                scrollTop: $(targetHref).offset().top - headerHeight
-            }, 1200);
+            if (!$target.length) return;
 
             e.preventDefault();
+
+            if (typeof lenis !== 'undefined' && lenis) {
+                lenis.scrollTo($target[0], { offset: -headerHeight, duration: 1.2 });
+            } else {
+                $('html, body').animate({
+                    scrollTop: $target.offset().top - headerHeight
+                }, 1200);
+            }
         });
     }
 

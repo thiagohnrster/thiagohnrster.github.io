@@ -63,13 +63,7 @@ gsap.ticker.lagSmoothing(0);
 
         e.preventDefault();
 
-        const top = ($target.offset().top - headerH()) * 1;
-
-        if (window.gsap && gsap.plugins && gsap.plugins.ScrollToPlugin) {
-            gsap.to(window, { scrollTo: top, duration: 0.8, ease: 'power2.out' });
-        } else {
-            $('html, body').stop(true).animate({ scrollTop: top }, 800);
-        }
+        lenis.scrollTo($target[0], { offset: -headerH(), duration: 0.8 });
     });
 
     function closestSectionId(el) {
@@ -240,7 +234,7 @@ gsap.ticker.lagSmoothing(0);
         entries.forEach((entry) => {
             if (entry.target !== hero) return;
             if (reduceMotion) {
-                gsap.set([badge, title, leads, btns], { clearProps: 'all', autoAlpha: 1, y: 0, scale: 1 });
+                gsap.set([badge, title, social, btns], { clearProps: 'all', autoAlpha: 1, y: 0, scale: 1 });
                 return;
             }
             if (entry.isIntersecting) {
@@ -449,6 +443,8 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     gsap.from('.stats-section', {
         scrollTrigger: {
             trigger: '.stats-section',
@@ -530,7 +526,9 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
-    gsap.from('.about-section', {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    gsap.from('.about-section .content:not(.content-skills)', {
         scrollTrigger: {
             trigger: '.about-section',
             start: 'top center',
@@ -546,6 +544,11 @@ gsap.ticker.lagSmoothing(0);
 (function contentSkillsAnimate() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', contentSkillsAnimate);
+        return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set('.content-skills', { opacity: 1 });
         return;
     }
 
@@ -585,6 +588,7 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const items = gsap.utils.toArray(".stats li");
 
     items.forEach((li, i) => {
@@ -592,7 +596,12 @@ gsap.ticker.lagSmoothing(0);
         const bar = li.querySelector(".progress-bar");
         const pct = li.querySelector(".progress-number");
         const finalValue = Number(bar.value);
-        
+
+        if (reduceMotion) {
+            pct.textContent = `${finalValue}%`;
+            return;
+        }
+
         gsap.set(item, { opacity: 0 });
 
         bar.value = 0;
@@ -635,10 +644,15 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set('.cards-skills .card', { opacity: 1, y: 0 });
+        return;
+    }
+
     gsap.set('.cards-skills .card', { opacity: 0, y: 50 });
 
     ScrollTrigger.create({
-        trigger: '.cards-skills .card',
+        trigger: '.cards-skills',
         start: 'top 80%',
         end: 'bottom 10%',
         toggleActions: 'play none none reverse',
@@ -678,6 +692,8 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     gsap.from('.recent-works-section', {
         scrollTrigger: {
             trigger: '.recent-works-section',
@@ -697,10 +713,15 @@ gsap.ticker.lagSmoothing(0);
         return;
     }
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set('.recent-works-cards .card', { opacity: 1, y: 0 });
+        return;
+    }
+
     gsap.set('.recent-works-cards .card', { opacity: 0, y: 50 });
 
     ScrollTrigger.create({
-        trigger: '.recent-works-cards .card',
+        trigger: '.recent-works-cards',
         start: 'top 65%',
         toggleActions: 'play none none reverse',
         onEnter() {
@@ -738,6 +759,8 @@ gsap.ticker.lagSmoothing(0);
         document.addEventListener('DOMContentLoaded', contactSectionAnimate);
         return;
     }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     gsap.from('.contact-section', {
         scrollTrigger: {
