@@ -1,3 +1,12 @@
+// Cores usadas nas animações de reveal dos títulos (apagada -> acesa)
+const TITLE_COLOR_DIM = '#0e253f';
+const TITLE_COLOR_LIT = '#455a6d';
+const TITLE_ACCENT_DIM = '#09375c';
+const TITLE_ACCENT_LIT = '#2cb4ff';
+const titleCharColor = (isDim, target) => target.closest('.accent')
+    ? (isDim ? TITLE_ACCENT_DIM : TITLE_ACCENT_LIT)
+    : (isDim ? TITLE_COLOR_DIM : TITLE_COLOR_LIT);
+
 gsap.registerPlugin(ScrollTrigger);
 
 const lenis = new Lenis({
@@ -191,7 +200,6 @@ gsap.ticker.lagSmoothing(0);
     const title = hero.querySelector('.hero-right .hero-title');
     const social = Array.from(hero.querySelectorAll('.hero-right .hero-social'));
     const btns = Array.from(hero.querySelectorAll('.hero-right .btn-group'));
-
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const SplitCtor = (window.SplitType && (window.SplitType.default || window.SplitType)) || null;
 
@@ -213,10 +221,10 @@ gsap.ticker.lagSmoothing(0);
                 gsap.set(title, { overflow: 'hidden' });
                 // remove tween antigo dos chars
                 tlReveal.getChildren().forEach(t => { if (t.vars && t.vars.data === 'hero-chars') t.kill(); });
-                gsap.set(charTargets, { opacity: 0.15 });
+                gsap.set(charTargets, { color: (i, target) => titleCharColor(true, target) });
                 tlReveal.to(charTargets, {
                     data: 'hero-chars',
-                    opacity: 1,
+                    color: (i, target) => titleCharColor(false, target),
                     duration: 0.28,
                     ease: 'power3.out',
                     stagger: { each: 0.02, from: 'start' }
@@ -299,7 +307,7 @@ gsap.ticker.lagSmoothing(0);
     }
     if (!window.gsap) { console.error('[titles] GSAP não encontrado'); return; }
 
-    const THRESHOLD = 0.50;
+    const THRESHOLD = 0.60;
     const MODE = 'chars';
     const DURATION = 0.2;
     const STAGGER = 0.02;
@@ -333,8 +341,8 @@ gsap.ticker.lagSmoothing(0);
 
         const tl = gsap.timeline({ paused: true, defaults: { ease: EASE } })
             .fromTo(targets,
-                { yPercent: 120, opacity: .2 },
-                { yPercent: 0, opacity: 1, duration: DURATION, stagger: STAGGER }
+                { yPercent: 120, color: (i, target) => titleCharColor(true, target) },
+                { yPercent: 0, color: (i, target) => titleCharColor(false, target), duration: DURATION, stagger: STAGGER }
             );
 
         const ctrl = { content, title, split, targets, tl, lastWidth: title.clientWidth || 0 };
@@ -372,13 +380,16 @@ gsap.ticker.lagSmoothing(0);
                     gsap.set(ctrl.title, { opacity: 1, y: 0 });
                 } else {
                     if (prevProg === 0 || wasRev) {
-                        gsap.set(ctrl.targets, { yPercent: 120, opacity: 0 });
+                        gsap.set(ctrl.targets, { yPercent: 120, color: (i, target) => titleCharColor(true, target) });
                         ctrl.tl.progress(0).reverse(0);
                     } else if (prevProg === 1 && !wasRev) {
-                        gsap.set(ctrl.targets, { yPercent: 0, opacity: 1 });
+                        gsap.set(ctrl.targets, { yPercent: 0, color: (i, target) => titleCharColor(false, target) });
                         ctrl.tl.progress(1);
                     } else {
-                        gsap.set(ctrl.targets, { yPercent: 120 * (1 - prevProg), opacity: prevProg });
+                        gsap.set(ctrl.targets, {
+                            yPercent: 120 * (1 - prevProg),
+                            color: (i, target) => gsap.utils.interpolate(titleCharColor(true, target), titleCharColor(false, target), prevProg)
+                        });
                         ctrl.tl.progress(prevProg);
                         if (wasRev) ctrl.tl.reverse(0);
                     }
@@ -432,6 +443,87 @@ gsap.ticker.lagSmoothing(0);
     });
 })();
 
+(function statsSectionAnimate() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', statsSectionAnimate);
+        return;
+    }
+
+    gsap.from('.stats-section', {
+        scrollTrigger: {
+            trigger: '.stats-section',
+            start: 'top 75%',
+            toggleActions: 'play none none reverse'
+        },
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out"
+    });
+})();
+
+(function statsCounterAnimate() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', statsCounterAnimate);
+        return;
+    }
+    if (!window.gsap || !window.ScrollTrigger) return;
+
+    const items = gsap.utils.toArray('.stats-section .stats-item');
+    if (!items.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    items.forEach((item, i) => {
+        const valueEl = item.querySelector('.stats-value');
+        const raw = valueEl.textContent.trim();
+
+        const match = raw.match(/^(\D*)([\d.,]+)(\D*)$/);
+        if (!match) return;
+
+        const [, prefix, numberStr, suffix] = match;
+        const finalValue = Number(numberStr.replace(/[.,]/g, ''));
+
+        if (reduceMotion) {
+            valueEl.textContent = raw;
+            return;
+        }
+
+        gsap.set(item, { autoAlpha: 0, y: 20 });
+        valueEl.textContent = `${prefix}0${suffix}`;
+
+        const counter = { value: 0 };
+
+        gsap.to(item, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            delay: i * 0.08,
+            scrollTrigger: {
+                trigger: '.stats-section',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        gsap.to(counter, {
+            value: finalValue,
+            duration: 1.4,
+            ease: 'power2.out',
+            delay: i * 0.08,
+            onUpdate: () => {
+                valueEl.textContent = `${prefix}${Math.round(counter.value)}${suffix}`;
+            },
+            scrollTrigger: {
+                trigger: '.stats-section',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+    });
+})();
+
 (function aboutSectionAnimate() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', aboutSectionAnimate);
@@ -441,9 +533,8 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.about-section', {
         scrollTrigger: {
             trigger: '.about-section',
-            start: 'top 50%',
-            end: 'bottom 50%',
-            toggleActions: 'play reverse play reverse'
+            start: 'top center',
+            toggleActions: 'play none none reverse'
         },
         opacity: 0,
         duration: 0.8,
@@ -462,9 +553,8 @@ gsap.ticker.lagSmoothing(0);
 
     ScrollTrigger.create({
         trigger: '.content-skills',
-        start: 'top 45%',
-        end: 'bottom 10%',
-
+        start: 'top center',
+        toggleActions: 'play none none reverse',
         onEnter() {
             gsap.to('.content-skills', {
                 opacity: 1,
@@ -472,15 +562,6 @@ gsap.ticker.lagSmoothing(0);
                 ease: 'power3.out'
             });
         },
-
-        onLeave() {
-            gsap.to('.content-skills', {
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out'
-            });
-        },
-
         onEnterBack() {
             gsap.to('.content-skills', {
                 opacity: 1,
@@ -488,7 +569,6 @@ gsap.ticker.lagSmoothing(0);
                 ease: 'power3.out'
             });
         },
-
         onLeaveBack() {
             gsap.to('.content-skills', {
                 opacity: 0,
@@ -526,7 +606,7 @@ gsap.ticker.lagSmoothing(0);
                 trigger: li,      // anima cada linha quando entrar
                 start: "top 95%",
                 end: "bottom 10%",
-                toggleActions: 'play reverse play reverse'
+                toggleActions: 'play none none reverse'
             }
         });
 
@@ -543,7 +623,7 @@ gsap.ticker.lagSmoothing(0);
                 trigger: li,      // anima cada linha quando entrar
                 start: "top 95%",
                 end: "bottom 10%",
-                toggleActions: 'play reverse play reverse'
+                toggleActions: 'play none none reverse'
             }
         });
     });
@@ -561,20 +641,11 @@ gsap.ticker.lagSmoothing(0);
         trigger: '.cards-skills .card',
         start: 'top 80%',
         end: 'bottom 10%',
-        toggleActions: 'play reverse play reverse',
+        toggleActions: 'play none none reverse',
         onEnter() {
             gsap.to('.cards-skills .card', {
                 opacity: 1,
                 y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'power3.out'
-            });
-        },
-        onLeave() {
-            gsap.to('.cards-skills .card', {
-                opacity: 0,
-                y: -50,
                 duration: 0.8,
                 stagger: 0.1,
                 ease: 'power3.out'
@@ -610,9 +681,8 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.recent-works-section', {
         scrollTrigger: {
             trigger: '.recent-works-section',
-            start: 'top 45%',
-            end: 'bottom 50%',
-            toggleActions: 'play reverse play reverse'
+            start: 'top 20%',
+            toggleActions: 'play none none reverse'
         },
         opacity: 0,
         duration: 0.8,
@@ -631,22 +701,12 @@ gsap.ticker.lagSmoothing(0);
 
     ScrollTrigger.create({
         trigger: '.recent-works-cards .card',
-        start: 'top 80%',
-        end: 'bottom 10%',
-        toggleActions: 'play reverse play reverse',
+        start: 'top 60%',
+        toggleActions: 'play none none reverse',
         onEnter() {
             gsap.to('.recent-works-cards .card', {
                 opacity: 1,
                 y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: 'power3.out'
-            });
-        },
-        onLeave() {
-            gsap.to('.recent-works-cards .card', {
-                opacity: 0,
-                y: -50,
                 duration: 0.8,
                 stagger: 0.1,
                 ease: 'power3.out'
@@ -684,7 +744,7 @@ gsap.ticker.lagSmoothing(0);
             trigger: '.contact-section',
             start: 'top 75%',
             end: 'bottom 50%',
-            toggleActions: 'play reverse play reverse'
+            toggleActions: 'play none none reverse'
         },
         opacity: 0,
         duration: 0.8,
