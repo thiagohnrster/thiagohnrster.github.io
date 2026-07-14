@@ -307,7 +307,7 @@ gsap.ticker.lagSmoothing(0);
     }
     if (!window.gsap) { console.error('[titles] GSAP não encontrado'); return; }
 
-    const THRESHOLD = 0.60;
+    const THRESHOLD = 0.55;
     const MODE = 'chars';
     const DURATION = 0.2;
     const STAGGER = 0.02;
@@ -681,7 +681,7 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.recent-works-section', {
         scrollTrigger: {
             trigger: '.recent-works-section',
-            start: 'top 20%',
+            start: 'top 25%',
             toggleActions: 'play none none reverse'
         },
         opacity: 0,
@@ -701,7 +701,7 @@ gsap.ticker.lagSmoothing(0);
 
     ScrollTrigger.create({
         trigger: '.recent-works-cards .card',
-        start: 'top 60%',
+        start: 'top 65%',
         toggleActions: 'play none none reverse',
         onEnter() {
             gsap.to('.recent-works-cards .card', {
