@@ -89,7 +89,7 @@ header {
 
 header.scrolled {
 	top: 0;
-	background: rgba(0, 0, 0, .8);
+	background: rgba(0, 0, 0, .7);
 	backdrop-filter: blur(30px);
 	-webkit-backdrop-filter: blur(30px);
 }
@@ -107,7 +107,7 @@ header .logo {
 	height: 72px;
 	outline: none;
 	transition: all .2s ease-in-out;
-	background: url('../../images/layout/logo_tc.svg') center center / 100% no-repeat;
+	background: url('../../images/layout/logo_tc.webp') center center / 100% no-repeat;
 }
 
 header.scrolled .logo {
@@ -266,6 +266,52 @@ nav li a span {
 	color: #ffffff;
 }
 
+.stats-section {
+	padding: 94px 0;
+	background: #0e253f;
+}
+
+.stats-section .stats-list {
+	display: flex;
+	align-items: center;
+	list-style: none;
+	margin: 0 -10px;
+}
+
+.stats-section .stats-item {
+	display: flex;
+	flex: 1;
+	gap: 15px;
+	padding: 0 10px;
+}
+
+.stats-section .stats-item-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.stats-section .stats-icon {
+	font-size: 64px;
+	color: #1f8efe;
+}
+
+.stats-section .stats-value,
+.stats-section .stats-label {
+	line-height: 1;
+}
+
+.stats-section .stats-value {
+	font-family: 'plus_jakarta_sansextrabold', sans-serif;
+	font-size: 38px;
+	color: #ffffff;
+	margin-bottom: 10px;
+}
+
+.stats-section .stats-label {
+	font-size: 16px;
+	color: #455a6d;
+}
+
 .pre-title {
 	margin: 0 0 30px 0;
 }
@@ -313,7 +359,7 @@ nav li a span {
 	font-size: 68px;
 	width: clamp(290px, 100%, 880px);
 	margin: 0 0 55px 0;
-	will-change: transform, opacity;
+	will-change: transform, color;
 }
 
 .hero-title,
