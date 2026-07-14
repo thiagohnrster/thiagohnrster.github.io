@@ -1158,3 +1158,29 @@ progress::-moz-progress-bar {
 		object-fit: cover;
 	}
 }
+
+@media (max-width: 1024px) {
+	.hero .main-title {
+		font-family: 'plus_jakarta_sansextrabold', sans-serif;
+		font-size: 54px;
+		color: #455a6d;
+		width: auto;
+		margin: 0 0 55px 0;
+	}
+
+	.hero .hero-social {
+		display: flex;
+		position: absolute;
+		gap: 20px;
+		bottom: 60px;
+		list-style: none;
+	}
+
+	.main-title {
+    	font-family: 'plus_jakarta_sansextrabold', sans-serif;
+    	font-size: 54px;
+    	width: clamp(290px, 100%, 760px);
+    	margin: 0 0 55px 0;
+    	will-change: transform, color;
+	}
+}
