@@ -84,7 +84,39 @@ $(function () {
         });
     }
 
+    function copyEmailButton() {
+        var $btn = $('#btn-copy-email');
+
+        if (!$btn.length) return;
+
+        $btn.on('click', function (e) {
+            e.preventDefault();
+
+            var email = $btn.data('email'),
+                $label = $btn.find('.label'),
+                originalLabel = $label.text();
+
+            function showFeedback(text) {
+                $label.text(text);
+                setTimeout(function () {
+                    $label.text(originalLabel);
+                }, 2000);
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(email).then(function () {
+                    showFeedback('E-mail copiado!');
+                }).catch(function () {
+                    window.location.href = 'mailto:' + email;
+                });
+            } else {
+                window.location.href = 'mailto:' + email;
+            }
+        });
+    }
+
 
     stickyNavigation();
     scrollToNavigate();
+    copyEmailButton();
 });

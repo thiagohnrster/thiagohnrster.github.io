@@ -765,8 +765,7 @@ gsap.ticker.lagSmoothing(0);
     gsap.from('.contact-section', {
         scrollTrigger: {
             trigger: '.contact-section',
-            start: 'top 75%',
-            end: 'bottom 50%',
+            start: 'top 50%',
             toggleActions: 'play none none reverse'
         },
         opacity: 0,
@@ -775,3 +774,98 @@ gsap.ticker.lagSmoothing(0);
         ease: "power3.out"
     });
 })();
+
+(function contactListAnimate() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', contactListAnimate);
+        return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set('.contact-list li', { opacity: 1, y: 0 });
+        return;
+    }
+
+    gsap.set('.contact-list li', { opacity: 0, y: 50 });
+
+    ScrollTrigger.create({
+        trigger: '.contact-list',
+        start: 'top 100%',
+        toggleActions: 'play none none reverse',
+        onEnter() {
+            gsap.to('.contact-list li', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+        },
+        onEnterBack() {
+            gsap.to('.contact-list li', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+        },
+        onLeaveBack() {
+            gsap.to('.contact-list li', {
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power3.out'
+            });
+        }
+    });
+})();
+
+(function contactBtnGroupAnimate() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', contactBtnGroupAnimate);
+        return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set('.contact-btn-group .btn', { opacity: 1, scale: 1 });
+        return;
+    }
+
+    gsap.set('.contact-btn-group .btn', { opacity: 0, scale: 0.95 });
+
+    ScrollTrigger.create({
+        trigger: '.contact-btn-group',
+        start: 'top 100%',
+        toggleActions: 'play none none reverse',
+        onEnter() {
+            gsap.to('.contact-btn-group .btn', {
+                opacity: 1,
+                scale: 1,
+                duration: 0.1,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+        },
+        onEnterBack() {
+            gsap.to('.contact-btn-group .btn', {
+                opacity: 1,
+                scale: 1,
+                duration: 0.1,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+        },
+        onLeaveBack() {
+            gsap.to('.contact-btn-group .btn', {
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.1,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+        }
+    });
+})();
+
