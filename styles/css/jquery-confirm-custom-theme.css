@@ -1,4 +1,5 @@
 .jconfirm {
+    overflow: auto;
     backdrop-filter: blur(30px);
 }
 
@@ -13,7 +14,7 @@
     border-radius: 4px;
     position: relative;
     outline: 0;
-    padding: 50px 50px 0;
+    padding: 50px;
     overflow: hidden;
     margin-left: auto;
     margin-right: auto;
@@ -26,12 +27,35 @@
     border-radius: 30px;
 }
 
-.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
-    overflow: hidden;
+.jconfirm .jconfirm-scrollpane {
+    display: block;
+    overflow: auto !important;
+    height: 100% !important;
+    max-height: none !important;
 }
 
+.jconfirm .jconfirm-box-container,
+.jconfirm .jconfirm-row,
+.jconfirm .jconfirm-cell {
+    overflow: visible !important;
+    height: 100% !important;
+}
+.jconfirm .jconfirm-row {
+    display: block !important;
+}
+.jconfirm .jconfirm-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .jconfirm .jconfirm-box div.jconfirm-content-pane {
-    margin-bottom: 46px;
+    margin-bottom: 0;
+    overflow: hidden;
+    max-height: none !important;
+}
+
+.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
+    overflow: hidden;
 }
 
 .jconfirm .jconfirm-box.loading {
