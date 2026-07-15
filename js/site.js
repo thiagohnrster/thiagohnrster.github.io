@@ -9,21 +9,6 @@ const titleCharColor = (isDim, target) => target.closest('.accent')
 
 gsap.registerPlugin(ScrollTrigger);
 
-const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    smoothTouch: false
-});
-
-lenis.on('scroll', ScrollTrigger.update);
-
-gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-});
-
-gsap.ticker.lagSmoothing(0);
-
 (function navActiveBySectionRange() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', navActiveBySectionRange);
@@ -63,7 +48,9 @@ gsap.ticker.lagSmoothing(0);
 
         e.preventDefault();
 
-        lenis.scrollTo($target[0], { offset: -headerH(), duration: 0.8 });
+        const targetY = $target[0].getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - headerH();
+
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
     });
 
     function closestSectionId(el) {
