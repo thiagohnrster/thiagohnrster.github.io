@@ -1109,10 +1109,17 @@ progress::-moz-progress-bar {
 }
 
 .jc-dialog-title {
+	display: inline-flex;
 	font-family: 'plus_jakarta_sansextrabold';
-	font-size: 28px;
+	font-size: 24px;
 	color: #2cb4ff;
+	gap: 20px;
 	margin: 0px 0px 20px 0px;
+}
+
+.jc-dialog-title > strong {
+	display: inline-block;
+	line-height: 28px;
 }
 
 .jc-dialog-subtitle {
@@ -1152,7 +1159,8 @@ progress::-moz-progress-bar {
 	height: 100%;
 	aspect-ratio: 4 / 3;
 	overflow: hidden;
-	background-color: #000000;
+	border-radius: 20px;
+	background: linear-gradient(rgba(44, 180, 255, 0.2), rgba(0, 0, 0, 1));
 }
 
 .jc-dialog-content-left::before {
@@ -1249,6 +1257,61 @@ progress::-moz-progress-bar {
 	display: inline-flex;
 	font-size: 20px;
 	margin-right: 10px;
+}
+
+.ui-badge {
+	display: inline-flex;
+    font-size: 12px;
+    font-family: 'plus_jakarta_sanssemibold';
+    color: #ffffff;
+    text-transform: uppercase;
+	white-space: nowrap;
+    flex: 0;
+	align-items: center;
+    align-self: baseline;
+	padding: 6px 10px 6px 6px;
+    border-radius: 64px;
+    border: 1px solid #455a6d;
+    gap: 5px;
+	background: #455a6d;
+}
+
+.ui-badge::before {
+	display: inline-flex;
+	font-family: 'boxicons';
+	font-size: 14px;
+	color: #8c97a3;
+	content: '\f31f';
+	transform: translateY(1px);
+}
+
+.ui-pills {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+}
+
+.ui-pills .pill {
+	display: inline-flex;
+    font-size: 16px;
+    font-family: 'plus_jakarta_sanssemibold';
+    color: #fff;
+    line-height: 1.33;
+    align-items: center;
+    padding: 8px 12px 8px 8px;
+    border-radius: 64px;
+    border: 1px solid #455a6d;
+    gap: 5px;
+}
+
+.ui-pills .pill::before {
+	display: inline-flex;
+	font-family: 'boxicons-filled';
+	font-size: 10px;
+	color: var(--pill-color, #1f8efe);
+	content: '\f755';
+	transform: translateY(1px);
 }
 
 .ui-tooltip {
