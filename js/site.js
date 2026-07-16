@@ -1,6 +1,6 @@
 // Cores usadas nas animações de reveal dos títulos (apagada -> acesa)
 const TITLE_COLOR_DIM = '#0e253f';
-const TITLE_COLOR_LIT = '#455a6d';
+const TITLE_COLOR_LIT = '#7c90a6';
 const TITLE_ACCENT_DIM = '#09375c';
 const TITLE_ACCENT_LIT = '#2cb4ff';
 const titleCharColor = (isDim, target) => target.closest('.accent')
