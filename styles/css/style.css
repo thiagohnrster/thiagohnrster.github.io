@@ -61,7 +61,7 @@ html,
 body {
 	font-family: 'plus_jakarta_sansregular', sans-serif;
 	font-size: 18px;
-	color: #455a6d;
+	color: #7c90a6;
 	width: 100%;
 	height: 100%;
 	margin: 0px;
@@ -242,7 +242,7 @@ nav li a span {
 .hero .main-title {
 	font-family: 'plus_jakarta_sansextrabold', sans-serif;
 	font-size: 68px;
-	color: #455a6d;
+	color: #7c90a6;
 	width: auto;
 	margin: 0 0 55px 0;
 }
@@ -309,7 +309,7 @@ nav li a span {
 
 .stats-section .stats-label {
 	font-size: 16px;
-	color: #455a6d;
+	color: #7c90a6;
 }
 
 .pre-title {
@@ -321,7 +321,7 @@ nav li a span {
     position: relative;
     font-family: 'Consolas', sans-serif;
     font-size: 20px;
-    color: #455a6d;
+    color: #7c90a6;
     padding: 5px;
 }
 
@@ -368,7 +368,7 @@ nav li a span {
 .main-title .char,
 .hero-title .accent .char,
 .main-title .accent .char {
-	color: #455a6d;	
+	color: #7c90a6;	
 }
 
 .hero-title .char,
@@ -922,7 +922,7 @@ progress::-moz-progress-bar {
 }
 
 .contact-list .contact-list-wp:hover .contact-list-text {
-	color: #8c97a3;
+	color: #7c90a6;
 }
 
 .contact-list .contact-list-wp .contact-list-title,
@@ -989,6 +989,7 @@ progress::-moz-progress-bar {
 .footer .footer-copy,
 .footer .footer-design-by {
 	font-size: 16px;
+	color: #7c90a6;
 }
 
 .footer .footer-design-by {
