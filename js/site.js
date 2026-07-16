@@ -18,6 +18,24 @@ gsap.registerPlugin(ScrollTrigger);
     const $nav = $('.navigation');
     const $header = $('header');
     const headerH = () => ($header.outerHeight() || 0);
+
+    // Respiro extra entre o header e o conteúdo ao navegar por âncora.
+    // Ajuste esse valor para dar mais ou menos "ar" acima do título.
+    const SCROLL_GAP = 40;
+
+    // Ao navegar para outra seção, pageYOffset > 0 e o header assume a classe
+    // "scrolled" (altura menor) assim que o scroll começa. Por isso o destino
+    // precisa ser calculado com a altura que o header terá em repouso, não com
+    // a altura atual — senão a seção anterior fica "vazando" alguns pixels
+    // abaixo do header quando as duas alturas divergem.
+    const headerHAtRest = () => {
+        const wasScrolled = $header.hasClass('scrolled');
+        if (!wasScrolled) $header.addClass('scrolled');
+        const h = $header.outerHeight() || 0;
+        if (!wasScrolled) $header.removeClass('scrolled');
+        return h;
+    };
+
     const $links = $nav.find('a.nav-link[href^="#"]');
     const sections = [];
 
@@ -48,7 +66,16 @@ gsap.registerPlugin(ScrollTrigger);
 
         e.preventDefault();
 
-        const targetY = $target[0].getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - headerH();
+        // Seções como #sobre e #projetos têm 180px de padding-top no .content
+        // (respiro usado pela animação de entrada do título). Ancorar no topo
+        // da própria <section> para o scroll bem antes desse respiro, deixando
+        // um vão vazio entre o header e a tag "//". Por isso ancoramos na tag
+        // visível quando ela existir; a Home não tem esse wrapper e continua
+        // indo para o topo da página normalmente.
+        const $anchor = $target.find('.content .pre-title').first();
+        const $scrollTarget = $anchor.length ? $anchor : $target;
+
+        const targetY = $scrollTarget[0].getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - headerHAtRest() - SCROLL_GAP;
 
         window.scrollTo({ top: targetY, behavior: 'smooth' });
     });
