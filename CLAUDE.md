@@ -1,0 +1,43 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+Ver também [CONTEXT.md](CONTEXT.md) para o contexto de negócio/conteúdo do site (seções, projetos exibidos, débito técnico).
+
+## Visão geral
+
+Portfólio pessoal estático de Thiago Celestino (dev front-end), em português. Página única (`index.html`), sem framework, sem back-end, sem etapa de build — HTML/CSS/JS são servidos como estão. Hospedado no GitHub Pages.
+
+## Comandos
+
+Não há scripts de build, lint ou teste configurados em `package.json` (`npm test` só retorna erro proposital). O único comando relevante:
+
+```bash
+npx live-server
+```
+
+Sobe um servidor local com auto-reload ao salvar qualquer arquivo. `live-server` é a única dependência do projeto.
+
+Deploy é automático: qualquer push em `main` dispara `.github/workflows/jekyll-gh-pages.yml`, que publica os arquivos estáticos no GitHub Pages via `actions/jekyll-build-pages`. Não existe `_config.yml` nem nada específico do Jekyll — o workflow apenas repassa os arquivos como estão.
+
+## Arquitetura
+
+**Tudo gira em torno de `index.html`.** As seções (`#intro`, `#stats`, `#sobre`, `#projetos`, `#contato`) estão todas nesse único arquivo, dentro de `<div class="master">`. Não há roteamento nem outras páginas HTML no domínio principal.
+
+**Separação de responsabilidades em `js/`:**
+- `js/site.js` — tudo que é decorativo/scroll: registra `ScrollTrigger` no GSAP, inicializa `Lenis` (smooth scroll), detecta a seção ativa no viewport para marcar o link do menu, timeline de entrada do hero, parallax da ilustração, reveal de título letra-a-letra via `SplitType`, animação de contadores/barras de progresso. Respeita `prefers-reduced-motion`.
+- `js/scripts.js` — tudo que é interação de clique: abre os modais de projeto (`$.dialog` do jquery-confirm), aplica `.scrolled` no header ao rolar, implementa scroll suave para links `.scroll-to`, limpa o hash da URL após navegar.
+- Demais arquivos em `js/` são bibliotecas de terceiros (GSAP, ScrollTrigger, SplitType, Lenis, jQuery + Migrate, jquery-confirm, jquery.visualnav, lucide) — **não editar como se fossem código próprio**.
+
+**Modais de projeto são fragmentos HTML separados, carregados via AJAX.** Cada card em `#projetos` (`card_1`…`card_4`) tem um handler em `scripts.js` que abre um `$.dialog()` apontando para `modals/*.html` (`hdc-eventos.html`, `rubrum.html`, `rubrum-site-v1.html`, `rubrum-site-v2.html`). Cada arquivo em `modals/` é um `<div>` isolado, sem `<html>`/`<head>` próprios — ao editar um modal, mantenha esse formato de fragmento. O mapeamento card → modal está documentado em [CONTEXT.md](CONTEXT.md).
+
+**CSS é um único arquivo escrito à mão:** `styles/css/style.css`. Não há Sass/Less ativo — `styles/scss/` existe mas está vazia e sem uso. Não introduzir um pipeline de build a menos que explicitamente pedido.
+
+**Fontes self-hosted:** Plus Jakarta Sans em `styles/fonts/`, referenciada via `@font-face` em `style.css` (6 pesos × 5 formatos cada, para compatibilidade ampla de navegador — não remover formatos sem necessidade).
+
+**Ícones:** só o set **Boxicons** (`bx`/`bxf`/`bxl`, carregado em `index.html`) está de fato em uso. `styles/css/fontawesome/`, `styles/css/tabler-icons/` e `js/lucide.js` existem no repo mas não são carregados por `index.html` — são débito técnico, não usar como se estivessem ativos sem confirmar antes.
+
+## Notas específicas
+
+- Não adicionar um link "Contato" na navegação do header — o botão CTA "Entre em contato" (`mailto:`) já cobre esse propósito.
+- `js/jquery.visualnav.min.js` é carregado no `<head>` mas nunca instanciado — o destaque do link ativo do menu é feito por lógica própria em `site.js`, não por esse plugin. Não assumir que o plugin está funcionando.
