@@ -42,11 +42,10 @@ Deploy é automático: qualquer push em `main` dispara `.github/workflows/jekyll
 
 **Fontes self-hosted:** Plus Jakarta Sans (6 pesos) e Source Code Pro (5 pesos, usada nos "//" dos pre-titles e no loader) em `styles/fonts/`, referenciadas via `@font-face` em `style.css` — múltiplos formatos por peso, para compatibilidade ampla de navegador (não remover formatos sem necessidade). Todas as faces têm `font-display: swap`; as 3 usadas no primeiro paint (`plus_jakarta_sansextrabold`, `plus_jakarta_sanssemibold`, `SourceCodePro-Medium`) têm `<link rel="preload">` em `index.html`, antes dos stylesheets.
 
-**Ícones:** só o set **Boxicons** (`bx`/`bxf`/`bxl`, carregado em `index.html`) está de fato em uso. `styles/css/fontawesome/`, `styles/css/tabler-icons/` e `js/lucide.js` existem no repo mas não são carregados por `index.html` — são débito técnico, não usar como se estivessem ativos sem confirmar antes.
+**Ícones:** só o set **Boxicons** (`bx`/`bxf`/`bxl`, carregado em `index.html`) está de fato em uso. Font Awesome, Tabler Icons e `lucide.js` foram removidos do repo por não terem uso — não reintroduzir sem necessidade real.
 
 ## Notas específicas
 
 - Não adicionar um link "Contato" na navegação do header — o botão CTA "Entre em contato" (`mailto:`) já cobre esse propósito.
-- `js/jquery.visualnav.min.js` é carregado no `<head>` mas nunca instanciado — o destaque do link ativo do menu é feito por lógica própria em `site.js`, não por esse plugin. Não assumir que o plugin está funcionando.
+- `js/jquery.visualnav.min.js`, `js/lenis.min.js`, `js/lucide.js`, `styles/css/fontawesome/` e `styles/css/tabler-icons/` foram removidos do repo por serem resíduo sem uso (o destaque do link ativo do menu é feito por lógica própria em `site.js`; o smooth scroll é feito via `window.scrollTo({ behavior: 'smooth' })` nativo — ver cálculo de offset acima).
 - `plus_jakarta_sanslight` e `plus_jakarta_sansmedium` (`@font-face` + arquivos em `styles/fonts/`) não são referenciados em nenhuma regra de `style.css` — confirmado que o navegador nunca os baixa. Débito técnico, mantidos por enquanto a pedido do usuário.
-- `js/lenis.min.js` não é mais carregado em `index.html` nem referenciado em `site.js`/`scripts.js` — o smooth scroll passou a ser feito via `window.scrollTo({ behavior: 'smooth' })` nativo (ver cálculo de offset acima). Arquivo órfão no repo, mesma categoria de débito técnico de `fontawesome`/`tabler-icons`/`lucide.js`.

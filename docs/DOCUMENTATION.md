@@ -48,11 +48,8 @@ js/                          → bibliotecas de terceiros + scripts próprios
   scripts.js                 → próprio — modais, header sticky, scroll suave
   gsap.min.js, ScrollTrigger.js
   split-type.min.js
-  lenis.min.js                → não usado (ver débito técnico)
   jquery-3.7.1.min.js, jquery-migrate-3.4.1.min.js
   jquery-confirm.min.js
-  jquery.visualnav.js / .min.js
-  lucide.js
 
 styles/
   css/
@@ -60,8 +57,6 @@ styles/
     jquery-confirm-custom-theme.css  → tema custom dos modais
     boxicons/                        → ícones usados no site (regular/filled/brands)
     jquery-confirm/3.3.4/
-    fontawesome/7.1.0/                → não usado no site (ver débito técnico)
-    tabler-icons/                    → não usado no site (ver débito técnico)
   fonts/                             → Plus Jakarta Sans self-hosted (6 pesos × 5 formatos)
   scss/                              → pasta vazia, sem uso atual
 
@@ -90,18 +85,15 @@ cv/
 | **GSAP** (+ **ScrollTrigger**) | Motor de todas as animações por scroll: fade-in de seções, parallax da ilustração do hero, contadores e barras de progresso animados, reveal de títulos, efeito de "digitação" nos pre-titles |
 | **SplitType 0.3.4** | Quebra os títulos em `<span>` por caractere, usado pelo GSAP para o efeito de "acender" letra por letra ao entrar na tela |
 
-O scroll da página é o nativo do navegador — **Lenis** foi removido do projeto (não é mais carregado em `index.html` nem referenciado em nenhum script próprio; `js/lenis.min.js` ficou órfão, ver débito técnico). O scroll suave ao clicar em âncoras (menu e `.scroll-to`) é feito via `window.scrollTo({ behavior: 'smooth' })`.
+O scroll da página é o nativo do navegador — **Lenis** foi removido do projeto (não é mais carregado em `index.html`, nem referenciado em nenhum script próprio, e o arquivo `js/lenis.min.js` foi apagado do repo). O scroll suave ao clicar em âncoras (menu e `.scroll-to`) é feito via `window.scrollTo({ behavior: 'smooth' })`.
 
 ### Interação
 | Biblioteca | Função no site |
 |---|---|
 | **jquery-confirm 3.3.4** | Abre os modais de case de projeto — cada clique num card carrega o HTML de `modals/*.html` via AJAX (`content: 'url:/modals/hdc-eventos.html'`) |
-| **jquery.visualnav** | Carregado no `<head>`, mas **nunca instanciado** — o destaque do link ativo do menu é feito por lógica própria em `site.js`, não por este plugin (ver débito técnico) |
 
 ### Ícones
 - **Boxicons** (regular, filled, brands) — único set realmente usado no site
-- **Font Awesome 7.1.0** e **Tabler Icons** — presentes em `styles/css/` mas não carregados em `index.html` (débito técnico)
-- **lucide.js** — presente em `js/` sem nenhuma referência no código (débito técnico)
 
 ### Tipografia
 **Plus Jakarta Sans**, hospedada localmente (não via Google Fonts), nos pesos light / regular / medium / semibold / bold / extrabold, cada um em 5 formatos (`eot`, `svg`, `ttf`, `woff`, `woff2`) para compatibilidade ampla de navegador.
@@ -185,8 +177,5 @@ Não há script `start` configurado em `package.json` — `live-server` é a ún
 ## Itens conhecidos / débito técnico
 
 - **`styles/scss/` vazia** — pasta preparada para um fluxo com Sass que não está em uso; o CSS é escrito e mantido diretamente em `style.css`.
-- **`jquery.visualnav`** carregado mas nunca instanciado — o destaque do nav ativo é feito por lógica própria em `site.js`. Provável resíduo de uma versão anterior do site.
-- **`fontawesome/7.1.0/`, `tabler-icons/` e `js/lucide.js`** — bibliotecas de ícones presentes no projeto mas não referenciadas em nenhum arquivo carregado por `index.html` (só aparecem numa linha comentada dentro de `modals/hdc-eventos.html`).
 - **`site.webmanifest`** tem `name` e `short_name` vazios.
-- **`js/lenis.min.js`** não é mais carregado em `index.html` nem referenciado em `site.js`/`scripts.js` — o Lenis foi removido e o smooth scroll passou a ser nativo (`window.scrollTo`). Arquivo órfão no repo.
 - Um levantamento de UX/conteúdo mais aprofundado (responsividade, hierarquia da seção de contato, estados dos cards de projeto) foi feito separadamente e está disponível como artifact publicado nesta conversa.
