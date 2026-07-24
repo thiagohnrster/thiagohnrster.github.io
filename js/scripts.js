@@ -64,23 +64,39 @@ $(function () {
     }
 
     function scrollToNavigate() {
+        var SCROLL_GAP = 40;
+
+        // Mesmo cálculo usado pelos links da navbar (site.js): o header assume
+        // a classe "scrolled" (altura menor) assim que o scroll começa, então
+        // o destino precisa ser calculado com a altura que o header terá em
+        // repouso, não com a altura atual.
+        function headerHAtRest() {
+            var $header = $('header'),
+                wasScrolled = $header.hasClass('scrolled'),
+                h;
+
+            if (!wasScrolled) $header.addClass('scrolled');
+            h = $header.outerHeight() || 0;
+            if (!wasScrolled) $header.removeClass('scrolled');
+
+            return h;
+        }
+
         $('.scroll-to').on('click', function (e) {
 
             var targetHref = $(this).attr('href'),
-                headerHeight = $('header').outerHeight(),
                 $target = $(targetHref);
 
             if (!$target.length) return;
 
             e.preventDefault();
 
-            if (typeof lenis !== 'undefined' && lenis) {
-                lenis.scrollTo($target[0], { offset: -headerHeight, duration: 1.2 });
-            } else {
-                $('html, body').animate({
-                    scrollTop: $target.offset().top - headerHeight
-                }, 1200);
-            }
+            var $anchor = $target.find('.content .pre-title').first(),
+                $scrollTarget = $anchor.length ? $anchor : $target,
+                targetY = $scrollTarget.offset().top - headerHAtRest() - SCROLL_GAP;
+
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+
         });
     }
 

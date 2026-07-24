@@ -19,6 +19,59 @@ const whenPageReady = (cb) => {
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Efeito de "digitação" nos pre-titles: o texto após o "//" vira um bloco que
+// revela via width (com ease em steps, pra parecer caractere a caractere) e um
+// caret que só some quando a digitação termina. Retorna um timeline pausado pra
+// ser encaixado (via .add(tl, pos)) na MESMA timeline/ScrollTrigger que já faz
+// o fade da section — sincroniza por construção, não por coincidência de tempo.
+function preparePreTitleTyping(span, opts) {
+    opts = opts || {};
+    const CHAR_DURATION = opts.charDuration || 0.035;
+    const MIN_DURATION = opts.minDuration || 0.2;
+    const HIDE_DELAY = opts.hideDelay || 0.4;
+
+    if (!span) return null;
+
+    const accent = span.querySelector('.accent');
+    const textNode = accent ? accent.nextSibling : span.firstChild;
+
+    if (!textNode || textNode.nodeType !== Node.TEXT_NODE || !textNode.textContent.trim()) return null;
+
+    const text = textNode.textContent;
+
+    const typed = document.createElement('span');
+    typed.className = 'pre-title-typed';
+    typed.textContent = text;
+
+    span.replaceChild(typed, textNode);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set(typed, { width: 'auto' });
+        return null;
+    }
+
+    const cursor = document.createElement('i');
+    cursor.className = 'pre-title-cursor';
+    span.appendChild(cursor);
+
+    const fullWidth = typed.scrollWidth;
+    gsap.set(typed, { width: 0 });
+
+    // Sem "paused: true": este timeline é sempre encaixado (.add) dentro de outro
+    // que já controla play/reverse (tlReveal ou o timeline com scrollTrigger) —
+    // um timeline aninhado que nasce pausado fica travado mesmo com o pai tocando.
+    return gsap.timeline({
+        onComplete: () => cursor.classList.add('is-hidden'),
+        onReverseComplete: () => cursor.classList.remove('is-hidden')
+    }).to(typed, {
+        width: fullWidth,
+        duration: Math.max(text.length * CHAR_DURATION, MIN_DURATION),
+        ease: `steps(${text.length})`
+    })
+        // espera com o caret ainda piscando antes de sumir, em vez de sumir na hora
+        .to({}, { duration: HIDE_DELAY });
+}
+
 (function navActiveBySectionRange() {
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', navActiveBySectionRange);
@@ -228,7 +281,11 @@ gsap.registerPlugin(ScrollTrigger);
         .fromTo(title, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.05)
         .fromTo(btns, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.35, stagger: 0.05 }, 0.12)
         .fromTo(social, { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.05 }, 0.32);
-        
+
+    // digitação do pre-title na mesma posição (0) do fade do badge, pra tocarem juntos
+    const badgeTypeTl = preparePreTitleTyping(badge);
+    if (badgeTypeTl) tlReveal.add(badgeTypeTl, 0);
+
     function buildSplitChars() {
         try { split && split.revert(); } catch (_) { }
         charTargets = [];
@@ -552,17 +609,21 @@ gsap.registerPlugin(ScrollTrigger);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.from('.about-section .content:not(.content-skills)', {
+    const tl = gsap.timeline({
         scrollTrigger: {
             trigger: '.about-section',
             start: 'top center',
             toggleActions: 'play none none reverse'
-        },
+        }
+    }).from('.about-section .content:not(.content-skills)', {
         opacity: 0,
         duration: 0.8,
         stagger: 0.1,
         ease: "power3.out"
-    });
+    }, 0);
+
+    const preTitleTl = preparePreTitleTyping(document.querySelector('.about-section .content:not(.content-skills) .pre-title > span'));
+    if (preTitleTl) tl.add(preTitleTl, 0);
 })();
 
 (function contentSkillsAnimate() {
@@ -718,17 +779,21 @@ gsap.registerPlugin(ScrollTrigger);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.from('.recent-works-section', {
+    const tl = gsap.timeline({
         scrollTrigger: {
             trigger: '.recent-works-section',
             start: 'top 25%',
             toggleActions: 'play none none reverse'
-        },
+        }
+    }).from('.recent-works-section', {
         opacity: 0,
         duration: 0.8,
         stagger: 0.1,
         ease: "power3.out"
-    });
+    }, 0);
+
+    const preTitleTl = preparePreTitleTyping(document.querySelector('.recent-works-section .pre-title > span'));
+    if (preTitleTl) tl.add(preTitleTl, 0);
 })();
 
 (function recentWorksCardsAnimate() {
@@ -786,17 +851,21 @@ gsap.registerPlugin(ScrollTrigger);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.from('.contact-section', {
+    const tl = gsap.timeline({
         scrollTrigger: {
             trigger: '.contact-section',
             start: 'top 50%',
             toggleActions: 'play none none reverse'
-        },
+        }
+    }).from('.contact-section', {
         opacity: 0,
         duration: 0.8,
         stagger: 0.1,
         ease: "power3.out"
-    });
+    }, 0);
+
+    const preTitleTl = preparePreTitleTyping(document.querySelector('.contact-section .pre-title > span'));
+    if (preTitleTl) tl.add(preTitleTl, 0);
 })();
 
 (function contactListAnimate() {
