@@ -7,6 +7,16 @@ const titleCharColor = (isDim, target) => target.closest('.accent')
     ? (isDim ? TITLE_ACCENT_DIM : TITLE_ACCENT_LIT)
     : (isDim ? TITLE_COLOR_DIM : TITLE_COLOR_LIT);
 
+// Adia o disparo de uma entrada até o loader (js/loader.js) liberar a página;
+// sem isso a entrada do hero tocaria enquanto fontes/ilustração ainda carregam.
+const whenPageReady = (cb) => {
+    if (window.__pageLoader && window.__pageLoader.ready && typeof window.__pageLoader.ready.then === 'function') {
+        window.__pageLoader.ready.then(cb);
+    } else {
+        cb();
+    }
+};
+
 gsap.registerPlugin(ScrollTrigger);
 
 (function navActiveBySectionRange() {
@@ -260,8 +270,8 @@ gsap.registerPlugin(ScrollTrigger);
             }
         });
     }, { threshold: 0.35 });
-    
-    io.observe(hero);
+
+    whenPageReady(() => io.observe(hero));
 
     window.addEventListener('unload', () => {
         io.disconnect();
@@ -291,12 +301,12 @@ gsap.registerPlugin(ScrollTrigger);
     const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
         .to(layers, { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.12 });
 
-    ScrollTrigger.create({
+    whenPageReady(() => ScrollTrigger.create({
         trigger: hero,
         start: 'top 95%',
         end: 'bottom 80%',
         onToggle: self => self.isActive ? tl.play() : tl.reverse()
-    });
+    }));
 
     gsap.timeline({
         scrollTrigger: {
