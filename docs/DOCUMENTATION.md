@@ -43,11 +43,12 @@ modals/                     → fragmentos HTML dos cases de projeto (carregados
   rubrum-site-v2.html
 
 js/                          → bibliotecas de terceiros + scripts próprios
+  loader.js                  → próprio — tela de carregamento inicial (#pageLoader)
   site.js                    → próprio — animações de scroll (GSAP)
   scripts.js                 → próprio — modais, header sticky, scroll suave
   gsap.min.js, ScrollTrigger.js
   split-type.min.js
-  lenis.min.js
+  lenis.min.js                → não usado (ver débito técnico)
   jquery-3.7.1.min.js, jquery-migrate-3.4.1.min.js
   jquery-confirm.min.js
   jquery.visualnav.js / .min.js
@@ -86,9 +87,10 @@ cv/
 ### Animação e scroll
 | Biblioteca | Função no site |
 |---|---|
-| **GSAP** (+ **ScrollTrigger**) | Motor de todas as animações por scroll: fade-in de seções, parallax da ilustração do hero, contadores e barras de progresso animados, reveal de títulos |
+| **GSAP** (+ **ScrollTrigger**) | Motor de todas as animações por scroll: fade-in de seções, parallax da ilustração do hero, contadores e barras de progresso animados, reveal de títulos, efeito de "digitação" nos pre-titles |
 | **SplitType 0.3.4** | Quebra os títulos em `<span>` por caractere, usado pelo GSAP para o efeito de "acender" letra por letra ao entrar na tela |
-| **Lenis** | Smooth scroll, sincronizado ao ticker do GSAP para o scroll da página inteira ficar fluido em vez do scroll nativo do navegador |
+
+O scroll da página é o nativo do navegador — **Lenis** foi removido do projeto (não é mais carregado em `index.html` nem referenciado em nenhum script próprio; `js/lenis.min.js` ficou órfão, ver débito técnico). O scroll suave ao clicar em âncoras (menu e `.scroll-to`) é feito via `window.scrollTo({ behavior: 'smooth' })`.
 
 ### Interação
 | Biblioteca | Função no site |
@@ -141,13 +143,18 @@ Cada fragmento de modal é um `<div>` isolado (sem `<html>`/`<head>` próprios) 
 
 ## Scripts JavaScript próprios
 
+### `js/loader.js`
+Controla a tela de carregamento inicial (`#pageLoader`), primeiro elemento do `<body>`. O progresso da barra reflete carregamento real — soma ponderada de `document.fonts.ready`, load da ilustração do hero e o evento `window.load` — suavizado por interpolação, nunca um timer fixo. Ao terminar, resolve a promise `window.__pageLoader.ready`, que `site.js` aguarda (`whenPageReady()`) antes de armar a animação de entrada do hero.
+
 ### `js/site.js`
 Responsável por tudo que é decorativo/scroll:
-- Registra o plugin `ScrollTrigger` no GSAP e inicializa o `Lenis` para smooth scroll
+- Registra o plugin `ScrollTrigger` no GSAP
 - Calcula qual seção está ativa no viewport e marca o link correspondente do menu (`is-active`)
+- Expõe `window.smoothScrollTo(target)`, função compartilhada que calcula o destino do scroll suave (header em repouso + gap fixo, ancorando no `.pre-title` da seção quando existir) e dispara `window.scrollTo({ behavior: 'smooth' })` — usada tanto pelo clique num link do menu (`a.nav-link`, aqui mesmo) quanto por `.scroll-to` em `scripts.js`
 - Timeline de entrada do hero (badge, título, botões, ícones sociais)
 - Parallax da ilustração do hero
 - Reveal de título por caractere em cada `.content` ao entrar na tela (usa `SplitType`)
+- Efeito de "digitação" nos pre-titles (`preparePreTitleTyping()`), encaixado na mesma timeline de fade de cada seção
 - Anima contadores e barras de progresso da seção de stats e de skills
 - Respeita `prefers-reduced-motion`, desativando as animações quando o usuário pede menos movimento
 
@@ -155,7 +162,7 @@ Responsável por tudo que é decorativo/scroll:
 Responsável pela interação de clique:
 - Abre os 4 modais de projeto (`$.dialog`)
 - Aplica `.scrolled` no header ao rolar a página
-- Implementa scroll suave ao clicar em links `.scroll-to`
+- Implementa scroll suave ao clicar em links `.scroll-to` (logo, botão "Saiba mais") delegando para `window.smoothScrollTo()`, definida em `site.js`
 - Limpa hash da URL após navegação
 
 ## Fontes e ícones
@@ -181,4 +188,5 @@ Não há script `start` configurado em `package.json` — `live-server` é a ún
 - **`jquery.visualnav`** carregado mas nunca instanciado — o destaque do nav ativo é feito por lógica própria em `site.js`. Provável resíduo de uma versão anterior do site.
 - **`fontawesome/7.1.0/`, `tabler-icons/` e `js/lucide.js`** — bibliotecas de ícones presentes no projeto mas não referenciadas em nenhum arquivo carregado por `index.html` (só aparecem numa linha comentada dentro de `modals/hdc-eventos.html`).
 - **`site.webmanifest`** tem `name` e `short_name` vazios.
+- **`js/lenis.min.js`** não é mais carregado em `index.html` nem referenciado em `site.js`/`scripts.js` — o Lenis foi removido e o smooth scroll passou a ser nativo (`window.scrollTo`). Arquivo órfão no repo.
 - Um levantamento de UX/conteúdo mais aprofundado (responsividade, hierarquia da seção de contato, estados dos cards de projeto) foi feito separadamente e está disponível como artifact publicado nesta conversa.

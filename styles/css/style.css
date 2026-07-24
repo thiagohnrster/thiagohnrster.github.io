@@ -420,6 +420,37 @@ nav li a span {
 	background: #000000;
 }
 
+.pre-title-typed {
+	display: inline-block;
+	flex: 0 0 auto;
+	overflow: hidden;
+	white-space: nowrap;
+	vertical-align: top;
+	width: 0;
+}
+
+.pre-title-cursor {
+	display: inline-block;
+	flex: 0 0 auto;
+	width: 2px;
+	height: 1em;
+	margin-left: 4px;
+	vertical-align: -3px;
+	background: #7c90a6;
+	animation: pre-title-blink 1s steps(1) infinite;
+}
+
+.pre-title-cursor.is-hidden {
+	opacity: 0;
+	animation: none;
+}
+
+@keyframes pre-title-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
 .hero-title,
 .main-title,
 .hero-title .line,
@@ -1552,14 +1583,15 @@ html.is-loading body {
 }
 
 .page-loader-mark {
-	width: 96px;
-	height: 96px;
+	width: 150px;
+	height: 150px;
 }
 
 .page-loader-mark img {
 	width: 100%;
 	height: 100%;
 	display: block;
+	object-fit: fill;
 }
 
 .page-loader-tag {
@@ -1610,7 +1642,7 @@ html.is-loading body {
 
 .page-loader-percent {
 	min-width: 3.4ch;
-	font-family: 'Source Code Pro', sans-serif;
+	font-family: 'plus_jakarta_sanssemibold', sans-serif;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 	font-size: 16px;
@@ -1623,6 +1655,10 @@ html.is-loading body {
 	}
 
 	.page-loader-cursor {
+		animation: none;
+	}
+
+	.pre-title-cursor {
 		animation: none;
 	}
 }

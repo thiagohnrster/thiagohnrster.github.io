@@ -64,23 +64,19 @@ $(function () {
     }
 
     function scrollToNavigate() {
+        // Cálculo de destino/offset compartilhado com os links do menu — ver
+        // window.smoothScrollTo em js/site.js.
         $('.scroll-to').on('click', function (e) {
 
             var targetHref = $(this).attr('href'),
-                headerHeight = $('header').outerHeight(),
                 $target = $(targetHref);
 
             if (!$target.length) return;
 
             e.preventDefault();
 
-            if (typeof lenis !== 'undefined' && lenis) {
-                lenis.scrollTo($target[0], { offset: -headerHeight, duration: 1.2 });
-            } else {
-                $('html, body').animate({
-                    scrollTop: $target.offset().top - headerHeight
-                }, 1200);
-            }
+            window.smoothScrollTo($target);
+
         });
     }
 
