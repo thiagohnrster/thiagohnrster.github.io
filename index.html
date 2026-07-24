@@ -9,6 +9,9 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
+	<link rel="preload" href="styles/fonts/plus_jakarta_sans_extrabold-webfont.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="styles/fonts/plus_jakarta_sans_semibold-webfont.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/basic/boxicons.min.css" />
 	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/filled/boxicons-filled.css" />
 	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/brands/boxicons-brands.min.css" />
@@ -22,11 +25,20 @@
 	<script src="js/jquery-migrate-3.4.1.min.js"></script>
 	<script src="js/jquery-confirm.min.js"></script>
 	<script src="js/jquery.visualnav.min.js"></script>
+	<script src="js/loader.js" defer></script>
 	<script src="js/site.js" defer></script>
 	<script src="js/scripts.js"></script>
 	<title>Portfólio &bull; Thiago Celestino &bull; Desenvolvedor Front-End</title>
 </head>
 <body>
+	<div class="page-loader" id="pageLoader" role="status" aria-label="Carregando página">
+		<div class="page-loader-mark"><img src="images/layout/logo_tc.svg" alt="" aria-hidden="true" /></div>
+		<div class="pre-title page-loader-tag"><span><em class="accent">//</em>carregando<i class="page-loader-cursor"></i></span></div>
+		<div class="page-loader-meter-row">
+			<div class="page-loader-meter"><div class="page-loader-meter-fill" id="pageLoaderFill"></div></div>
+			<span class="page-loader-percent" id="pageLoaderPercent">0%</span>
+		</div>
+	</div>
 	<div class="master">
 		<header class="header">
 			<div class="container">

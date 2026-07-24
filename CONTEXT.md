@@ -18,6 +18,7 @@ Apresentar Thiago como desenvolvedor front-end para potenciais clientes/empregad
 
 Nessa ordem, todas dentro de `index.html`:
 
+0. **Loading inicial (`#pageLoader`)** — tela cheia sobre tudo (inclusive o header) enquanto a página carrega de verdade: logo, tag `// carregando` com cursor piscando, barra de progresso e percentual. Some assim que fontes, ilustração do hero e o `load` da página terminam, e só então a animação de entrada do hero é liberada. Ver detalhes técnicos em [CLAUDE.md](CLAUDE.md).
 1. **Header** — logo, navegação (Home / Sobre / Projetos) e CTA "Entre em contato" (`mailto:`). *(Não adicionar um link "Contato" separado no menu — o CTA já cobre isso.)*
 2. **Hero (`#intro`)** — headline, ilustração, botões "Saiba mais" e "Download CV" (`cv/CVTHIAGO-2025.pdf`), ícones sociais.
 3. **Stats (`#stats`)** — 4 indicadores animados: 5+ anos de experiência, 4 projetos entregues, 95% HTML/CSS/JS, 1000+ xícaras de café.
@@ -41,6 +42,8 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 
 - O menu de navegação foi deliberadamente mantido sem um item "Contato" — o botão CTA do header já direciona para contato via `mailto:`. Não reintroduzir esse link a menos que explicitamente pedido.
 - `js/jquery.visualnav` foi carregado em versões anteriores do site para destacar o link ativo do menu, mas essa função foi substituída por lógica própria em `site.js`. O script antigo permanece carregado no `<head>` porém inativo (resíduo, não removido).
+- A tela de loading (`js/loader.js`) foi adicionada porque a entrada do hero (GSAP) tocava assim que a página abria, mesmo com fontes/ilustração ainda carregando — o loader passou a segurar essa animação até a página estar de fato pronta. O progresso é sempre baseado em eventos reais de carregamento, nunca um timer fixo (pedido explícito).
+- Fontes usadas no primeiro paint (`plus_jakarta_sansextrabold`, `plus_jakarta_sanssemibold`, `SourceCodePro-Medium`) ganharam `<link rel="preload">` e todas as faces ganharam `font-display: swap`, pra acelerar/suavizar o carregamento — decisão tomada em conjunto com o loader, já que ele mede exatamente esse carregamento.
 
 ## Itens conhecidos / débito técnico
 
@@ -49,6 +52,7 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 - `js/lucide.js` está presente mas não é referenciado em nenhum lugar do código carregado.
 - `site.webmanifest` tem `name` e `short_name` vazios.
 - Os cards 1 e 2 (HDC Eventos, Rubrum V2) ainda não têm link de projeto publicado — status "Prévia em breve".
+- `plus_jakarta_sanslight` e `plus_jakarta_sansmedium` (fonte + `@font-face`) não são usados em nenhuma regra de `style.css` — mantidos por enquanto a pedido do usuário, sem custo de performance (arquivo não referenciado não é baixado).
 
 ## Onde procurar mais detalhes
 
