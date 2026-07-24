@@ -150,7 +150,7 @@ Controla a tela de carregamento inicial (`#pageLoader`), primeiro elemento do `<
 Responsável por tudo que é decorativo/scroll:
 - Registra o plugin `ScrollTrigger` no GSAP
 - Calcula qual seção está ativa no viewport e marca o link correspondente do menu (`is-active`)
-- Calcula o destino do scroll suave ao clicar num link do menu (`a.nav-link`) e dispara `window.scrollTo({ behavior: 'smooth' })` — mesmo cálculo de offset usado por `.scroll-to` em `scripts.js`
+- Expõe `window.smoothScrollTo(target)`, função compartilhada que calcula o destino do scroll suave (header em repouso + gap fixo, ancorando no `.pre-title` da seção quando existir) e dispara `window.scrollTo({ behavior: 'smooth' })` — usada tanto pelo clique num link do menu (`a.nav-link`, aqui mesmo) quanto por `.scroll-to` em `scripts.js`
 - Timeline de entrada do hero (badge, título, botões, ícones sociais)
 - Parallax da ilustração do hero
 - Reveal de título por caractere em cada `.content` ao entrar na tela (usa `SplitType`)
@@ -162,7 +162,7 @@ Responsável por tudo que é decorativo/scroll:
 Responsável pela interação de clique:
 - Abre os 4 modais de projeto (`$.dialog`)
 - Aplica `.scrolled` no header ao rolar a página
-- Implementa scroll suave ao clicar em links `.scroll-to` (logo, botão "Saiba mais"), com o mesmo cálculo de offset de header usado pelos links do menu em `site.js`
+- Implementa scroll suave ao clicar em links `.scroll-to` (logo, botão "Saiba mais") delegando para `window.smoothScrollTo()`, definida em `site.js`
 - Limpa hash da URL após navegação
 
 ## Fontes e ícones

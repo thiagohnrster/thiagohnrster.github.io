@@ -19,6 +19,44 @@ const whenPageReady = (cb) => {
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Scroll suave compartilhado por âncoras — usado tanto pelos links do menu
+// (aqui embaixo) quanto pelos elementos .scroll-to em js/scripts.js. Fica em
+// site.js porque este script já carrega (defer) antes do corpo de scripts.js
+// rodar (dentro do $(document).ready).
+const SCROLL_GAP = 40;
+
+// Ao navegar para outra seção, pageYOffset > 0 e o header assume a classe
+// "scrolled" (altura menor) assim que o scroll começa. Por isso o destino
+// precisa ser calculado com a altura que o header terá em repouso, não com
+// a altura atual — senão a seção anterior fica "vazando" alguns pixels
+// abaixo do header quando as duas alturas divergem.
+const headerHAtRest = () => {
+    const $header = $('header');
+    const wasScrolled = $header.hasClass('scrolled');
+    if (!wasScrolled) $header.addClass('scrolled');
+    const h = $header.outerHeight() || 0;
+    if (!wasScrolled) $header.removeClass('scrolled');
+    return h;
+};
+
+// Calcula o destino do scroll suave até `target` (seletor, elemento ou
+// objeto jQuery) e dispara window.scrollTo. Seções como #sobre e #projetos
+// têm 180px de padding-top no .content (respiro usado pela animação de
+// entrada do título); por isso ancoramos na tag .pre-title visível quando
+// ela existir, em vez do topo da própria section.
+window.smoothScrollTo = function (target) {
+    const $target = $(target);
+
+    if (!$target.length) return;
+
+    const $anchor = $target.find('.content .pre-title').first();
+    const $scrollTarget = $anchor.length ? $anchor : $target;
+
+    const targetY = $scrollTarget[0].getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - headerHAtRest() - SCROLL_GAP;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+};
+
 // Efeito de "digitação" nos pre-titles: o texto após o "//" vira um bloco que
 // revela via width (com ease em steps, pra parecer caractere a caractere) e um
 // caret que só some quando a digitação termina. Retorna um timeline pausado pra
@@ -82,23 +120,6 @@ function preparePreTitleTyping(span, opts) {
     const $header = $('header');
     const headerH = () => ($header.outerHeight() || 0);
 
-    // Respiro extra entre o header e o conteúdo ao navegar por âncora.
-    // Ajuste esse valor para dar mais ou menos "ar" acima do título.
-    const SCROLL_GAP = 40;
-
-    // Ao navegar para outra seção, pageYOffset > 0 e o header assume a classe
-    // "scrolled" (altura menor) assim que o scroll começa. Por isso o destino
-    // precisa ser calculado com a altura que o header terá em repouso, não com
-    // a altura atual — senão a seção anterior fica "vazando" alguns pixels
-    // abaixo do header quando as duas alturas divergem.
-    const headerHAtRest = () => {
-        const wasScrolled = $header.hasClass('scrolled');
-        if (!wasScrolled) $header.addClass('scrolled');
-        const h = $header.outerHeight() || 0;
-        if (!wasScrolled) $header.removeClass('scrolled');
-        return h;
-    };
-
     const $links = $nav.find('a.nav-link[href^="#"]');
     const sections = [];
 
@@ -129,18 +150,7 @@ function preparePreTitleTyping(span, opts) {
 
         e.preventDefault();
 
-        // Seções como #sobre e #projetos têm 180px de padding-top no .content
-        // (respiro usado pela animação de entrada do título). Ancorar no topo
-        // da própria <section> para o scroll bem antes desse respiro, deixando
-        // um vão vazio entre o header e a tag "//". Por isso ancoramos na tag
-        // visível quando ela existir; a Home não tem esse wrapper e continua
-        // indo para o topo da página normalmente.
-        const $anchor = $target.find('.content .pre-title').first();
-        const $scrollTarget = $anchor.length ? $anchor : $target;
-
-        const targetY = $scrollTarget[0].getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - headerHAtRest() - SCROLL_GAP;
-
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
+        window.smoothScrollTo($target);
     });
 
     function closestSectionId(el) {
