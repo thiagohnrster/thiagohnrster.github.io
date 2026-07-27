@@ -80,6 +80,82 @@ $(function () {
         });
     }
 
+    // Painel do menu mobile (ver .nav-toggle e header.nav-is-open em style.css).
+    // Fecha ao clicar num link, no Esc, ou se a tela voltar a ficar larga com o
+    // painel ainda aberto — pra nunca sobrar um overlay travado escondido atrás.
+    function mobileNavToggle() {
+        var $header = $('.header'),
+            $toggle = $('#navToggle'),
+            $nav = $('#mainNav');
+
+        if (!$toggle.length || !$nav.length) return;
+
+        // overflow:hidden sozinho no html/body faz o navegador (principalmente
+        // mobile) descartar o scroll atual e voltar pro topo quando o painel
+        // abre no meio da página. Guardamos o scrollY de antes de travar e
+        // fixamos o body nessa posição (top negativo) — ver html.nav-open no
+        // style.css — restaurando com scrollTo ao fechar.
+        var lockedScrollY = 0;
+
+        function closeMenu() {
+            $header.removeClass('nav-is-open');
+            $toggle.attr('aria-expanded', 'false');
+            document.documentElement.classList.remove('nav-open');
+            document.body.style.top = '';
+            window.scrollTo(0, lockedScrollY);
+        }
+
+        function openMenu() {
+            lockedScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+            $header.addClass('nav-is-open');
+            $toggle.attr('aria-expanded', 'true');
+            document.documentElement.classList.add('nav-open');
+            document.body.style.top = (-lockedScrollY) + 'px';
+        }
+
+        $toggle.on('click', function () {
+            if ($header.hasClass('nav-is-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // O scroll suave em si é disparado pelo handler de click de site.js,
+        // ligado direto no <a> (fase de bubble). Se a gente também fechasse o
+        // painel só na fase de bubble, a ordem entre os dois handlers dependeria
+        // de qual script rodou primeiro — e como fechar o menu tira o
+        // "html.nav-open" (overflow:hidden que trava o scroll da página), se
+        // esse handler rodasse DEPOIS do de site.js, o window.scrollTo já teria
+        // sido chamado com a página ainda travada e não ia rolar nada. Ouvindo
+        // na fase de CAPTURA a partir do <nav> (ancestral do link) garante que
+        // o painel fecha e o scroll é liberado antes do clique chegar no <a>.
+        //
+        // Só faz sentido chamar closeMenu() se o painel estiver de fato aberto
+        // (mobile) — sem esse "if", o handler disparava em QUALQUER clique num
+        // link do menu, inclusive no desktop, onde lockedScrollY nunca é
+        // atualizado (fica 0 pra sempre, já que openMenu() só roda no toggle
+        // mobile) e o window.scrollTo(0, 0) do closeMenu() jogava a página pro
+        // topo antes do smoothScrollTo de site.js calcular o destino certo.
+        $nav[0].addEventListener('click', function (e) {
+            if ($header.hasClass('nav-is-open') && e.target.closest('a.nav-link')) closeMenu();
+        }, true);
+
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape' && $header.hasClass('nav-is-open')) closeMenu();
+        });
+
+        var deskMq = window.matchMedia('(min-width: 901px)');
+        function handleDeskMq(e) {
+            if (e.matches) closeMenu();
+        }
+        if (deskMq.addEventListener) {
+            deskMq.addEventListener('change', handleDeskMq);
+        } else if (deskMq.addListener) {
+            deskMq.addListener(handleDeskMq);
+        }
+    }
+
     function copyEmailButton() {
         var $btn = $('#btn-copy-email');
 
@@ -115,4 +191,5 @@ $(function () {
     stickyNavigation();
     scrollToNavigate();
     copyEmailButton();
+    mobileNavToggle();
 });
