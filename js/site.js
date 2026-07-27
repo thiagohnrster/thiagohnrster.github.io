@@ -340,7 +340,7 @@ function preparePreTitleTyping(span, opts) {
 
     whenPageReady(() => io.observe(hero));
 
-    window.addEventListener('unload', () => {
+    window.addEventListener('pagehide', () => {
         io.disconnect();
         try { split && split.revert(); } catch (_) { }
         try { tlReveal && tlReveal.kill(); } catch (_) { }
@@ -383,6 +383,287 @@ function preparePreTitleTyping(span, opts) {
             scrub: true
         }
     }).to(layers[0], { yPercent: -10 }, 0)
+})();
+
+
+(function heroRight() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', heroRight);
+        return;
+    }
+
+    const hero = document.querySelector('#intro.hero') || document.querySelector('#intro');
+    
+    if (!hero) return;
+
+    const layers = [
+        hero.querySelector('.hero-right'),
+    ].filter(Boolean);
+    
+    if (!layers.length) return;
+
+    gsap.set(layers, { autoAlpha: 0, force3D: true });
+
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
+        .to(layers, { autoAlpha: 1, duration: 0.8, stagger: 0.12 });
+
+    whenPageReady(() => ScrollTrigger.create({
+        trigger: hero,
+        start: 'top 95%',
+        end: 'bottom 80%',
+        onToggle: self => self.isActive ? tl.play() : tl.reverse()
+    }));
+
+    gsap.timeline({
+        scrollTrigger: {
+            trigger: hero,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+        }
+    });
+})();
+
+// Fundo decorativo do hero: ícones de componentes de UI (botão, toggle, checkbox...)
+// à deriva atrás do conteúdo, em canvas 2D simples — nada de partículas pesadas.
+// Fica pausado sempre que a seção sai da viewport, a aba perde foco, ou o usuário
+// pede movimento reduzido (nesse caso desenha só um quadro estático, sem loop).
+(function heroAtomsBackground() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', heroAtomsBackground);
+        return;
+    }
+
+    const hero = document.querySelector('#intro.hero') || document.querySelector('#intro');
+    const container = hero && hero.querySelector('.container');
+    const canvas = hero && hero.querySelector('.hero-atoms');
+
+    if (!hero || !container || !canvas || !canvas.getContext) return;
+
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+    const TYPES = ['button', 'toggle', 'checkbox', 'radio', 'chevron', 'cursor', 'badge', 'slider', 'bell', 'search'];
+    const COUNT = 240;
+    const SCROLL_RANGE = 999; // deslocamento (px) do plano mais à frente entre o hero entrar e sair da tela
+
+    let atoms = [];
+    let W = 0, H = 0;
+    let raf = null;
+    let running = false;
+    let inViewport = false;
+    const mouse = { x: 0, y: 0 };
+    const scrollState = { y: 0.5 }; // 0 = hero entrando por baixo, 1 = saindo por cima
+
+    function roundRect(c, x, y, w, h, r) {
+        c.beginPath();
+        c.moveTo(x + r, y);
+        c.arcTo(x + w, y, x + w, y + h, r);
+        c.arcTo(x + w, y + h, x, y + h, r);
+        c.arcTo(x, y + h, x, y, r);
+        c.arcTo(x, y, x + w, y, r);
+        c.closePath();
+    }
+
+    // Vocabulário de UI (botão, toggle, checkbox...) em vez de sintaxe de código
+    // ou pontos conectados — pra remeter a front-end sem cair nesses dois clichês.
+    function drawShape(c, type, s) {
+        switch (type) {
+            case 'button':
+                roundRect(c, -s, -s * 0.32, s * 2, s * 0.64, s * 0.32); c.stroke();
+                break;
+            case 'toggle':
+                roundRect(c, -s * 0.9, -s * 0.4, s * 1.8, s * 0.8, s * 0.4); c.stroke();
+                c.beginPath(); c.arc(s * 0.5, 0, s * 0.28, 0, Math.PI * 2); c.stroke();
+                break;
+            case 'checkbox':
+                roundRect(c, -s * 0.5, -s * 0.5, s, s, s * 0.15); c.stroke();
+                c.beginPath(); c.moveTo(-s * 0.22, 0); c.lineTo(-s * 0.05, s * 0.22); c.lineTo(s * 0.3, -s * 0.25); c.stroke();
+                break;
+            case 'radio':
+                c.beginPath(); c.arc(0, 0, s * 0.5, 0, Math.PI * 2); c.stroke();
+                c.beginPath(); c.arc(0, 0, s * 0.16, 0, Math.PI * 2); c.fill();
+                break;
+            case 'chevron':
+                c.beginPath(); c.moveTo(-s * 0.4, -s * 0.2); c.lineTo(0, s * 0.25); c.lineTo(s * 0.4, -s * 0.2); c.stroke();
+                break;
+            case 'cursor':
+                c.beginPath();
+                c.moveTo(-s * 0.3, -s * 0.5); c.lineTo(s * 0.35, s * 0.05); c.lineTo(s * 0.02, s * 0.1);
+                c.lineTo(s * 0.18, s * 0.5); c.lineTo(-s * 0.02, s * 0.58); c.lineTo(-s * 0.2, s * 0.15); c.lineTo(-s * 0.42, s * 0.22);
+                c.closePath(); c.stroke();
+                break;
+            case 'badge':
+                roundRect(c, -s * 0.6, -s * 0.32, s * 1.2, s * 0.64, s * 0.32); c.stroke();
+                c.beginPath(); c.arc(-s * 0.3, 0, s * 0.08, 0, Math.PI * 2); c.fill();
+                break;
+            case 'slider':
+                c.beginPath(); c.moveTo(-s * 0.7, 0); c.lineTo(s * 0.7, 0); c.stroke();
+                c.beginPath(); c.arc(s * 0.1, 0, s * 0.18, 0, Math.PI * 2); c.stroke();
+                break;
+            case 'bell':
+                c.beginPath(); c.arc(0, -s * 0.05, s * 0.35, Math.PI, 0); c.lineTo(s * 0.42, s * 0.28); c.lineTo(-s * 0.42, s * 0.28); c.closePath(); c.stroke();
+                c.beginPath(); c.arc(0, s * 0.38, s * 0.08, 0, Math.PI * 2); c.stroke();
+                break;
+            case 'search':
+                c.beginPath(); c.arc(-s * 0.05, -s * 0.05, s * 0.35, 0, Math.PI * 2); c.stroke();
+                c.beginPath(); c.moveTo(s * 0.22, s * 0.22); c.lineTo(s * 0.5, s * 0.5); c.stroke();
+                break;
+        }
+    }
+
+    function resize() {
+        const rect = container.getBoundingClientRect();
+        W = rect.width; H = rect.height;
+        canvas.width = W * DPR; canvas.height = H * DPR;
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        // Sem isso, mouse.x/y ficam em (0,0) — bem à esquerda do centro — até o
+        // primeiro mousemove dentro do hero, enviesando o paralaxe pra esquerda
+        // (e cortando átomos nessa borda) assim que a página carrega.
+        mouse.x = W / 2;
+        mouse.y = H / 2;
+    }
+
+    function makeAtoms() {
+        atoms = [];
+        for (let i = 0; i < COUNT; i++) {
+            // Profundidade contínua (0.2 longe .. 1.0 perto) — tamanho, opacidade,
+            // espessura do traço e força do paralaxe derivam todos dela, em vez de
+            // só dois grupos fixos. É o que vende a sensação de vários planos.
+            const depth = 0.2 + Math.random() * 0.8;
+            atoms.push({
+                type: TYPES[i % TYPES.length],
+                x: Math.random() * W,
+                y: Math.random() * H,
+                s: 10 + depth * 24,
+                vx: (Math.random() - 0.5) * (0.04 + depth * 0.10),
+                vy: (Math.random() - 0.5) * (0.04 + depth * 0.10),
+                rot: Math.random() * Math.PI * 2,
+                vr: (Math.random() - 0.5) * 0.0025,
+                depth,
+                opacity: 0.05 + depth * 0.11,
+                lineWidth: 0.9 + depth * 0.8
+            });
+        }
+    }
+
+    function frame() {
+        if (!W || !H) return;
+        ctx.clearRect(0, 0, W, H);
+        const px = (mouse.x - W / 2) * 0.03;
+        const py = (mouse.y - H / 2) * 0.03;
+        const scrollY = (scrollState.y - 0.5) * SCROLL_RANGE;
+        atoms.forEach((a) => {
+            ctx.save();
+            ctx.translate(a.x + px * a.depth, a.y + py * a.depth + scrollY * a.depth);
+            ctx.rotate(a.rot);
+            ctx.strokeStyle = `rgba(95, 196, 255, ${a.opacity})`;
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.lineWidth = a.lineWidth;
+            drawShape(ctx, a.type, a.s);
+            ctx.restore();
+        });
+    }
+
+    function tick() {
+        // O wrap precisa considerar a posição RENDERIZADA (com paralaxe de mouse
+        // e scroll), não só a lógica — senão um átomo "escondido" além da borda
+        // pode reaparecer deslocado pelo paralaxe e ficar cortado pelo canvas.
+        const px = (mouse.x - W / 2) * 0.03;
+        const py = (mouse.y - H / 2) * 0.03;
+        const scrollY = (scrollState.y - 0.5) * SCROLL_RANGE;
+        const MARGIN = 40;
+
+        atoms.forEach((a) => {
+            a.x += a.vx; a.y += a.vy; a.rot += a.vr;
+
+            const rx = a.x + px * a.depth;
+            const ry = a.y + py * a.depth + scrollY * a.depth;
+
+            if (rx < -MARGIN) a.x = W + MARGIN - px * a.depth;
+            if (rx > W + MARGIN) a.x = -MARGIN - px * a.depth;
+            if (ry < -MARGIN) a.y = H + MARGIN - py * a.depth - scrollY * a.depth;
+            if (ry > H + MARGIN) a.y = -MARGIN - py * a.depth - scrollY * a.depth;
+        });
+        frame();
+        raf = requestAnimationFrame(tick);
+    }
+
+    function start() {
+        if (running) return;
+        running = true;
+        if (reduceMotion) { frame(); return; }
+        tick();
+    }
+
+    function stop() {
+        running = false;
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+    }
+
+    function shouldRun() {
+        return inViewport && document.visibilityState === 'visible';
+    }
+
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+    });
+
+    // Paralaxe de scroll: mesma técnica scrub do heroLeft() (yPercent na ilustração),
+    // só que aqui alimenta scrollState.y e é a própria tick() (já rodando) que lê o
+    // valor a cada frame — não precisa de onUpdate redesenhando por conta própria.
+    if (!reduceMotion && window.gsap && window.ScrollTrigger) {
+        gsap.to(scrollState, {
+            y: 1,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: hero,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+    }
+
+    const onResize = () => {
+        resize();
+        makeAtoms();
+        if (running) frame();
+    };
+
+    if (window.ResizeObserver) {
+        new ResizeObserver(onResize).observe(container);
+    } else {
+        window.addEventListener('resize', onResize);
+    }
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.target !== hero) return;
+            inViewport = entry.isIntersecting;
+            if (shouldRun()) start(); else stop();
+        });
+    }, { threshold: 0 });
+
+    document.addEventListener('visibilitychange', () => {
+        if (shouldRun()) start(); else stop();
+    });
+
+    whenPageReady(() => {
+        resize();
+        makeAtoms();
+        io.observe(hero);
+    });
+
+    window.addEventListener('pagehide', () => {
+        stop();
+        io.disconnect();
+    });
 })();
 
 (function contentIsIn_andTitleAnim() {
@@ -516,7 +797,7 @@ function preparePreTitleTyping(span, opts) {
         }
     });
 
-    window.addEventListener('unload', () => {
+    window.addEventListener('pagehide', () => {
         io.disconnect();
         document.querySelectorAll('.content').forEach((c) => {
             const ctrl = controls.get(c);
@@ -677,59 +958,70 @@ function preparePreTitleTyping(span, opts) {
     });
 })();
 
-(function skillBarsFillAnimate () {
+// Console de skills: digita o comando e revela cada linha de saída em stagger.
+// Substitui as antigas barras de porcentagem por evidência real (contagem de
+// projetos da seção Projetos) — ver .term no HTML e no CSS.
+(function skillsConsoleAnimate() {
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', skillBarsFillAnimate);
+        document.addEventListener('DOMContentLoaded', skillsConsoleAnimate);
         return;
     }
+    if (!window.gsap || !window.ScrollTrigger) return;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const items = gsap.utils.toArray(".stats li");
+    const term = document.getElementById('skillsTerm');
+    if (!term) return;
 
-    items.forEach((li, i) => {
-        const item = li;
-        const bar = li.querySelector(".progress-bar");
-        const pct = li.querySelector(".progress-number");
-        const finalValue = Number(bar.value);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; // HTML já nasce 100% visível
 
-        if (reduceMotion) {
-            pct.textContent = `${finalValue}%`;
-            return;
-        }
-
-        gsap.set(item, { opacity: 0 });
-
-        bar.value = 0;
-        pct.textContent = "0%";
-
-        gsap.to(item, {
-            opacity: 1,
-            duration: 1.4,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: li,      // anima cada linha quando entrar
-                start: "top 95%",
-                end: "bottom 10%",
-                toggleActions: 'play none none reverse'
-            }
+    // Mesmo truque de preparePreTitleTyping(): revela um bloco monoespaçado via
+    // largura, com ease em steps — generalizado aqui pra também "digitar" as
+    // barras ASCII (1 step por bloco ■, não por caractere).
+    function typeReveal(el, opts) {
+        opts = opts || {};
+        const charDuration = opts.charDuration || 0.035;
+        const minDuration = opts.minDuration || 0.15;
+        const steps = opts.steps || el.textContent.length;
+        const full = el.scrollWidth;
+        gsap.set(el, { width: 0 });
+        return gsap.to(el, {
+            width: full,
+            duration: Math.max(steps * charDuration, minDuration),
+            ease: `steps(${Math.max(steps, 1)})`
         });
+    }
 
-        gsap.to(bar, {
-            value: finalValue,
-            duration: 1.4,
-            ease: "power3.out",
-            delay: i * 0.08, // “stagger” simples por item
-            onUpdate: () => {
-                const v = Math.round(bar.value);
-                pct.textContent = `${v}%`;
-            },
-            scrollTrigger: {
-                trigger: li,      // anima cada linha quando entrar
-                start: "top 95%",
-                end: "bottom 10%",
-                toggleActions: 'play none none reverse'
-            }
-        });
+    const cmd = term.querySelector('.term-cmd');
+    const techLines = term.querySelectorAll('.term-line-tech');
+    const checkLines = term.querySelectorAll('.term-line-check');
+    const blankLines = term.querySelectorAll('.term-line-blank');
+    const finalLine = term.querySelector('.term-line-final');
+    const bars = term.querySelectorAll('.term-bar');
+
+    const toHide = term.querySelectorAll('.term-line-tech, .term-line-check, .term-line-blank, .term-line-final');
+    gsap.set(toHide, { autoAlpha: 0, y: 6 });
+    gsap.set(bars, { width: 0 });
+
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
+        .add(typeReveal(cmd, { charDuration: 0.04 }), 0)
+        .to(blankLines[0], { autoAlpha: 1, y: 0, duration: 0.2 }, '+=0.15');
+
+    techLines.forEach((line) => {
+        const bar = line.querySelector('.term-bar');
+        const blocks = bar.textContent.length;
+        tl.to(line, { autoAlpha: 1, y: 0, duration: 0.25 }, '>-0.05')
+            .add(typeReveal(bar, { steps: blocks, charDuration: 0.09 }), '<');
+    });
+
+    tl.to(blankLines[1], { autoAlpha: 1, y: 0, duration: 0.2 }, '+=0.1')
+        .to(checkLines, { autoAlpha: 1, y: 0, duration: 0.25, stagger: 0.12 }, '>-0.05')
+        .to(blankLines[2], { autoAlpha: 1, y: 0, duration: 0.2 }, '+=0.1')
+        .to(finalLine, { autoAlpha: 1, y: 0, duration: 0.2 }, '<');
+
+    ScrollTrigger.create({
+        trigger: term,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        onToggle: self => self.isActive ? tl.play() : tl.reverse()
     });
 })();
 
@@ -969,6 +1261,53 @@ function preparePreTitleTyping(span, opts) {
                 ease: 'power3.out'
             });
         }
+    });
+})();
+
+// Caret azul no lugar do ponteiro do sistema (.has-custom-cursor esconde o
+// cursor nativo via CSS). Sobre links, botões e cards ele vira um círculo em
+// vez de sumir, pra manter o sinal de "isso é clicável" sem depender da mão
+// do navegador. Só ativa com mouse de verdade (pointer: fine).
+(function cursorCaret() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', cursorCaret);
+        return;
+    }
+    if (!window.matchMedia('(pointer: fine)').matches) return; // touch não tem cursor persistente
+
+    const caret = document.createElement('div');
+    caret.className = 'cursor-caret';
+    caret.setAttribute('aria-hidden', 'true');
+    caret.innerHTML = '<span class="cursor-caret-bar"></span>';
+    document.body.appendChild(caret);
+
+    let raf = null;
+    function moveTo(x, y) {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+            caret.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            raf = null;
+        });
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        // só esconde o cursor do sistema a partir do primeiro movimento real —
+        // sem isso, o mouse fica sem nenhum indicador visível até a página notar
+        document.documentElement.classList.add('has-custom-cursor');
+        caret.classList.add('is-visible');
+        moveTo(e.clientX, e.clientY);
+    });
+
+    document.documentElement.addEventListener('mouseleave', () => {
+        caret.classList.remove('is-visible');
+    });
+
+    const INTERACTIVE = 'a, button, .btn, input, textarea, select, [role="button"], .card-wrapper, .jconfirm-closeIcon';
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(INTERACTIVE)) caret.classList.add('is-interactive');
+    });
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(INTERACTIVE)) caret.classList.remove('is-interactive');
     });
 })();
 

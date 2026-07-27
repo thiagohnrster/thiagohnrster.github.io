@@ -54,6 +54,8 @@
 		</header>
 		<section id="intro" class="hero">
 			<div class="container">
+				<canvas class="hero-atoms" aria-hidden="true"></canvas>
+				<div class="hero-atoms-vignette" aria-hidden="true"></div>
 				<div class="hero-left">
 					<img title="" alt="Ilustração de programação front-end com código e interface" src="images/layout/programming.svg" />
 				</div>
@@ -62,7 +64,7 @@
 					<h1 class="hero-title main-title">Codifico interfaces <span class="accent">elegantes, ageis e pensadas nos mínimos detalhes.</span></h1>
 					<div class="btn-group">
 						<a href="#sobre" class="btn-descubra btn btn-primary scroll-to"><span class="label">Saiba mais<i class="icon bx bx-chevrons-down"></i></span></a>
-						<a href="cv/CVTHIAGO-2025.pdf" class="btn btn-inverted btn-outline"><span class="label">Download CV<i class="bx bx-arrow-to-bottom"></i></span></a>
+						<a href="cv/CVTHIAGO-2025.pdf" class="btn-download-cv btn btn-inverted btn-inverted-ghost btn-outline"><span class="label">Download CV<i class="bx bx-arrow-to-bottom"></i></span></a>
 					</div>
 					<ul class="hero-social">
 						<li><a target="_blank" href="https://www.linkedin.com/in/thiagohnrster/"><i class="icon bxl bx-linkedin-square"></i></a></li>
@@ -112,59 +114,43 @@
 					<h3 class="main-title">Design e código <span class="accent">a serviço da experiência do usuário</span></h3>
 					<div class="about-content-flex">
 						<div class="about-column-flex">
-							<p>
-								Meu trabalho é dar vida a interfaces que não apenas funcionam bem, mas que também entregam sensações —
-								fluidez, clareza, impacto visual.
-							</p>
-							<p>
-								Utilizo tecnologias como <span class="highlighted">Javascript, Angular JS, CSS moderno</span>,
-								animações com <span class="highlighted">GSAP</span>, entre outras, para construir projetos que unem
-								estética e desempenho sempre com atenção aos mínimos detalhes de interação.
-							</p>
-							<p>
-								Gosto de unir design e código para criar experiências digitais que realmente fazem diferença — do primeiro
-								rascunho de layout até a última transição de interface.
-							</p>
+							<pre class="about-column-pre-text">
+								<p>
+									Meu trabalho é dar vida a interfaces que não apenas funcionam bem, mas que também entregam sensações —
+									fluidez, clareza, impacto visual.
+								</p>
+								<p>
+									Utilizo tecnologias como <span class="highlighted highlighted-custom">Javascript, Angular JS, CSS moderno</span>,
+									animações com <span class="highlighted highlighted-custom">GSAP</span>, entre outras, para construir projetos que unem
+									estética e desempenho sempre com atenção aos mínimos detalhes de interação.
+								</p>
+								<p>
+									Gosto de unir design e código para criar experiências digitais que realmente fazem diferença — do primeiro
+									rascunho de layout até a última transição de interface.
+								</p>
+							</pre>
 						</div>
 						<div class="about-column-flex">
 							<div class="content-stats">
-								<ul class="stats">
-									<li>
-										<div class="progress">
-											<label class="progress-label">HTML</label>
-											<progress class="progress-bar" value="95" max="100"></progress>
-											<span class="progress-number">0%</span>
-										</div>
-									</li>
-									<li>
-										<div class="progress">
-											<label class="progress-label">CSS</label>
-											<progress class="progress-bar" value="95" max="100"></progress>
-											<span class="progress-number">0%</span>
-										</div>
-									</li>
-									<li>
-										<div class="progress">
-											<label class="progress-label">Javascript</label>
-											<progress class="progress-bar" value="75" max="100"></progress>
-											<span class="progress-number">0%</span>
-										</div>
-									</li>
-									<li>
-										<div class="progress">
-											<label class="progress-label">UI / UX</label>
-											<progress class="progress-bar" value="85" max="100"></progress>
-											<span class="progress-number">0%</span>
-										</div>
-									</li>
-									<li>
-										<div class="progress">
-											<label class="progress-label">Design Responsivo</label>
-											<progress class="progress-bar" value="80" max="100"></progress>
-											<span class="progress-number">0%</span>
-										</div>
-									</li>
-								</ul>
+								<div class="term" id="skillsTerm">
+									<div class="term-chrome">
+										<span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
+										<span class="term-title">zsh &mdash; skills.js</span>
+									</div>
+									<div class="term-body">
+										<div class="term-line term-line-cmd"><span class="term-prompt">$ </span><span class="term-cmd">node skills.js</span></div>
+										<div class="term-line term-line-blank">&nbsp;</div>
+										<div class="term-line term-line-tech"><span class="term-label">HTML5</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
+										<div class="term-line term-line-tech"><span class="term-label">CSS / Sass</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
+										<div class="term-line term-line-tech"><span class="term-label">Javascript</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
+										<div class="term-line term-line-tech"><span class="term-label">Angular JS</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;</span><span class="term-bar-off">&#9632;&#9632;</span></span><span class="term-count"># 2/4 projetos</span></div>
+										<div class="term-line term-line-blank">&nbsp;</div>
+										<div class="term-line term-line-check"><span class="term-check">&#10003;</span><span class="term-label term-label-wide">UI / UX</span><span class="term-desc">da pesquisa ao protótipo funcional</span></div>
+										<div class="term-line term-line-check"><span class="term-check">&#10003;</span><span class="term-label term-label-wide">Design Responsivo</span><span class="term-desc">mobile &middot; tablet &middot; desktop</span></div>
+										<div class="term-line term-line-blank">&nbsp;</div>
+										<div class="term-line term-line-final"><span class="term-prompt">$ </span><span class="term-cursor"></span></div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -224,41 +210,29 @@
 					<h6 class="pre-title"><span><em class="accent">//</em>projetos</span></h6>
 					<h3 class="main-title">Trabalhos <span class="accent">recentes</span></h3>
 					<ul class="cards recent-works-cards">
-						<li id="card_1" class="card">
+						<li id="card_4" class="card">
 							<div class="card-wrapper">
 								<picture class="card-picture">
-									<img src="/images/layout/project_thumb_4.png" title="" alt="" />
-									<div class="card-picture-reveal">
-										<i class="icon bxl bx-html5"></i>
-										<i class="icon bxl bx-sass"></i>
-										<i class="icon bxl bx-javascript"></i>
-										<i class="icon bxl bx-angular"></i>
-										<i class="icon bxl bx-laravel"></i>
+									<div class="card-chrome">
+										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
+									</div>
+									<div class="card-art">
+										<img src="/images/layout/project_thumb_3.png" title="" alt="" />
+										<div class="card-duotone"></div>
+										<div class="card-picture-reveal">
+											<i class="icon bxl bx-html5"></i>
+											<i class="icon bxl bx-css3"></i>
+											<i class="icon bxl bx-javascript"></i>
+											<i class="icon bxl bx-angular"></i>
+											<i class="icon bxl bx-laravel"></i>
+										</div>
 									</div>
 								</picture>
 								<div class="card-content">
 									<div class="card-caption">
-										<h5 class="card-title">HDC Eventos</h5>
-										<div class="card-description-status coming-soon">Prévia em breve</div>
-									</div>
-									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
-								</div>
-							</div>
-						</li>
-						<li id="card_2" class="card">
-							<div class="card-wrapper">
-								<picture class="card-picture">
-									<img src="/images/layout/project_thumb_2.png" title="" alt="" />
-									<div class="card-picture-reveal">
-										<i class="icon bxl bx-html5"></i>
-										<i class="icon bxl bx-css3"></i>
-										<i class="icon bxl bx-javascript"></i>
-									</div>
-								</picture>
-								<div class="card-content">
-									<div class="card-caption">
-										<h5 class="card-title">Rubrum - Site Comercial V2</h5>
-										<div class="card-description-status coming-soon">Prévia em breve</div>
+										<h5 class="card-title">Rubrum</h5>
+										<small class="card-description">Gestão de embalagens · Plataforma web</small>
+										<div class="card-description-status is-done">24 de Julho de 2019</div>
 									</div>
 									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
 								</div>
@@ -267,38 +241,78 @@
 						<li id="card_3" class="card">
 							<div class="card-wrapper">
 								<picture class="card-picture">
-									<img src="/images/layout/project_thumb_1.png" title="" alt="" />
-									<div class="card-picture-reveal">
-										<i class="icon bxl bx-html5"></i>
-										<i class="icon bxl bx-css3"></i>
-										<i class="icon bxl bx-javascript"></i>
+									<div class="card-chrome">
+										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
+									</div>
+									<div class="card-art">
+										<img src="/images/layout/project_thumb_1.png" title="" alt="" />
+										<div class="card-duotone"></div>
+										<div class="card-picture-reveal">
+											<i class="icon bxl bx-html5"></i>
+											<i class="icon bxl bx-css3"></i>
+											<i class="icon bxl bx-javascript"></i>
+										</div>
 									</div>
 								</picture>
 								<div class="card-content">
 									<div class="card-caption">
 										<h5 class="card-title">Rubrum - Site Comercial V1</h5>
+										<small class="card-description">Landing page · Divulgação da plataforma web</small>
 										<div class="card-description-status is-done">05 de Agosto de 2020</div>
 									</div>
 									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
 								</div>
 							</div>
 						</li>
-						<li id="card_4" class="card">
+						<li id="card_2" class="card">
 							<div class="card-wrapper">
 								<picture class="card-picture">
-									<img src="/images/layout/project_thumb_3.png" title="" alt="" />
-									<div class="card-picture-reveal">
-										<i class="icon bxl bx-html5"></i>
-										<i class="icon bxl bx-css3"></i>
-										<i class="icon bxl bx-javascript"></i>
-										<i class="icon bxl bx-angular"></i>
-										<i class="icon bxl bx-laravel"></i>
+									<div class="card-chrome">
+										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
+									</div>
+									<div class="card-art">
+										<img src="/images/layout/project_thumb_2.png" title="" alt="" />
+										<div class="card-duotone"></div>
+										<div class="card-picture-reveal">
+											<i class="icon bxl bx-html5"></i>
+											<i class="icon bxl bx-css3"></i>
+											<i class="icon bxl bx-javascript"></i>
+										</div>
 									</div>
 								</picture>
 								<div class="card-content">
 									<div class="card-caption">
-										<h5 class="card-title">Rubrum</h5>
-										<div class="card-description-status is-done">24 de Julho de 2019</div>
+										<h5 class="card-title">Rubrum - Site Comercial V2</h5>
+										<small class="card-description">Landing page · Redesign</small>
+										<div class="card-description-status coming-soon">Prévia em breve</div>
+									</div>
+									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
+								</div>
+							</div>
+						</li>
+						<li id="card_1" class="card">
+							<div class="card-wrapper">
+								<picture class="card-picture">
+									<div class="card-chrome">
+										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
+									</div>
+									<div class="card-art">
+										<img src="/images/layout/project_thumb_4.png" title="" alt="" />
+										<div class="card-duotone"></div>
+										<div class="card-picture-reveal">
+											<i class="icon bxl bx-html5"></i>
+											<i class="icon bxl bx-sass"></i>
+											<i class="icon bxl bx-javascript"></i>
+											<i class="icon bxl bx-angular"></i>
+											<i class="icon bxl bx-laravel"></i>
+										</div>
+									</div>
+								</picture>
+								<div class="card-content">
+									<div class="card-caption">
+										<h5 class="card-title">HDC Eventos</h5>
+										<small class="card-description">Plataforma de gestão de eventos · Full-stack</small>
+										<div class="card-description-status coming-soon">Prévia em breve</div>
 									</div>
 									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
 								</div>

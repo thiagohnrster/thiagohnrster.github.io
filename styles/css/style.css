@@ -291,8 +291,27 @@ nav li a span {
 	height: 100%;
 }
 
+.hero .hero-atoms {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+/* Some com os átomos perto das bordas em vez de deixar o corte do canvas
+   aparecer. Elipse (não círculo) porque o hero é bem mais largo que alto —
+   um círculo centralizado ficaria "gordo" no meio das laterais e "fino" nos
+   cantos; a elipse acompanha a proporção real da caixa nos dois eixos. */
+.hero .hero-atoms-vignette {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: radial-gradient(ellipse at center, transparent 45%, #001833 88%);
+}
+
 .hero .hero-left,
 .hero .hero-right {
+	position: relative;
+	z-index: 1;
 	display: inline-flex;
 	flex-direction: column;
 	justify-content: center;
@@ -341,6 +360,14 @@ nav li a span {
 	color: #ffffff;
 }
 
+.hero .btn-download-cv {
+	box-shadow: inset 0px 0px 0px 2px rgba(69, 90, 109, 1.0);
+}
+
+.hero .btn-download-cv:hover {
+	color: #ffffff !important;
+}
+
 .stats-section {
 	padding: 94px 0;
 	background: #0e253f;
@@ -383,7 +410,9 @@ nav li a span {
 }
 
 .stats-section .stats-label {
+	font-family: 'Source Code Pro';
 	font-size: 16px;
+	font-weight: 400;
 	color: #7c90a6;
 }
 
@@ -398,8 +427,8 @@ nav li a span {
 	font-size: 20px;
 	color: #7c90a6;
 	font-weight: 500;
-	line-height: 24px;
-	padding: 5px 10px;
+	line-height: 1;
+	padding: 5px 5px 5px 15px;
 }
 
 .pre-title>span>.accent {
@@ -417,7 +446,9 @@ nav li a span {
 	width: 100%;
 	height: 100%;
 	z-index: -1;
-	background: #000000;
+	border: 1px solid rgba(25, 47, 71, .5);
+	border-radius: 5px;
+	background: #050e18;
 }
 
 .pre-title-typed {
@@ -446,6 +477,69 @@ nav li a span {
 }
 
 @keyframes pre-title-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+/* Caret estilo bloco de terminal (como o cursor do .term em Sobre) que substitui
+   o ponteiro do sistema (ver .has-custom-cursor abaixo). Sobre links, botões e
+   cards ele muda de forma (bloco -> círculo) em vez de sumir, pra não perder o
+   afordance de "isso é clicável". */
+.has-custom-cursor,
+.has-custom-cursor * {
+	cursor: none;
+}
+
+/* .jconfirm-box tem regras de cursor com especificidade maior que a nossa
+   (ex: cursor:pointer no botão de fechar) — sem isso, a seta nativa reaparece
+   só dentro do modal, mesmo com o caret customizado ativo em todo o resto. */
+.has-custom-cursor .jconfirm-box * {
+	cursor: none !important;
+}
+
+.cursor-caret {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+	/* jquery-confirm usa z-index:99999999 no overlay do modal — sem ficar acima
+	   disso, o caret desaparece atrás do modal e some ao tentar fechar pelo X. */
+	z-index: 100000000;
+	opacity: 0;
+	transition: opacity .15s ease-in-out;
+}
+
+.cursor-caret.is-visible {
+	opacity: 1;
+}
+
+.cursor-caret-bar {
+	position: absolute;
+	left: 14px;
+	top: -11px;
+	width: 11px;
+	height: 22px;
+	border-radius: 2px;
+	background: #2cb4ff;
+	animation: cursor-caret-blink 1s steps(1) infinite;
+	transition: left .15s ease, top .15s ease, width .15s ease, height .15s ease, border-radius .15s ease, background .15s ease;
+}
+
+.cursor-caret.is-interactive .cursor-caret-bar {
+	left: 2px;
+	top: -7px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: rgba(44, 180, 255, .3);
+	border: 1.5px solid #2cb4ff;
+	animation: none;
+}
+
+@keyframes cursor-caret-blink {
 	50% {
 		opacity: 0;
 	}
@@ -536,6 +630,17 @@ nav li a span {
 	color: #ffffff;
 }
 
+/* Lê como um trecho selecionado num editor de código — bloco sólido na cor de
+   acento, sem borda, e box-decoration-break pra "clonar" o realce por linha
+   quando o texto quebra, em vez de esticar um retângulo só pelas duas linhas. */
+.content p>.highlighted-custom {
+	padding: 0 2px;
+	border-radius: 3px;
+	background: rgba(44, 180, 255, .28);
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
 .about-section {
 	position: relative;
 }
@@ -563,75 +668,136 @@ nav li a span {
 	padding: 0 45px;
 }
 
-.stats {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+.about-section .about-content-flex .about-column-flex .about-column-pre-text,
+.about-section .about-content-flex .about-column-flex .about-column-pre-text * {
+	font-family: 'Source Code Pro';
+	white-space: normal;
 }
 
-.stats>li {
-	margin: 0 0 40px 0;
+/* Console de skills — substitui as barras de porcentagem. Em vez de um número
+   auto-atribuído, HTML5/CSS/JS mostram em quantos dos 4 projetos reais (seção
+   Projetos) a tecnologia apareceu; UI/UX e Design Responsivo, que não são uma
+   tag de projeto, ganham uma frase qualitativa em vez de uma métrica inventada. */
+.term {
+	background: #00101f;
+	border: 1px solid #0f2e4c;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
-.stats>li:last-child {
-	margin: 0;
-}
-
-.progress {
-	position: relative;
+.term-chrome {
 	display: flex;
 	align-items: center;
-	height: 25px;
+	gap: 8px;
+	padding: 0 14px;
+	height: 32px;
+	background: #03192e;
+	border-bottom: 1px solid #0f2e4c;
 }
 
-.progress .progress-label {
-	position: absolute;
-	display: inline-flex;
-	font-family: 'plus_jakarta_sanssemibold';
-	font-size: 16px;
+.term-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+}
+
+.term-dot-r {
+	background: #e5564d;
+}
+
+.term-dot-y {
+	background: #e8b93f;
+}
+
+.term-dot-g {
+	background: #3ec97a;
+}
+
+.term-title {
+	margin-left: 8px;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 11.5px;
+	color: #3f5a75;
+}
+
+.term-body {
+	padding: 20px 22px 24px;
+	font-family: 'Source Code Pro', monospace;
+	font-size: 13.5px;
+	line-height: 1.95;
+}
+
+.term-line {
+	white-space: pre;
+	color: #7c90a6;
+}
+
+.term-prompt {
+	color: #5a7691;
+}
+
+.term-cmd {
+	color: #dfeeff;
+}
+
+.term-label {
+	display: inline-block;
+	width: 150px;
 	color: #ffffff;
-	line-height: 1.563;
-	align-items: center;
-	top: 0;
-	left: 0;
-	z-index: 1;
-	padding: 0px 16px;
 }
 
-.progress .progress-number {
-	display: inline-flex;
-	font-family: 'plus_jakarta_sanssemibold', sans-serif;
-	font-size: 16px;
-	color: #ffffff;
-	line-height: 1.563;
-	margin-left: auto;
+.term-label-wide {
+	width: 132px;
 }
 
-progress {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: calc(100% - 60px);
-	width: -webkit-fill-available;
-	width: fill-available;
-	height: 100%;
+.term-bar {
+	display: inline-block;
 	overflow: hidden;
-	border-radius: 100px;
-	margin-inline-end: 60px;
+	vertical-align: bottom;
+	white-space: nowrap;
 }
 
-progress::-webkit-progress-bar {
-	background-color: #455a6d;
+.term-bar-on {
+	color: #2cb4ff;
 }
 
-progress::-webkit-progress-value {
-	background-color: #2cb4ff;
-	border-radius: 100px;
+.term-bar-off {
+	color: #1c3350;
 }
 
-progress::-moz-progress-bar {
-	background-color: #455a6d;
+.term-count {
+	color: #5a7691;
+	margin-left: 10px;
+}
+
+.term-check {
+	color: #2cb4ff;
+	margin-right: 8px;
+}
+
+.term-desc {
+	color: #8fa6bb;
+}
+
+.term-cursor {
+	display: inline-block;
+	width: .55em;
+	height: 1.1em;
+	background: #2cb4ff;
+	vertical-align: -2px;
+	margin-left: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.term-cursor {
+		animation: term-blink 1s steps(1) infinite;
+	}
+}
+
+@keyframes term-blink {
+	50% {
+		opacity: 0;
+	}
 }
 
 .cards {
@@ -677,7 +843,8 @@ progress::-moz-progress-bar {
 	height: 100%;
 	overflow: hidden;
 	border-radius: 20px;
-	background: #000000;
+	background: #0e253f;
+	box-shadow: 0px 0px 0px 1px #192f47;
 }
 
 .cards .card .card-wrapper:hover .card-surface {
@@ -692,7 +859,7 @@ progress::-moz-progress-bar {
 	content: '';
 	width: 100%;
 	height: 80rem;
-	background: #1f8efe;
+	background: #192f47;
 	transform: skewY(135deg);
 	transition: all .4s ease-in-out;
 }
@@ -725,7 +892,8 @@ progress::-moz-progress-bar {
 }
 
 .cards .card .card-title {
-	font-family: 'plus_jakarta_sansbold', sans-serif;
+	font-family: 'Source Code Pro', sans-serif;
+	font-weight: 500;
 	font-size: 20px;
 }
 
@@ -741,18 +909,56 @@ progress::-moz-progress-bar {
 	padding: 0 !important;
 	overflow: hidden;
 	border-radius: 20px;
-	box-shadow: 0px 0px 0px 1px #001833;
+	box-shadow: 0px 0px 0px 1px #192f47;
 }
 
 .recent-works-cards .card-wrapper .card-picture {
 	position: relative;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
 }
 
-.recent-works-cards .card-wrapper .card-picture img {
+/* Barra de chrome falsa (bolinhas + url) — mesmo tratamento em cima de qualquer
+   imagem-fonte, pra normalizar screenshot cru, render de marketing e print de painel. */
+.recent-works-cards .card-wrapper .card-chrome {
+	display: flex;
+	align-items: center;
+	flex: 0 0 26px;
+	gap: 7px;
+	padding: 10px 12px;
+	background: #03192e;
+	border-bottom: 1px solid #0f2e4c;
+	position: relative;
+	z-index: 2;
+}
+
+/* Sem texto de propósito — só a forma da barra de endereço, curta e colada nas
+   bolinhas, pra não ser confundida com um skeleton loader. */
+.recent-works-cards .card-wrapper .card-chrome .url {
+	width: 100%;
+	height: 10px;
+	border-radius: 64px;
+	background: #0f2e4c;
+	border: 1px solid #0f2e4c;
+}
+
+.recent-works-cards .card-wrapper .card-chrome .dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #25415c;
+}
+
+.recent-works-cards .card-wrapper .card-art {
+	position: relative;
+	flex: 1;
+	overflow: hidden;
+}
+
+.recent-works-cards .card-wrapper .card-art img {
 	position: absolute;
 	display: block;
 	top: 0;
@@ -762,6 +968,20 @@ progress::-moz-progress-bar {
 	z-index: -1;
 	object-fit: cover;
 	transform-origin: center;
+	/* dessatura antes do duotone entrar — sem isso, cores muito fortes na imagem
+	   de origem (ex: o vermelho da Rubrum) furam a tinta azul e ficam destoando */
+	filter: grayscale(.85);
+}
+
+/* Duotone azul-marinho por cima da imagem — neutraliza a paleta de origem
+   (fundo branco, vermelho saturado, render rosa...) numa família só de cor. */
+.recent-works-cards .card-wrapper .card-duotone {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	background: linear-gradient(160deg, rgba(0, 24, 51, .86), rgba(31, 142, 254, .4));
+	mix-blend-mode: multiply;
+	pointer-events: none;
 }
 
 .recent-works-cards .card-wrapper .card-picture,
@@ -797,14 +1017,14 @@ progress::-moz-progress-bar {
 	opacity: 1;
 }
 
-.recent-works-cards .card-wrapper:hover .card-picture img {
+.recent-works-cards .card-wrapper:hover .card-art img {
 	transform: scale(1.03);
 }
 
 .recent-works-cards .card-wrapper .card-picture-reveal .icon,
 .recent-works-cards .card-wrapper:hover .card-picture-reveal .icon {
 	font-size: 34px;
-	color: #1f8efe;
+	color: rgba(44, 180, 255, .5);
 }
 
 .recent-works-cards .card-wrapper .card-content {
@@ -825,7 +1045,7 @@ progress::-moz-progress-bar {
 	content: '';
 	width: 100%;
 	height: 100%;
-	background: #000000;
+	background: #0e253f;
 }
 
 .recent-works-cards .card .card-title,
@@ -835,6 +1055,12 @@ progress::-moz-progress-bar {
 	z-index: 1;
 }
 
+.recent-works-cards .card .card-title,
+.recent-works-cards .card .card-description {
+	width: 90%;
+}
+
+
 .recent-works-cards .card .card-title {
 	font-family: 'plus_jakarta_sanssemibold';
 	font-size: 18px;
@@ -842,11 +1068,21 @@ progress::-moz-progress-bar {
 	margin: 0 0 10px 0;
 }
 
+.recent-works-cards .card .card-description {
+	display: block;
+	font-family: 'Source Code Pro';
+	font-size: 14px;
+	color: #7c90a6;
+	margin: 0px 0px 10px 0px;
+}
+
+
 .recent-works-cards .card .card-description-status {
 	display: inline-flex;
-	font-family: 'plus_jakarta_sansbold';
-	font-size: 10px;
+	font-family: 'Source Code Pro', sans-serif;
+	font-size: 12px;
 	color: #1f8efe;
+	line-height: 1;
 	letter-spacing: 0.03rem;
 	text-transform: uppercase;
 	align-items: center;
@@ -865,7 +1101,7 @@ progress::-moz-progress-bar {
 .recent-works-cards .card .card-description-status.is-done::before {
 	display: inline-block;
 	font-family: 'boxicons';
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 1;
 	content: '\f26e';
 	margin-right: 8px;
@@ -874,7 +1110,7 @@ progress::-moz-progress-bar {
 .recent-works-cards .card .card-description-status.coming-soon::before {
 	display: inline-block;
 	font-family: 'boxicons';
-	font-size: 14px;
+	font-size: 12px;
 	line-height: 1;
 	content: '\f31f';
 	margin-right: 8px;
@@ -889,7 +1125,7 @@ progress::-moz-progress-bar {
 	width: 95rem;
 	height: 100%;
 	transform: skewX(-45deg);
-	background: #1f8efe;
+	background: #192f47;
 	transition: all .4s ease-in-out;
 }
 
@@ -899,11 +1135,16 @@ progress::-moz-progress-bar {
 
 .recent-works-cards .card .view-more {
 	position: relative;
+	color: #7c90a6 !important;
 	font-size: 36px;
 	cursor: pointer;
 	margin: 0;
 	z-index: 1;
 	opacity: 0;
+}
+
+.recent-works-cards .card .view-more:hover {
+	color: #ffffff !important;
 }
 
 .recent-works-cards .card .card-wrapper:hover .view-more {
@@ -941,6 +1182,7 @@ progress::-moz-progress-bar {
 	overflow: hidden;
 	transition: all .2s ease-in-out;
 	background: #0e253f;
+	box-shadow: 0px 0px 0px 1px #192f47;
 
 }
 
@@ -1016,8 +1258,9 @@ progress::-moz-progress-bar {
 }
 
 .contact-list .contact-list-wp .contact-list-text {
-	font-family: 'plus_jakarta_sansmedium' sans-serif;
+	font-family: 'Source Code Pro', sans-serif;
 	font-size: 16px;
+	font-weight: 500;
 	line-height: 1.3;
 	width: 100%;
 	min-width: 0;
@@ -1066,6 +1309,7 @@ progress::-moz-progress-bar {
 
 .footer .footer-copy,
 .footer .footer-design-by {
+	font-family: 'Source Code Pro', sans-serif;
 	font-size: 16px;
 	color: #7c90a6;
 }
@@ -1081,12 +1325,13 @@ progress::-moz-progress-bar {
 .btn {
 	display: inline-flex;
 	position: relative;
-	font-family: 'plus_jakarta_sanssemibold', sans-serif;
+	font-family: 'Source Code Pro', sans-serif;
 	font-size: 18px;
+	font-weight: 600;
 	color: #ffffff;
 	text-decoration: none;
-	padding: 18px 28px 18px 30px;
-	border-radius: 999px;
+	padding: 18px 20px 18px 30px;
+	border-radius: 15px;
 	background: #000000;
 	margin: 0 30px 0 0;
 	overflow: hidden;
@@ -1217,6 +1462,8 @@ progress::-moz-progress-bar {
 }
 
 .jc-dialog-text {
+	font-family: 'Source Code Pro';
+	white-space: normal;
 	margin: 0px 0px 10px 0px;
 }
 
@@ -1315,11 +1562,11 @@ progress::-moz-progress-bar {
 
 .jc-dialog-links .link {
 	display: inline-flex;
-	font-family: 'plus_jakarta_sansbold';
+	font-family: 'Source Code Pro', sans-serif;
 	font-size: 14px;
 	color: #ffffff;
 	text-decoration: none;
-	border-radius: 64px;
+	border-radius: 15px;
 	padding: 10px 16px 10px 0px;
 	background: #03588c;
 	transition: all .2s ease-in-out;
@@ -1361,9 +1608,11 @@ progress::-moz-progress-bar {
 
 .ui-badge {
 	display: inline-flex;
-	font-size: 10px;
-	font-family: 'plus_jakarta_sansbold';
+	font-size: 12px;
+	font-family: 'Source Code Pro', sans-serif;
+	font-weight: 500;
 	color: #ffffff;
+	line-height: 1;
 	letter-spacing: 0.03rem;
 	text-transform: uppercase;
 	white-space: nowrap;
@@ -1380,7 +1629,7 @@ progress::-moz-progress-bar {
 .ui-badge::before {
 	display: inline-flex;
 	font-family: 'boxicons';
-	font-size: 14px;
+	font-size: 12px;
 	color: #8c97a3;
 	line-height: 1;
 	content: '\f31f';
@@ -1406,10 +1655,12 @@ progress::-moz-progress-bar {
 .ui-pills .pill {
 	display: inline-flex;
 	font-size: 16px;
-	font-family: 'plus_jakarta_sanssemibold';
-	color: #ffffff;
+	font-family: 'Source Code Pro';
+	font-weight: 500;
+	color: #7c90a6;
 	cursor: pointer;
-	line-height: 1.33;
+	line-height: 1;
+	white-space: nowrap;
 	align-items: center;
 	padding: 8px 12px 8px 8px;
 	border-radius: 64px;
@@ -1421,6 +1672,7 @@ progress::-moz-progress-bar {
 }
 
 .ui-pills .pill:hover {
+	color: #8c97a3;
 	background: rgba(140, 151, 163, .2);
 }
 
@@ -1428,9 +1680,13 @@ progress::-moz-progress-bar {
 	display: inline-flex;
 	font-family: 'boxicons-filled';
 	font-size: 10px;
-	color: var(--pill-color, #1f8efe);
+	color: var(--pill-color, #7c90a6);
 	content: '\f755';
 	transform: translateY(1px);
+}
+
+.ui-pills .pill:hover::before {
+	color: #8c97a3;
 }
 
 .ui-tooltip {
@@ -1439,9 +1695,10 @@ progress::-moz-progress-bar {
 
 .ui-tooltip:after {
 	position: absolute;
-	font-family: 'plus_jakarta_sanssemibold', sans-serif;
+	font-family: 'Source Code Pro', sans-serif;
 	font-size: 14px;
 	color: #ffffff;
+	line-height: 1;
 	text-align: center;
 	white-space: normal;
 	content: attr(data-title);
@@ -1449,12 +1706,13 @@ progress::-moz-progress-bar {
 	width: max-content;
 	min-width: 75px;
 	max-width: 200px;
-	padding: 10px;
+	padding: 8px;
 	opacity: 0;
 	visibility: hidden;
 	border-radius: 5px;
 	box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, .2);
-	background: rgba(25, 25, 25, .8);
+	background: rgba(5, 14, 24, 0.8);
+    border: 1px solid rgba(25, 47, 71, .3);
 	/* precisa ter alpha */
 	-webkit-backdrop-filter: blur(5px);
 	backdrop-filter: blur(5px);
@@ -1642,7 +1900,7 @@ html.is-loading body {
 
 .page-loader-percent {
 	min-width: 3.4ch;
-	font-family: 'plus_jakarta_sanssemibold', sans-serif;
+	font-family: 'Source Code Pro', sans-serif;
 	font-weight: 600;
 	font-variant-numeric: tabular-nums;
 	font-size: 16px;
@@ -1659,6 +1917,10 @@ html.is-loading body {
 	}
 
 	.pre-title-cursor {
+		animation: none;
+	}
+
+	.cursor-caret-bar {
 		animation: none;
 	}
 }

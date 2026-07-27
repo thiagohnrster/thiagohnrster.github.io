@@ -10,7 +10,8 @@
 }
 
 .jconfirm .jconfirm-box {
-    background: rgba(15, 15, 15, .8);
+    background: rgba(5, 14, 24, 0.8);
+    border: 1px solid rgba(25, 47, 71, .3);
     border-radius: 4px;
     position: relative;
     outline: 0;
@@ -137,7 +138,7 @@
 
 .jconfirm .jconfirm-box div.jconfirm-closeIcon:hover::after {
     transform: translate(-50%, -50%) scale(1);
-    background-color: rgba(155, 155, 155, .2);
+    background-color: rgba(25, 47, 71, .6);
 }
 
 .jconfirm .jconfirm-box div.jconfirm-closeIcon:hover {
