@@ -13,6 +13,7 @@ Site estático de portfólio pessoal de **Thiago Celestino**, desenvolvedor fron
 - [Fontes e ícones](#fontes-e-ícones)
 - [Rodando localmente](#rodando-localmente)
 - [Deploy](#deploy)
+- [Detalhes de interação do hero e cursor](#detalhes-de-interação-do-hero-e-cursor)
 - [Itens conhecidos / débito técnico](#itens-conhecidos--débito-técnico)
 
 ## Visão geral
@@ -82,8 +83,9 @@ cv/
 ### Animação e scroll
 | Biblioteca | Função no site |
 |---|---|
-| **GSAP** (+ **ScrollTrigger**) | Motor de todas as animações por scroll: fade-in de seções, parallax da ilustração do hero, contadores e barras de progresso animados, reveal de títulos, efeito de "digitação" nos pre-titles |
+| **GSAP** (+ **ScrollTrigger**) | Motor de todas as animações por scroll: fade-in de seções, parallax da ilustração e do fundo de átomos do hero, contador da seção de stats, reveal de títulos, efeito de "digitação" nos pre-titles e no console de skills |
 | **SplitType 0.3.4** | Quebra os títulos em `<span>` por caractere, usado pelo GSAP para o efeito de "acender" letra por letra ao entrar na tela |
+| **Canvas 2D (nativo)** | `heroAtomsBackground()` desenha o fundo animado do hero (ícones de UI à deriva) num `<canvas>`, sem biblioteca externa |
 
 O scroll da página é o nativo do navegador — **Lenis** foi removido do projeto (não é mais carregado em `index.html`, nem referenciado em nenhum script próprio, e o arquivo `js/lenis.min.js` foi apagado do repo). O scroll suave ao clicar em âncoras (menu e `.scroll-to`) é feito via `window.scrollTo({ behavior: 'smooth' })`.
 
@@ -113,21 +115,21 @@ O scroll da página é o nativo do navegador — **Lenis** foi removido do proje
 Todas dentro de `<div class="master">`, na ordem em que aparecem:
 
 1. **Header fixo** (`.header`) — logo, navegação (`Home`, `Sobre`, `Projetos`) e botão CTA "Entre em contato" (`mailto:`). Fica sólido (`.scrolled`) ao rolar a página.
-2. **Hero** (`#intro`) — título de apresentação, ilustração SVG, botões "Saiba mais" / "Download CV", ícones sociais (LinkedIn, GitHub).
+2. **Hero** (`#intro`) — título de apresentação, ilustração SVG, botões "Saiba mais" / "Download CV", ícones sociais (LinkedIn, GitHub), fundo animado de ícones de UI em `<canvas>` (ver [Detalhes de interação](#detalhes-de-interação-do-hero-e-cursor)) e cursor customizado ativo em todo o site.
 3. **Stats** (`#stats`) — 4 indicadores numéricos animados (anos de experiência, projetos entregues, % HTML/CSS/JS, xícaras de café).
-4. **Sobre** (`#sobre`) — texto de apresentação, barras de progresso de skill (HTML, CSS, JavaScript, UI/UX, Design Responsivo) e grade de cards de ferramentas/bibliotecas (Less, Sass, Bootstrap, Angular JS, GSAP, jQuery).
-5. **Projetos** (`#projetos`) — 4 cards de "Trabalhos recentes", cada um abrindo um modal com case de projeto ao clicar.
+4. **Sobre** (`#sobre`) — texto de apresentação e um console de terminal (`node skills.js`) no lugar de barras de porcentagem: HTML5, CSS/Sass e Javascript mostram em quantos dos 4 projetos reais foram usados; UI/UX e Design Responsivo ganham uma frase qualitativa. Grade de cards de ferramentas/bibliotecas abaixo (Less, Sass, Bootstrap, Angular JS, GSAP, jQuery), sem mudança.
+5. **Projetos** (`#projetos`) — 4 cards de "Trabalhos recentes" com thumbnail em frame unificado (barra de chrome falsa + duotone), reordenados pra mostrar primeiro os projetos com data de publicação real. Cada um abre um modal com case de projeto ao clicar.
 6. **Contato** (`#contato`) — lista de canais: e-mail, WhatsApp, LinkedIn, GitHub.
 7. **Footer** — copyright com ano atual gerado via `Date().getFullYear()`, assinatura "Design by Thiago Celestino".
 
 ## Sistema de modais de projeto
 
-Cada card em `#projetos` tem um `id` (`card_1`…`card_4`). Um clique dispara `scripts.js`, que abre um `$.dialog()` do jquery-confirm carregando o fragmento correspondente via AJAX:
+Cada card em `#projetos` tem um `id` (`card_1`…`card_4`) — os `id`s não seguem mais a ordem visual (ver [Seções da página](#seções-da-página) e [CONTEXT.md](../CONTEXT.md) para a ordem exibida). Um clique dispara `scripts.js`, que abre um `$.dialog()` do jquery-confirm carregando o fragmento correspondente via AJAX:
 
 | Card | Modal | Projeto | Status |
 |---|---|---|---|
-| `card_1` | `modals/hdc-eventos.html` | HDC Eventos — plataforma de gestão de eventos | Em desenvolvimento |
-| `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Em desenvolvimento |
+| `card_1` | `modals/hdc-eventos.html` | HDC Eventos — plataforma de gestão de eventos | Prévia em breve |
+| `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Prévia em breve |
 | `card_3` | `modals/rubrum-site-v1.html` | Rubrum — Site Comercial V1 | Publicado (05/08/2020) |
 | `card_4` | `modals/rubrum.html` | Rubrum — plataforma de gestão de embalagens | Publicado (24/07/2019) |
 
@@ -145,9 +147,12 @@ Responsável por tudo que é decorativo/scroll:
 - Expõe `window.smoothScrollTo(target)`, função compartilhada que calcula o destino do scroll suave (header em repouso + gap fixo, ancorando no `.pre-title` da seção quando existir) e dispara `window.scrollTo({ behavior: 'smooth' })` — usada tanto pelo clique num link do menu (`a.nav-link`, aqui mesmo) quanto por `.scroll-to` em `scripts.js`
 - Timeline de entrada do hero (badge, título, botões, ícones sociais)
 - Parallax da ilustração do hero
+- Fundo animado de átomos de UI no hero em `<canvas>` (`heroAtomsBackground()`) — ver [Detalhes de interação](#detalhes-de-interação-do-hero-e-cursor)
 - Reveal de título por caractere em cada `.content` ao entrar na tela (usa `SplitType`)
 - Efeito de "digitação" nos pre-titles (`preparePreTitleTyping()`), encaixado na mesma timeline de fade de cada seção
-- Anima contadores e barras de progresso da seção de stats e de skills
+- Console de skills animado em "Sobre" (`skillsConsoleAnimate()`), reaproveitando a técnica de digitação por `steps()` do item acima
+- Anima o contador da seção de stats
+- Cursor customizado em todo o site (`cursorCaret()`) — ver [Detalhes de interação](#detalhes-de-interação-do-hero-e-cursor)
 - Respeita `prefers-reduced-motion`, desativando as animações quando o usuário pede menos movimento
 
 ### `js/scripts.js`
@@ -173,6 +178,39 @@ Não há script `start` configurado em `package.json` — `live-server` é a ún
 ## Deploy
 
 `.github/workflows/jekyll-gh-pages.yml` publica o site no **GitHub Pages** a cada push na branch `main`, usando o template padrão `actions/jekyll-build-pages`. Não há `_config.yml` nem nenhum recurso específico do Jekyll no projeto — como não há nada para o Jekyll processar, o build só repassa os arquivos estáticos como estão, funcionando na prática como uma publicação de HTML puro.
+
+## Detalhes de interação do hero e cursor
+
+### Fundo de átomos do hero
+
+`.hero-atoms` (canvas) dentro de `.hero .container`, desenhado por `heroAtomsBackground()`. ~30 ícones de componentes de UI (botão, toggle, checkbox, rádio, chevron, cursor, badge, slider, sino, busca) à deriva atrás do conteúdo — deliberadamente **não** código nem pontos conectados (rede neural), por serem os dois clichês mais repetidos de fundo animado em portfólio de dev.
+
+Cada átomo tem uma `depth` contínua (0.2 = longe … 1.0 = perto) da qual derivam tamanho, opacidade, espessura do traço e velocidade — múltiplos planos de profundidade, não dois grupos fixos. Reage a dois tipos de paralaxe, ambos ponderados por `depth`:
+- **Mouse** — deslocamento proporcional à distância do cursor até o centro do hero.
+- **Scroll** — via `ScrollTrigger` com `scrub` (mesma técnica de `heroLeft()`), até ±75px no plano mais à frente.
+
+**Gotchas já corrigidos, não reintroduzir:**
+- O wrap-around (átomo sai de um lado, reaparece do outro) calcula a posição usando a coordenada **renderizada** (lógica + paralaxe de mouse/scroll), não só a lógica — cortar aqui faz um átomo "escondido" reaparecer deslocado pelo paralaxe e ficar cortado pela borda do canvas.
+- `resize()` recentraliza `mouse.x`/`mouse.y` no meio do hero — o valor inicial `{x:0,y:0}` enviesava o paralaxe pra esquerda antes do primeiro `mousemove` real.
+- `.hero-atoms-vignette`, logo depois do canvas no HTML, aplica `radial-gradient(ellipse at center, transparent 45%, #001833 88%)` — elipse (não círculo) porque o hero é bem mais largo que alto; mascara qualquer corte residual de wrap nas bordas.
+
+Pausa (sem `requestAnimationFrame` rodando) quando: a seção sai da viewport (`IntersectionObserver`), a aba perde foco (`visibilitychange`), ou o usuário pede `prefers-reduced-motion` (nesse caso desenha 1 quadro estático, sem loop).
+
+### Console de skills em "Sobre"
+
+`.term` + `skillsConsoleAnimate()`. Visualmente uma janela de terminal (`zsh — skills.js`) rodando `node skills.js`. Em vez de percentuais auto-atribuídos, mostra evidência real: HTML5/CSS·Sass/Javascript/Angular JS aparecem como barras ASCII (`■■■■`) com a contagem de em quantos dos 4 projetos da seção Projetos aquela tecnologia foi usada; UI/UX e Design Responsivo (que não são uma tag de projeto) ganham uma frase qualitativa em vez de um número. A animação usa um `typeReveal()` local que generaliza a técnica de `preparePreTitleTyping()` (revelar largura via `ease: steps(n)`) tanto pro comando digitado quanto pras barras, disparada por `ScrollTrigger` (`onToggle` reversível).
+
+### Frame unificado dos cards de projeto
+
+As 4 imagens reais (`project_thumb_1.png`…`project_thumb_4.png`) vêm de origens visuais muito diferentes (screenshot de painel, render de marketing rosa, foto de evento). Cada `.card-picture` ganhou uma barra de chrome falsa (`.card-chrome`: 3 bolinhas + um retângulo curto sem texto) e a imagem foi movida pra dentro de `.card-art`, com `filter: grayscale(.85)` na `<img>` (dessatura antes de qualquer tinta entrar — sem isso, cores muito saturadas na origem furam o duotone) e um `.card-duotone` (`mix-blend-mode: multiply`, azul-marinho) por cima. Os cards também têm `.card-description` (linha de contexto sob o título) e foram reordenados no HTML pra mostrar antes os projetos com data de publicação real.
+
+### Cursor customizado
+
+`.cursor-caret` + `cursorCaret()`. Um bloco azul piscando (estilo cursor de terminal, mesma linguagem visual do `.term` de Sobre) segue o mouse via `translate3d`, substituindo o ponteiro nativo do sistema (`.has-custom-cursor` aplica `cursor: none` globalmente — só ativado a partir do primeiro `mousemove` real, pra nunca existir um instante sem nenhum cursor visível). Sobre elementos interativos (`a`, `button`, `.btn`, `.card-wrapper`, etc.) o bloco vira um círculo em vez de sumir, preservando o sinal de "isso é clicável". Só ativa com `pointer: fine` (sem efeito em touch).
+
+O jQuery Confirm exige dois ajustes específicos: seu overlay de modal usa `z-index: 99999999`, então `.cursor-caret` precisa ficar acima disso (hoje `100000000`); e seu botão de fechar define `cursor: pointer` com especificidade maior que a regra genérica `.has-custom-cursor *`, por isso existe `.has-custom-cursor .jconfirm-box * { cursor: none !important; }`, com `.jconfirm-closeIcon` incluído na lista de elementos interativos do script.
+
+**Trade-off aceito:** com o cursor nativo escondido em todo o site, texto selecionável (parágrafos, contato) perde o indicador visual de I-beam — a seleção em si continua funcionando normalmente.
 
 ## Itens conhecidos / débito técnico
 
