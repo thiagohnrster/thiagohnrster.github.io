@@ -212,6 +212,18 @@ function preparePreTitleTyping(span, opts) {
     function onScroll() {
         if (ticking) return;
 
+        // Com o menu mobile aberto, o body vira position:fixed com um "top"
+        // negativo pra simular visualmente o scroll mantido (ver html.nav-open
+        // no CSS e mobileNavToggle em scripts.js) — mas window.pageYOffset
+        // passa a ler 0 de verdade nesse meio tempo. Se algo disparar um
+        // recálculo aqui (resize da barra de endereço no mobile, refresh do
+        // ScrollTrigger etc.), a conta abaixo ia sempre resolver pra "Home" e
+        // essa marcação ficava presa lá até o próximo scroll de verdade. Não
+        // recalcula enquanto a página está travada — ao fechar o menu,
+        // scripts.js restaura o scroll real, o que já dispara um 'scroll'
+        // genuíno e resincroniza isso sozinho.
+        if (document.documentElement.classList.contains('nav-open')) return;
+
         ticking = true;
 
         requestAnimationFrame(() => {
@@ -514,7 +526,7 @@ function preparePreTitleTyping(span, opts) {
     }
 
     function resize() {
-        const rect = container.getBoundingClientRect();
+        const rect = hero.getBoundingClientRect();
         W = rect.width; H = rect.height;
         canvas.width = W * DPR; canvas.height = H * DPR;
         canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -637,7 +649,7 @@ function preparePreTitleTyping(span, opts) {
     };
 
     if (window.ResizeObserver) {
-        new ResizeObserver(onResize).observe(container);
+        new ResizeObserver(onResize).observe(hero);
     } else {
         window.addEventListener('resize', onResize);
     }
@@ -768,9 +780,19 @@ function preparePreTitleTyping(span, opts) {
         return ctrl;
     }
 
+    // Observa o .main-title em si, não o .content inteiro. No mobile, .content
+    // engloba o texto E o que vem embaixo dele empilhado (console de skills em
+    // Sobre, cards em coluna única em Projetos, lista em Contato) — a div fica
+    // bem mais alta que a viewport, e um threshold de 55% sobre o .content
+    // inteiro nunca é atingido, então a animação nunca dispara. Medindo a
+    // visibilidade do título (que tem altura estável, curta) o threshold
+    // continua significando a mesma coisa em qualquer largura de tela.
     const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            const content = entry.target;
+            const title = entry.target;
+            const content = title.closest('.content');
+            if (!content) return;
+
             const ctrl = ensureCtrl(content);
             if (!ctrl) return;
 
@@ -791,9 +813,10 @@ function preparePreTitleTyping(span, opts) {
     }, { threshold: THRESHOLD });
 
     document.querySelectorAll('.content').forEach((c) => {
-        if (c.querySelector('.main-title')) {
+        const title = c.querySelector('.main-title');
+        if (title) {
             ensureCtrl(c);
-            io.observe(c);
+            io.observe(title);
         }
     });
 

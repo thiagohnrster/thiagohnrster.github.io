@@ -150,14 +150,14 @@ header {
 	z-index: 3;
 	align-items: center;
 	justify-content: center;
-	min-width: 1009px;
 	width: 100%;
 	height: 100px;
 	background: none;
 	transition: all .2s ease-in-out;
 }
 
-header.scrolled {
+header.scrolled,
+header.nav-is-open {
 	top: 0;
 	height: 80px;
 	background: rgba(0, 0, 0, .7);
@@ -278,7 +278,82 @@ nav li a span {
 	width: 150%;
 }
 
+/* Botão de menu — só aparece no breakpoint mobile (ver @media abaixo), onde
+   .navigation deixa de ser a barra horizontal e passa a ser o painel cheio
+   que ele abre/fecha. As 3 barras viram um X via rotate/opacity, sem SVG novo. */
+.nav-toggle {
+	display: none;
+	position: relative;
+	flex: 0 0 auto;
+	width: 40px;
+	height: 40px;
+	padding: 0;
+	border: none;
+	background: none;
+	cursor: pointer;
+	z-index: 3;
+}
+
+.nav-toggle-bar {
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	height: 2px;
+	background: #7c90a6;
+	border-radius: 2px;
+	transition: all .25s ease-in-out;
+}
+
+.nav-toggle-bar:nth-child(1) {
+	top: 13px;
+}
+
+.nav-toggle-bar:nth-child(2) {
+	top: 19px;
+}
+
+.nav-toggle-bar:nth-child(3) {
+	top: 25px;
+}
+
+.nav-toggle:hover .nav-toggle-bar {
+	background: #ffffff;
+}
+
+header.nav-is-open .nav-toggle-bar:nth-child(1) {
+	top: 19px;
+	transform: rotate(45deg);
+}
+
+header.nav-is-open .nav-toggle-bar:nth-child(2) {
+	opacity: 0;
+}
+
+header.nav-is-open .nav-toggle-bar:nth-child(3) {
+	top: 19px;
+	transform: rotate(-45deg);
+}
+
+/* Trava o scroll da página com o painel aberto. Diferente do html.is-loading
+   (ver seção Loader) — aquele trava sempre no topo, no load da página, então
+   overflow:hidden sozinho basta. Aqui o usuário pode abrir o menu já rolado
+   pra qualquer ponto da página, e overflow:hidden sozinho no html/body faz o
+   navegador (principalmente mobile) descartar o scroll atual e voltar pro
+   topo. position:fixed no body com "top" negativo (calculado em JS, ver
+   mobileNavToggle em js/scripts.js) preserva a posição visualmente enquanto
+   trava o scroll, e o JS restaura o scroll real ao fechar. */
+html.nav-open {
+	overflow: hidden;
+}
+
+html.nav-open body {
+	position: fixed;
+	overflow: hidden;
+	width: 100%;
+}
+
 .hero {
+	position: relative;
 	display: flex;
 	height: 100%;
 	align-items: center;
@@ -295,6 +370,7 @@ nav li a span {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
+	z-index: -1;
 }
 
 /* Some com os átomos perto das bordas em vez de deixar o corte do canvas
@@ -305,7 +381,7 @@ nav li a span {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
-	background: radial-gradient(ellipse at center, transparent 45%, #001833 88%);
+	background: radial-gradient(ellipse at center, transparent 50%, #001023 100%);
 }
 
 .hero .hero-left,
@@ -394,7 +470,7 @@ nav li a span {
 
 .stats-section .stats-icon {
 	font-size: 64px;
-	color: #1f8efe;
+	color: #2cb4ff;
 }
 
 .stats-section .stats-value,
@@ -599,7 +675,6 @@ nav li a span {
 .container {
 	width: 100%;
 	max-width: 1480px;
-	min-width: 960px;
 	padding-inline: 30px;
 	margin: 0 auto;
 }
@@ -747,7 +822,7 @@ nav li a span {
 }
 
 .term-label-wide {
-	width: 132px;
+	width: 160px;
 }
 
 .term-bar {
@@ -956,6 +1031,10 @@ nav li a span {
 	position: relative;
 	flex: 1;
 	overflow: hidden;
+	/* Contém o mix-blend-mode do duotone só dentro deste elemento — sem isolar,
+	   Safari é inconsistente com Chrome/Firefox sobre até onde a mistura de cor
+	   se propaga (pode vazar pro chrome do card acima). */
+	isolation: isolate;
 }
 
 .recent-works-cards .card-wrapper .card-art img {
@@ -1807,6 +1886,315 @@ nav li a span {
 		width: clamp(290px, 100%, 760px);
 		margin: 0 0 55px 0;
 		will-change: transform, color;
+	}
+
+	.term-label-wide {
+		width: 160px;
+	}
+}
+
+/* Responsivo — abaixo de ~900px o header (logo + nav + CTA) e o hero (ilustração
+   ao lado do texto) foram pensados como layout fixo de desktop. Os breakpoints
+   acima só reduzem font-size; aqui a gente reflow de verdade pra caber em
+   tablet/celular, sem trocar o menu por um hambúrguer novo. */
+@media (max-width: 900px) {
+	.page-loader .page-loader-mark {
+		width: 100px;
+		height: 100px;
+	}
+
+	header {
+		height: 80px;
+	}
+
+	header .container {
+		height: 80px;
+	}
+
+	header .logo {
+		width: 48px;
+		height: 48px;
+	}
+
+	header.scrolled .logo {
+		width: 42px;
+		height: 42px;
+	}
+
+	.nav-toggle {
+		display: flex;
+		margin-left: auto;
+	}
+
+	header .navigation {
+		position: fixed;
+		top: 0px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 2;
+		flex: none;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0;
+		height: 100vh;
+		padding: 40px 30px;
+		overflow-y: auto;
+		visibility: hidden;
+		opacity: 0;
+		transform: translateY(-12px);
+		transition: opacity .25s ease-in-out, transform .25s ease-in-out, visibility .25s;
+	}
+
+	header.nav-is-open .navigation {
+		visibility: visible;
+		opacity: 1;
+		transform: translateY(0);
+		background: rgba(0, 0, 0, .8);
+		-webkit-backdrop-filter: blur(20px);
+		backdrop-filter: blur(20px);
+	}
+
+	header nav ul {
+		position: static;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		margin: 0 0 30px 0;
+		transform: none;
+	}
+
+	nav li a {
+		width: 100%;
+		padding: 16px 10px;
+		font-size: 17px;
+		justify-content: center;
+		text-align: center;
+	}
+
+	/* O indicador de link ativo (bolinha antes do texto) é pensado pro menu
+	   horizontal do desktop — no painel centralizado do mobile ele só sobra. */
+	nav li a:before {
+		display: none;
+	}
+
+	.navigation .btn-contact {
+		min-width: 0;
+		width: 100%;
+		max-width: 280px;
+		margin: 0 !important;
+		padding: 16px 20px;
+	}
+
+	.hero {
+		min-height: 956px;
+		height: 100%;
+	}
+
+	.hero .container {
+		flex-direction: column;
+		justify-content: center;
+		gap: 0px;
+		padding-block: 80px;
+	}
+
+	.hero .hero-left,
+	.hero .hero-right {
+		flex: 1 1 auto;
+		width: 100%;
+	}
+
+	.hero .hero-left {
+		max-width: clamp(180px, 8vw, 280px);
+		margin: 0 auto 20px auto;
+	}
+
+	.hero .main-title,
+	.main-title {
+		font-size: clamp(34px, 8vw, 40px);
+		width: 100%;
+		margin: 0px 0px 30px 0px;
+	}
+
+	.hero .pre-title {
+		margin: 0px 0px 20px 0px;
+	}
+
+	.hero .hero-social {
+		position: static;
+		bottom: auto;
+		margin-top: 20px;
+		justify-content: center;
+	}
+
+	.hero .btn-group {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.section {
+		padding: 0 0 100px 0;
+	}
+
+	.content {
+		padding: 120px 0 0 0;
+	}
+
+	.stats-section .stats-list {
+		flex-wrap: wrap;
+		gap: 30px;
+	}
+
+	.stats-section .stats-item {
+		flex-direction: column;
+        flex: 1 1 45%;
+        padding: 20px;
+        border-radius: 25px;
+        background: #192f47;
+        box-shadow: 0px 0px 0px 1px #25415c;
+	}
+
+	.stats-section .stats-icon {
+		font-size: 26px;
+		color: #2cb4ff;
+        border-radius: 12px;
+        background: #25415c;
+        display: inline-flex;
+        flex: 0 0 54px;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+	}
+
+	.stats-section .stats-value {
+		font-size: 28px;
+	}
+
+	.about-section .about-content-flex {
+		flex-direction: column;
+		margin: 0 -15px;
+		gap: 40px;
+	}
+
+	.about-section .about-content-flex .about-column-flex {
+		padding: 0 15px;
+	}
+
+	.term-body {
+		font-size: 10px;
+		padding: 15px;
+	}
+
+	.term-line {
+		white-space: pre;
+		color: #7c90a6;
+		display: flex;
+		align-items: baseline;
+		line-height: 1.45;
+	}
+
+	.term-line.term-line-final {
+        line-height: 1;
+        align-items: stretch;
+    }
+
+	.cards-skills .card {
+		min-width: 50%;
+		flex-basis: 50%;
+	}
+
+	.cards .card .ti, 
+	.cards .card .bx, 
+	.cards .card .bxf, 
+	.cards .card .bxl {
+		font-size: 40px;
+		color: #455a6d;
+		margin-bottom: 20px;
+	}
+
+	.recent-works-cards .card {
+		flex-basis: 100%;
+		max-width: 100%;
+		min-height: 320px;
+	}
+
+	.contact-list li {
+		min-width: 0;
+	}
+
+	.footer .footer-in {
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.footer .footer-design-by {
+		margin-left: 0;
+	}
+
+	.btn {
+		display: inline-flex;
+		position: relative;
+		font-family: 'Source Code Pro', sans-serif;
+		font-size: 16px;
+		font-weight: 600;
+		color: #ffffff;
+		text-decoration: none;
+		justify-content: center;
+		width: 100%;
+		padding: 14px 16px 14px 26px;
+		border-radius: 15px;
+		background: #000000;
+		margin: 0 30px 0 0;
+		overflow: hidden;
+	}
+
+	.btn>.label>.ti,
+	.btn>.label>.bx,
+	.btn>.label>.bxf {
+		font-size: 20px;
+	}
+
+	/* Modal de case de projeto (jquery-confirm) — sem isso, o jconfirm-box
+	   herda a largura pensada pro desktop (a lib usa classes de grid do
+	   Bootstrap que a gente nunca carregou, então o !important aqui é pra
+	   vencer o width inline que a própria lib aplica via JS) e o
+	   .jc-dialog-flexbox-container mantém vídeo e texto lado a lado, cabendo
+	   os dois espremidos numa fração da tela. */
+	.jconfirm .jconfirm-box {
+		width: 100% !important;
+		max-width: 100vw !important;
+		padding: 45px 30px !important;
+	}
+
+	.jconfirm .jconfirm-box div.jconfirm-closeIcon {
+		top: 12px;
+		right: 12px;
+	}
+
+	.jc-dialog-flexbox-container {
+		flex-direction: column;
+	}
+
+	.jc-dialog-content-left {
+		width: 100%;
+	}
+
+	.jc-dialog-content-right {
+		margin-left: 0;
+		margin-top: 24px;
+	}
+
+	.jc-dialog-title {
+		font-size: 20px;
+	}
+}
+
+@media (max-width: 375px) {
+	.hero .hero-left {
+		width: 180px;
+		margin-bottom: 20px;
 	}
 }
 
