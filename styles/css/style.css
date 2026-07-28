@@ -1916,7 +1916,8 @@ html.nav-open body {
 		height: 48px;
 	}
 
-	header.scrolled .logo {
+	header.scrolled .logo,
+	header.nav-is-open .logo {
 		width: 42px;
 		height: 42px;
 	}
@@ -1947,11 +1948,15 @@ html.nav-open body {
 		transition: opacity .25s ease-in-out, transform .25s ease-in-out, visibility .25s;
 	}
 
+	header.nav-is-open {
+		backdrop-filter: none;
+	}
+
 	header.nav-is-open .navigation {
 		visibility: visible;
 		opacity: 1;
 		transform: translateY(0);
-		background: rgba(0, 0, 0, .8);
+		background: rgba(0, 0, 0, .65);
 		-webkit-backdrop-filter: blur(20px);
 		backdrop-filter: blur(20px);
 	}
@@ -2072,6 +2077,14 @@ html.nav-open body {
 		font-size: 28px;
 	}
 
+	.stats-section .stats-label {
+		font-family: 'Source Code Pro';
+		font-size: 16px;
+		font-weight: 400;
+		color: #7c90a6;
+		line-height: normal;
+	}
+
 	.about-section .about-content-flex {
 		flex-direction: column;
 		margin: 0 -15px;
@@ -2112,6 +2125,12 @@ html.nav-open body {
 		font-size: 40px;
 		color: #455a6d;
 		margin-bottom: 20px;
+	}
+
+	.cards .card .card-title {
+		font-family: 'Source Code Pro', sans-serif;
+		font-weight: 500;
+		font-size: 16px;
 	}
 
 	.recent-works-cards .card {
