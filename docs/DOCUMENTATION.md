@@ -40,7 +40,7 @@ site.webmanifest            → ícones para "adicionar à tela inicial"
 favicon.ico, apple-touch-icon.png, android-chrome-*.png
 
 modals/                     → fragmentos HTML dos cases de projeto (carregados via AJAX)
-  hdc-eventos.html
+  grade.html
   rubrum.html
   rubrum-site-v1.html
   rubrum-site-v2.html
@@ -94,7 +94,7 @@ O scroll da página é o nativo do navegador — **Lenis** foi removido do proje
 ### Interação
 | Biblioteca | Função no site |
 |---|---|
-| **jquery-confirm 3.3.4** | Abre os modais de case de projeto — cada clique num card carrega o HTML de `modals/*.html` via AJAX (`content: 'url:/modals/hdc-eventos.html'`) |
+| **jquery-confirm 3.3.4** | Abre os modais de case de projeto — cada clique num card carrega o HTML de `modals/*.html` via AJAX (`content: 'url:/modals/grade.html'`) |
 
 ### Ícones
 - **Boxicons** (regular, filled, brands) — único set realmente usado no site
@@ -130,7 +130,7 @@ Cada card em `#projetos` tem um `id` (`card_1`…`card_4`) — os `id`s não seg
 
 | Card | Modal | Projeto | Status |
 |---|---|---|---|
-| `card_1` | `modals/hdc-eventos.html` | HDC Eventos — plataforma de gestão de eventos | Prévia em breve |
+| `card_1` | `modals/grade.html` | Grade — plataforma de gestão de eventos | Publicado (31/07/2026) |
 | `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Prévia em breve |
 | `card_3` | `modals/rubrum-site-v1.html` | Rubrum — Site Comercial V1 | Publicado (05/08/2020) |
 | `card_4` | `modals/rubrum.html` | Rubrum — plataforma de gestão de embalagens | Publicado (24/07/2019) |
@@ -243,4 +243,4 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 
 - **`styles/scss/` vazia** — pasta preparada para um fluxo com Sass que não está em uso; o CSS é escrito e mantido diretamente em `style.css`.
 - **`site.webmanifest`** tem `name` e `short_name` vazios.
-- Os cards 1 e 2 (HDC Eventos, Rubrum V2) ainda não têm link de projeto publicado — status "Prévia em breve".
+- O card 2 (Rubrum V2) ainda não tem link de projeto publicado — status "Prévia em breve".

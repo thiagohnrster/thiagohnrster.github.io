@@ -6,7 +6,7 @@ $(function () {
     $('.recent-works-cards #card_1').on('click', function () {
         $.dialog({
             title: '',
-            content: 'url:/modals/hdc-eventos.html',
+            content: 'url:/modals/grade.html',
             closeIconClass: 'bx bx-x',
             animateFromElement: false,
             animationSpeed: 200
