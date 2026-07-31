@@ -29,16 +29,16 @@ Nessa ordem, todas dentro de `index.html`:
 
 ## Projetos exibidos (cards → modal)
 
-Ordem de exibição no site (reordenados pra mostrar prova social — data real — antes de expectativa):
+Ordem de exibição no site (reordenados por data de publicação, mais recente primeiro):
 
 | Ordem visual | Card | Modal | Projeto | Contexto exibido | Status exibido no site |
 |---|---|---|---|---|---|
-| 1º | `card_4` | `modals/rubrum.html` | Rubrum — plataforma de gestão de embalagens | Gestão de embalagens · Plataforma web | Publicado — 24 de Julho de 2019 |
+| 1º | `card_1` | `modals/grade.html` | Grade — plataforma de gestão de eventos (HTML5, CSS3, JS, Angular JS, Laravel 5, PHP) | Plataforma de gestão de eventos · Full-stack | Publicado — 31 de Julho de 2026 |
 | 2º | `card_3` | `modals/rubrum-site-v1.html` | Rubrum — Site Comercial V1 | Landing page · Divulgação da plataforma web | Publicado — 05 de Agosto de 2020 |
-| 3º | `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Landing page · Redesign | "Prévia em breve" |
-| 4º | `card_1` | `modals/hdc-eventos.html` | HDC Eventos — plataforma de gestão de eventos (HTML5, Sass, JS, Angular JS, Laravel 5, PHP) | Plataforma de gestão de eventos · Full-stack | "Prévia em breve" |
+| 3º | `card_4` | `modals/rubrum.html` | Rubrum — plataforma de gestão de embalagens | Gestão de embalagens · Plataforma web | Publicado — 24 de Julho de 2019 |
+| 4º | `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Landing page · Redesign | "Prévia em breve" |
 
-Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias (pills coloridas) e, quando disponível, link para o projeto publicado. Os `id`s (`card_1`…`card_4`) não mudaram — só a ordem deles no HTML/visual.
+Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias (pills coloridas) e, quando disponível, link para o projeto publicado. Os `id`s (`card_1`…`card_4`) não mudaram de significado — `hdc-eventos.html` foi removido do repo e `card_1` passou a apontar para `modals/grade.html`, o projeto mais recente.
 
 ## Decisões e histórico relevantes
 
@@ -55,12 +55,13 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 - Border-radius dos botões de ação foi padronizado pra `15px` (antes pill/`999px`) — badges e tags de status/tecnologia continuam pill, por serem uma categoria de UI diferente (rótulo, não ação).
 - **O site não era de fato responsivo** apesar de "Design Responsivo" aparecer como skill comprovada no console de "Sobre": `.container`/`header` tinham `min-width` fixo e cortavam conteúdo abaixo de ~1000px de largura. Isso foi corrigido com um breakpoint que reflowa header, hero, stats, "Sobre", cards e o modal de projeto pra tablet/celular, incluindo um menu hambúrguer novo (ver [CLAUDE.md](CLAUDE.md) para os detalhes técnicos e os gotchas já corrigidos nessa parte — vale a leitura antes de tocar em qualquer coisa relacionada ao menu mobile, já alguns bugs sutis já voltaram mais de uma vez durante o desenvolvimento).
 - Outras correções da mesma auditoria: `<html lang="pt-BR">` (estava `en`), Open Graph/Twitter Card + `<link rel="canonical">` (o link não tinha preview decente ao compartilhar), `rel="noopener noreferrer"` em todos os links `target="_blank"`, e `defer` nos scripts de terceiros que bloqueavam o primeiro paint.
+- O card "HDC Eventos" (`modals/hdc-eventos.html`) foi substituído por **Grade**, outra plataforma de gestão de eventos (mesmo stack: HTML5, CSS3, JS, Angular JS, Laravel 5, PHP), publicada em 31 de Julho de 2026 com link de repositório no GitHub — `modals/hdc-eventos.html` foi removido do repo e `js/scripts.js` passou a apontar `card_1` para `modals/grade.html`. Como Grade tem data real de publicação, ela assumiu a 1ª posição visual, empurrando os outros cards uma posição adiante (Rubrum V1 → 2º, Rubrum → 3º, Rubrum V2 seguindo por último por ainda não ter link publicado). `images/layout/project_thumb_4.png` foi reexportado/otimizado (~530KB → ~249KB) como thumbnail do novo card.
 
 ## Itens conhecidos / débito técnico
 
 - `styles/scss/` está vazia — preparada para um fluxo Sass que nunca foi adotado; o CSS é mantido diretamente em `styles/css/style.css`.
 - `site.webmanifest` tem `name` e `short_name` vazios.
-- Os cards 1 e 2 (HDC Eventos, Rubrum V2) ainda não têm link de projeto publicado — status "Prévia em breve".
+- O card 2 (Rubrum V2) ainda não tem link de projeto publicado — status "Prévia em breve".
 - `plus_jakarta_sanslight` e `plus_jakarta_sansmedium` (fonte + `@font-face`) não são usados em nenhuma regra de `style.css` — mantidos por enquanto a pedido do usuário, sem custo de performance (arquivo não referenciado não é baixado).
 - O cursor customizado esconde o ponteiro nativo do sistema em todo o site — texto selecionável (parágrafos do "Sobre", contato) perde o indicador visual de "aqui dá pra selecionar" (I-beam), embora a seleção em si continue funcionando. Trade-off aceito, não um bug.
 
