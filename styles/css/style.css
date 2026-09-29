@@ -65,56 +65,74 @@
 
 @font-face {
 	font-family: 'plus_jakarta_sansbold';
-	src: url('../fonts/plus_jakarta_sans_bold-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_bold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_bold-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_bold-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_bold-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_bold-webfont.svg#plus_jakarta_sansbold') format('svg');
+	src: url('../fonts/PlusJakartaSans-Bold.eot');
+	src: url('../fonts/PlusJakartaSans-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-Bold.woff2') format('woff2'), url('../fonts/PlusJakartaSans-Bold.woff') format('woff'), url('../fonts/PlusJakartaSans-Bold.ttf') format('truetype'), url('../fonts/PlusJakartaSans-Bold.svg#PlusJakartaSans-Bold') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 @font-face {
 	font-family: 'plus_jakarta_sansextrabold';
-	src: url('../fonts/plus_jakarta_sans_extrabold-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_extrabold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_extrabold-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_extrabold-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_extrabold-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_extrabold-webfont.svg#plus_jakarta_sansextrabold') format('svg');
+	src: url('../fonts/PlusJakartaSans-ExtraBold.eot');
+	src: url('../fonts/PlusJakartaSans-ExtraBold.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-ExtraBold.woff2') format('woff2'), url('../fonts/PlusJakartaSans-ExtraBold.woff') format('woff'), url('../fonts/PlusJakartaSans-ExtraBold.ttf') format('truetype'), url('../fonts/PlusJakartaSans-ExtraBold.svg#PlusJakartaSans-ExtraBold') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 @font-face {
 	font-family: 'plus_jakarta_sanslight';
-	src: url('../fonts/plus_jakarta_sans_light-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_light-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_light-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_light-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_light-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_light-webfont.svg#plus_jakarta_sanslight') format('svg');
+	src: url('../fonts/PlusJakartaSans-Light.eot');
+	src: url('../fonts/PlusJakartaSans-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-Light.woff2') format('woff2'), url('../fonts/PlusJakartaSans-Light.woff') format('woff'), url('../fonts/PlusJakartaSans-Light.ttf') format('truetype'), url('../fonts/PlusJakartaSans-Light.svg#PlusJakartaSans-Light') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 @font-face {
 	font-family: 'plus_jakarta_sansmedium';
-	src: url('../fonts/plus_jakarta_sans_medium-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_medium-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_medium-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_medium-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_medium-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_medium-webfont.svg#plus_jakarta_sansmedium') format('svg');
+	src: url('../fonts/PlusJakartaSans-Medium.eot');
+	src: url('../fonts/PlusJakartaSans-Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-Medium.woff2') format('woff2'), url('../fonts/PlusJakartaSans-Medium.woff') format('woff'), url('../fonts/PlusJakartaSans-Medium.ttf') format('truetype'), url('../fonts/PlusJakartaSans-Medium.svg#PlusJakartaSans-Medium') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 @font-face {
 	font-family: 'plus_jakarta_sansregular';
-	src: url('../fonts/plus_jakarta_sans_regular-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_regular-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_regular-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_regular-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_regular-webfont.svg#plus_jakarta_sansregular') format('svg');
+	src: url('../fonts/PlusJakartaSans-Regular.eot');
+	src: url('../fonts/PlusJakartaSans-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-Regular.woff2') format('woff2'), url('../fonts/PlusJakartaSans-Regular.woff') format('woff'), url('../fonts/PlusJakartaSans-Regular.ttf') format('truetype'), url('../fonts/PlusJakartaSans-Regular.svg#PlusJakartaSans-Regular') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 @font-face {
 	font-family: 'plus_jakarta_sanssemibold';
-	src: url('../fonts/plus_jakarta_sans_semibold-webfont.eot');
-	src: url('../fonts/plus_jakarta_sans_semibold-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/plus_jakarta_sans_semibold-webfont.woff2') format('woff2'), url('../fonts/plus_jakarta_sans_semibold-webfont.woff') format('woff'), url('../fonts/plus_jakarta_sans_semibold-webfont.ttf') format('truetype'), url('../fonts/plus_jakarta_sans_semibold-webfont.svg#plus_jakarta_sanssemibold') format('svg');
+	src: url('../fonts/PlusJakartaSans-SemiBold.eot');
+	src: url('../fonts/PlusJakartaSans-SemiBold.eot?#iefix') format('embedded-opentype'), url('../fonts/PlusJakartaSans-SemiBold.woff2') format('woff2'), url('../fonts/PlusJakartaSans-SemiBold.woff') format('woff'), url('../fonts/PlusJakartaSans-SemiBold.ttf') format('truetype'), url('../fonts/PlusJakartaSans-SemiBold.svg#PlusJakartaSans-SemiBold') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;
+	ascent-override: 103.8086%;
+	descent-override: 20.0195%;
+	line-gap-override: 0%;
 }
 
 * {
