@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- i18n:redirect — 1ª visita vinda de fora com o navegador em outro idioma (não português) → versão em inglês.
+	     Quem escolheu um idioma no botão PT/EN (localStorage tc:lang) nunca é redirecionado; robôs de busca também não. -->
+	<script>
+	(function () {
+		try {
+			if (localStorage.getItem('tc:lang')) return;
+			if (/bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(navigator.userAgent || '')) return;
+			if (document.referrer && new URL(document.referrer).origin === location.origin) return;
+			var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+			if (!langs[0] || langs.some(function (l) { return /^pt\b/i.test(l); })) return;
+			location.replace('/en' + location.pathname.replace(/index\.html$/, '') + location.search + location.hash);
+		} catch (e) {}
+	})();
+	</script>
+	<!-- /i18n:redirect -->
+	<meta name="description" content="Rubrum Site V1 — Promoção da plataforma comercial. Case do portfólio de Thiago Celestino, desenvolvedor front-end.">
+	<meta property="og:type" content="article">
+	<meta property="og:title" content="Rubrum Site V1 • Case • Thiago Celestino">
+	<meta property="og:description" content="Rubrum Site V1 — Promoção da plataforma comercial. Case do portfólio de Thiago Celestino, desenvolvedor front-end.">
+	<meta property="og:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_1.png">
+	<meta property="og:url" content="https://thiagohnrster.github.io/projetos/rubrum-site-v1.html">
+	<meta property="og:locale" content="pt_BR">
+	<meta property="og:locale:alternate" content="en_US">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Rubrum Site V1 • Case • Thiago Celestino">
+	<meta name="twitter:description" content="Rubrum Site V1 — Promoção da plataforma comercial. Case do portfólio de Thiago Celestino, desenvolvedor front-end.">
+	<meta name="twitter:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_1.png">
+	<link rel="canonical" href="https://thiagohnrster.github.io/projetos/rubrum-site-v1.html">
+	<link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum-site-v1.html">
+	<link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html">
+	<link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="preload" href="/styles/fonts/PlusJakartaSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" type="text/css" href="/styles/css/style.css" />
+	<script src="/js/gsap.min.js" defer></script>
+	<script src="/js/ScrollTrigger.min.js" defer></script>
+	<script src="/js/site.js" defer></script>
+	<!-- Pré-renderiza o case ao passar o mouse/tocar num projeto (Chrome/Edge): a navegação fica instantânea e a transição não corre o risco de expirar esperando a página nova. -->
+	<script type="speculationrules">
+	{"prerender":[{"source":"document","where":{"href_matches":"/projetos/*"},"eagerness":"moderate"}]}
+	</script>
+		<script>
+	// Sem View Transitions entre documentos (Firefox): se a página anterior saiu com a transição
+	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
+	try { if (!('onpagereveal' in window) && sessionStorage.getItem('tc:pt')) document.documentElement.classList.add('tc-pt-in'); } catch (e) {}
+	</script>
+	<title>Rubrum Site V1 • Case • Thiago Celestino</title>
+</head>
+<body class="page-case">
+<!-- Página gerada a partir do modelo em projetos/ — ao criar um case novo, copie este arquivo
+     e troque os textos, a imagem (images/layout/) e o link do "Próximo projeto". -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tcg" x1="137.03" y1="486.02" x2="435.97" y2="313.42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#003f77"/><stop offset=".25" stop-color="#005099"/><stop offset=".57" stop-color="#005bad"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 631.04 544.23">
+      <path class="lg-c" fill="#fff" d="M437,542c-121.33-9-208.3-117.37-197.99-237.49,5.74-66.83,42.47-125.91,97.99-162.51,31.85-16.66,64.59-31.530,101-34,66.37-4.51,135.88,21.95,182.03,69.47,1.43,1.48,10.18,10.84,10.51,11.55.35.77.72,1.41.36,2.28l-81.39,81.68c-32.45-54.18-102.18-71.37-155.22-35.2-56.23,38.34-60.68,122.32-9.75,167.19,51.41,45.3,129.86,31.98,164.97-25.96l81.43,81.35c-35.62,42.87-84.97,72.4-140.59,80.470-18.42,2.67-34.93,2.53-53.33,1.17Z"/>
+      <path fill="#1f8efe" d="M115,312c-.02-28.32.02-56.68,0-85H0v-119h115V0h130v108h193c-36.41,2.47-69.15,17.34-101,34-21.64,11.32-37.34,20.72-56.9,35.6-53.3,40.56-104.6,85.99-156.63,128.37-2.65,2.16-5.39,4.5-8.48,6.02Z"/>
+      <path fill="url(#tcg)" d="M337,142c-55.52,36.6-92.25,95.68-97.99,162.51-10.31,120.12,76.66,228.49,197.99,237.49l-5.49,1.02c-62.3-2.94-128.12,3.88-190-.03-63.43-4-122.64-54.36-126.55-119.45-2.14-35.57.07-75.47.04-111.54,3.08-1.53,5.83-3.87,8.48-6.02,52.03-42.38,103.33-87.81,156.63-128.37,19.56-14.88,35.26-24.29,56.9-35.6Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel">ver</span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<header class="header nav wrap" id="nav">
+  <a href="/" class="logo" aria-label="Thiago Celestino — início"><svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg></a>
+  <nav aria-label="Principal">
+    <ul>
+      <li><a href="/" data-label="Home"><span>Home</span></a></li>
+      <li><a href="/#sobre" data-label="Sobre"><span>Sobre</span></a></li>
+      <li><a href="/#projetos" data-label="Projetos"><span>Projetos</span></a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <a class="lang-switch mono" href="/en/projetos/rubrum-site-v1.html" hreflang="en" lang="en" data-lang="en" aria-label="Read this page in English"><span class="is-on" aria-hidden="true">PT</span><span aria-hidden="true">EN</span></a>
+    <span class="mono muted status">São Paulo — <span class="clock" id="clock">--:--</span></span>
+    <a href="#contato" class="btn" data-scroll data-magnetic>Entre em contato</a>
+    <button type="button" class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu wrap" id="menu" aria-hidden="true">
+  <ol>
+    <li><a href="/" data-menu-link>Home <small>01</small></a></li>
+    <li><a href="/#sobre" data-menu-link>Sobre <small>02</small></a></li>
+    <li><a href="/#projetos" data-menu-link>Projetos <small>03</small></a></li>
+    <li><a href="#contato" data-scroll data-menu-link>Contato <small>04</small></a></li>
+  </ol>
+  <div class="m-foot">
+    <span class="mono muted">São Paulo — <span class="clock">--:--</span> · Disponível</span>
+    <span style="font-size:20px;font-weight:600;user-select:all">celesthiago@outlook.com</span>
+    <div class="row2 mono">
+      <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
+      <a href="/cv/CVTHIAGO-2025.pdf" download>Currículo ↓</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section class="case-hero wrap" id="top">
+    <div class="case-meta mono muted">
+      <a href="/#projetos" class="case-back"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Todos os projetos</a>
+      <span>(04) Case — Landing page</span>
+      <span>2020</span>
+    </div>
+    <h1 class="case-title" style="view-transition-name: case-title">Rubrum Site V1</h1>
+    <p class="case-lead">Promoção da plataforma comercial</p>
+  </section>
+
+  <figure class="case-shot wrap">
+    <div class="case-frame">
+      <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+      <div class="case-art"><img class="is-duo" src="/images/layout/project_thumb_1-1280.webp" srcset="/images/layout/project_thumb_1-720.webp 720w, /images/layout/project_thumb_1-1280.webp 1280w" sizes="(max-width: 760px) 100vw, min(1376px, 92vw)" width="1280" height="860" fetchpriority="high" decoding="async" alt="Tela do projeto Rubrum Site V1" /><span class="duo"></span></div>
+    </div>
+  </figure>
+
+  <dl class="case-info">
+    <div><dt class="mono muted">Ano</dt><dd>2020</dd></div>
+    <div><dt class="mono muted">Tipo</dt><dd>Landing page</dd></div>
+    <div><dt class="mono muted">Status</dt><dd>Publicado em 05 de agosto de 2020</dd></div>
+    <div><dt class="mono muted">Link</dt><dd><a href="http://www.rubrum.com.br" class="btn" target="_blank" rel="noopener noreferrer" data-magnetic>Acessar projeto ↗</a></dd></div>
+  </dl>
+
+  <section class="case-body wrap" aria-labelledby="sobre-projeto">
+    <span class="label mono muted" id="sobre-projeto">Sobre o projeto</span>
+    <div class="case-text">
+        <p>Primeiro site comercial desenvolvido para divulgar a plataforma Rubrum, sistema de gerenciamento de embalagens.</p>
+        <p>O projeto estabeleceu a presença digital da plataforma, apresentando suas funcionalidades e diferenciais de forma acessível para potenciais clientes.</p>
+    </div>
+    <ul class="case-stack" aria-label="Tecnologias utilizadas">
+        <li>HTML5</li>
+        <li>Compilador LESS</li>
+        <li>CSS3</li>
+        <li>Javascript</li>
+        <li>jQuery</li>
+    </ul>
+    <span class="label mono muted">Meu papel</span>
+    <div class="case-text">
+        <p>Programei o front-end do primeiro site comercial do Rubrum — a porta de entrada da plataforma na internet.</p>
+    </div>
+    <span class="label mono muted">Objetivo</span>
+    <div class="case-text">
+        <p>O objetivo era direto: apresentar o sistema de forma clara para quem ainda não conhecia a ideia de gerenciar artes de embalagem num só lugar.</p>
+    </div>
+  </section>
+
+  <section class="case-gallery wrap" aria-labelledby="telas">
+    <div class="gal-head"><span class="label mono muted" id="telas">Telas</span><span class="mono muted">04 capturas</span></div>
+    <figure class="gal-item">
+      <a class="gal-frame" href="/images/projetos/rubrum-site-v1/tela-1.webp" target="_blank" rel="noopener" data-cursor="ampliar" aria-label="Abrir tela 01 em tamanho real">
+        <span class="chrome" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+        <img src="/images/projetos/rubrum-site-v1/tela-1.webp" srcset="/images/projetos/rubrum-site-v1/tela-1-800.webp 800w, /images/projetos/rubrum-site-v1/tela-1.webp 1400w" sizes="(max-width: 760px) 100vw, min(1376px, 92vw)" width="1400" height="744" loading="lazy" decoding="async" alt="Hero do site Rubrum V1 em vermelho com o título “Gestão de artes simplificada e sem riscos” e uma lata Ruby Cola cercada por cards de recursos" />
+      </a>
+      <figcaption class="mono"><span>(01)</span> Hero — lata com os recursos do sistema em cards</figcaption>
+    </figure>
+    <div class="gal-grid">
+      <figure class="gal-item">
+        <a class="gal-frame" href="/images/projetos/rubrum-site-v1/tela-2.webp" target="_blank" rel="noopener" data-cursor="ampliar" aria-label="Abrir tela 02 em tamanho real">
+          <span class="chrome" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+          <img src="/images/projetos/rubrum-site-v1/tela-2.webp" srcset="/images/projetos/rubrum-site-v1/tela-2-800.webp 800w, /images/projetos/rubrum-site-v1/tela-2.webp 1400w" sizes="(max-width: 760px) 100vw, 46vw" width="1400" height="744" loading="lazy" decoding="async" alt="Seção “Use um fluxo validado por líderes de mercado” com a tela de um ticket do sistema Rubrum dentro de um notebook" />
+        </a>
+        <figcaption class="mono"><span>(02)</span> Fluxo validado — o sistema dentro do notebook</figcaption>
+      </figure>
+      <figure class="gal-item">
+        <a class="gal-frame" href="/images/projetos/rubrum-site-v1/tela-3.webp" target="_blank" rel="noopener" data-cursor="ampliar" aria-label="Abrir tela 03 em tamanho real">
+          <span class="chrome" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+          <img src="/images/projetos/rubrum-site-v1/tela-3.webp" srcset="/images/projetos/rubrum-site-v1/tela-3-800.webp 800w, /images/projetos/rubrum-site-v1/tela-3.webp 1400w" sizes="(max-width: 760px) 100vw, 46vw" width="1400" height="698" loading="lazy" decoding="async" alt="Seção “Todas as embalagens na sua mão” com a lista de embalagens do sistema num tablet e o menu de ações aberto" />
+        </a>
+        <figcaption class="mono"><span>(03)</span> Arquivos — todas as embalagens num tablet</figcaption>
+      </figure>
+    </div>
+    <figure class="gal-item">
+      <a class="gal-frame" href="/images/projetos/rubrum-site-v1/tela-4.webp" target="_blank" rel="noopener" data-cursor="ampliar" aria-label="Abrir tela 04 em tamanho real">
+        <span class="chrome" aria-hidden="true"><i></i><i></i><i></i><b></b></span>
+        <img src="/images/projetos/rubrum-site-v1/tela-4.webp" srcset="/images/projetos/rubrum-site-v1/tela-4-800.webp 800w, /images/projetos/rubrum-site-v1/tela-4.webp 1400w" sizes="(max-width: 760px) 100vw, min(1376px, 92vw)" width="1400" height="698" loading="lazy" decoding="async" alt="Seção “Fotos e mockups 3D sempre atualizados” com o catálogo de embalagens Ruby Cola dentro de um notebook" />
+      </a>
+      <figcaption class="mono"><span>(04)</span> Catálogo digital — fotos e mockups 3D</figcaption>
+    </figure>
+  </section>
+
+  <a class="case-next wrap" href="/projetos/grade.html" data-cursor="próximo">
+    <span class="fill"></span>
+    <span class="mono muted">Próximo projeto — (01)</span>
+    <strong>Grade<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></strong>
+  </a>
+
+  <footer class="contact wrap" id="contato">
+    <div class="top">
+      <span class="mono muted">Contato — Tem um projeto em mente?</span>
+      <h2 id="talk"><span data-split>Vamos</span><em data-split>conversar?</em></h2>
+      <div class="mail">
+        <span class="addr" id="addr">celesthiago@outlook.com</span>
+        <button type="button" class="copy" id="copyBtn" data-magnetic>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
+          Copiar e-mail
+        </button>
+        <a href="/cv/CVTHIAGO-2025.pdf" class="copy" download data-magnetic>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          Baixar currículo (PDF)
+        </a>
+      </div>
+    </div>
+    <div class="foot">
+      <nav class="links mono" aria-label="Redes">
+        <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
+        <a href="#top" data-scroll>Voltar ao topo ↑</a>
+      </nav>
+      <div class="sig">
+        <div class="brand"><svg viewBox="0 0 631.04 544.23" id="footLogo" aria-hidden="true"><use href="#logo"/></svg><span class="ghost" id="ghost" aria-hidden="true">Celestino</span></div>
+        <div class="copyr mono muted"><span>© <span id="current-year">2026</span> Thiago Celestino</span><span>Feito à mão em São Paulo</span></div>
+      </div>
+    </div>
+  </footer>
+</main>
+<script>
+	document.getElementById("current-year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

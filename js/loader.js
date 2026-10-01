@@ -21,6 +21,12 @@
 
         if (!loader) { resolveReady(); return; }
 
+        // Já carregou nesta sessão (ex.: voltando de uma página de case): fontes e
+        // assets vêm do cache — pula o loader pra não cobrir a transição entre páginas.
+        let seen = false;
+        try { seen = sessionStorage.getItem('tc:loaded') === '1'; } catch (e) { /* storage bloqueado */ }
+        if (seen) { loader.remove(); resolveReady(); return; }
+
         const fill = document.getElementById('pageLoaderFill');
         const percentEl = document.getElementById('pageLoaderPercent');
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -43,7 +49,7 @@
             displayed += (target - displayed) * (reduceMotion ? 1 : 0.14);
             if (Math.abs(target - displayed) < 0.15) displayed = target;
             if (fill) fill.style.width = displayed + '%';
-            if (percentEl) percentEl.textContent = Math.round(displayed) + '%';
+            if (percentEl) percentEl.textContent = String(Math.round(displayed)).padStart(3, '0');
 
             if (displayed !== target) {
                 raf = requestAnimationFrame(tick);
@@ -64,11 +70,13 @@
         }
 
         function leave() {
+            try { sessionStorage.setItem('tc:loaded', '1'); } catch (e) { /* storage bloqueado */ }
             document.documentElement.classList.remove('is-loading');
             loader.classList.add('is-leaving');
             // resolve um pouco antes do loader sumir de vez, pra sobrepor com a entrada do hero
             setTimeout(resolveReady, reduceMotion ? 0 : 420);
-            setTimeout(() => loader.remove(), reduceMotion ? 40 : 650);
+            // a cortina (.page-loader.is-leaving em style.css) leva ~1.35s pra sair da tela
+            setTimeout(() => loader.remove(), reduceMotion ? 40 : 1500);
         }
 
         tasks.forEach((task) => {

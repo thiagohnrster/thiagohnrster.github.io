@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="preload" href="/styles/fonts/PlusJakartaSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" type="text/css" href="/styles/css/style.css" />
+	<script src="/js/gsap.min.js" defer></script>
+	<script src="/js/ScrollTrigger.min.js" defer></script>
+	<script src="/js/site.js" defer></script>
+	<!-- Pré-renderiza o case ao passar o mouse/tocar num projeto (Chrome/Edge): a navegação fica instantânea e a transição não corre o risco de expirar esperando a página nova. -->
+	<script type="speculationrules">
+	{"prerender":[{"source":"document","where":{"href_matches":"/projetos/*"},"eagerness":"moderate"}]}
+	</script>
+		<script>
+	// Sem View Transitions entre documentos (Firefox): se a página anterior saiu com a transição
+	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
+	try { if (!('onpagereveal' in window) && sessionStorage.getItem('tc:pt')) document.documentElement.classList.add('tc-pt-in'); } catch (e) {}
+	</script>
+	<title>Página não encontrada • Thiago Celestino</title>
+</head>
+<body class="page-404">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tcg" x1="137.03" y1="486.02" x2="435.97" y2="313.42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#003f77"/><stop offset=".25" stop-color="#005099"/><stop offset=".57" stop-color="#005bad"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 631.04 544.23">
+      <path class="lg-c" fill="#fff" d="M437,542c-121.33-9-208.3-117.37-197.99-237.49,5.74-66.83,42.47-125.91,97.99-162.51,31.85-16.66,64.59-31.530,101-34,66.37-4.51,135.88,21.95,182.03,69.47,1.43,1.48,10.18,10.84,10.51,11.55.35.77.72,1.41.36,2.28l-81.39,81.68c-32.45-54.18-102.18-71.37-155.22-35.2-56.23,38.34-60.68,122.32-9.75,167.19,51.41,45.3,129.86,31.98,164.97-25.96l81.43,81.35c-35.62,42.87-84.97,72.4-140.59,80.470-18.42,2.67-34.93,2.53-53.33,1.17Z"/>
+      <path fill="#1f8efe" d="M115,312c-.02-28.32.02-56.68,0-85H0v-119h115V0h130v108h193c-36.41,2.47-69.15,17.34-101,34-21.64,11.32-37.34,20.72-56.9,35.6-53.3,40.56-104.6,85.99-156.63,128.37-2.65,2.16-5.39,4.5-8.48,6.02Z"/>
+      <path fill="url(#tcg)" d="M337,142c-55.52,36.6-92.25,95.68-97.99,162.51-10.31,120.12,76.66,228.49,197.99,237.49l-5.49,1.02c-62.3-2.94-128.12,3.88-190-.03-63.43-4-122.64-54.36-126.55-119.45-2.14-35.57.07-75.47.04-111.54,3.08-1.53,5.83-3.87,8.48-6.02,52.03-42.38,103.33-87.81,156.63-128.37,19.56-14.88,35.26-24.29,56.9-35.6Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel" data-en="view">ver</span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<header class="header nav wrap" id="nav">
+  <a href="/" class="logo" aria-label="Thiago Celestino — início" data-en-label="Thiago Celestino — home"><svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg></a>
+  <nav aria-label="Principal" data-en-label="Main">
+    <ul>
+      <li><a href="/" data-label="Home"><span>Home</span></a></li>
+      <li><a href="/#sobre" data-label="Sobre" data-en-dlabel="About"><span data-en="About">Sobre</span></a></li>
+      <li><a href="/#projetos" data-label="Projetos" data-en-dlabel="Projects"><span data-en="Projects">Projetos</span></a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <span class="mono muted status">São Paulo — <span class="clock" id="clock">--:--</span></span>
+    <a href="/#contato" class="btn" data-magnetic data-en="Get in touch">Entre em contato</a>
+    <button type="button" class="burger" id="burger" aria-label="Abrir menu" data-en-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu wrap" id="menu" aria-hidden="true">
+  <ol>
+    <li><a href="/" data-menu-link>Home <small>01</small></a></li>
+    <li><a href="/#sobre" data-menu-link><span data-en="About">Sobre</span> <small>02</small></a></li>
+    <li><a href="/#projetos" data-menu-link><span data-en="Projects">Projetos</span> <small>03</small></a></li>
+    <li><a href="/#contato" data-menu-link><span data-en="Contact">Contato</span> <small>04</small></a></li>
+  </ol>
+  <div class="m-foot">
+    <span class="mono muted">São Paulo — <span class="clock">--:--</span> · <span data-en="Available">Disponível</span></span>
+    <span style="font-size:20px;font-weight:600;user-select:all">celesthiago@outlook.com</span>
+    <div class="row2 mono">
+      <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
+      <a href="/cv/CVTHIAGO-2025.pdf" download data-en="Résumé ↓" data-en-href="/cv/CVTHIAGO-2025-EN.pdf">Currículo ↓</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- 404 do GitHub Pages: servido para qualquer endereço inexistente, por isso todos os caminhos são absolutos (/...). -->
+  <section class="e404 wrap" id="top">
+    <div class="meta mono muted"><span data-en="Error 404 — page not found">Erro 404 — página não encontrada</span><span class="e404-path">[ /pagina-que-voce-procurou ]</span></div>
+    <h1 class="e404-big" aria-label="404"><span class="d" aria-hidden="true">4</span><span class="d" aria-hidden="true">0</span><span class="d" aria-hidden="true">4</span><span class="caret" aria-hidden="true"></span></h1>
+    <p class="e404-phrase" data-en="This page doesn’t exist. The rest of the site does.">Essa página não existe. O resto do site, sim.</p>
+    <div class="e404-actions">
+      <a href="/" class="btn" data-magnetic><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-en="Back to home">Voltar para a home</span></a>
+      <a href="/#projetos" class="btn btn-ghost" data-magnetic data-en="See projects">Ver projetos</a>
+    </div>
+  </section>
+</main>
+<!-- 404 bilíngue: o GitHub Pages usa este mesmo arquivo para qualquer endereço inexistente,
+     inclusive em /en/. Em inglês quando o endereço é /en/..., quando a pessoa escolheu EN no botão
+     ou quando o navegador não está em português (mesma regra do redirecionamento das outras páginas). -->
+<script>
+(function () {
+	var en = false;
+	try {
+		var saved = localStorage.getItem('tc:lang');
+		var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+		en = /^\/en(\/|$)/.test(location.pathname) || saved === 'en' || (!saved && !!langs[0] && !langs.some(function (l) { return /^pt\b/i.test(l); }));
+	} catch (e) {}
+	if (!en) return;
+	document.documentElement.lang = 'en';
+	document.title = 'Page not found • Thiago Celestino';
+	[].forEach.call(document.querySelectorAll('[data-en]'), function (el) { el.textContent = el.getAttribute('data-en'); });
+	[].forEach.call(document.querySelectorAll('[data-en-label]'), function (el) { el.setAttribute('aria-label', el.getAttribute('data-en-label')); });
+	[].forEach.call(document.querySelectorAll('[data-en-href]'), function (el) { el.setAttribute('href', el.getAttribute('data-en-href')); });
+	[].forEach.call(document.querySelectorAll('[data-en-dlabel]'), function (el) { el.setAttribute('data-label', el.getAttribute('data-en-dlabel')); });
+	[].forEach.call(document.querySelectorAll('a[href^="/"]'), function (a) {
+		var h = a.getAttribute('href');
+		if (!/^\/(cv|en)\//.test(h)) a.setAttribute('href', '/en' + h);
+	});
+})();
+</script>
+</body>
+</html>

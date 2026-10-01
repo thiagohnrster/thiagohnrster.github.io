@@ -3,6 +3,21 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- i18n:redirect — 1ª visita vinda de fora com o navegador em outro idioma (não português) → versão em inglês.
+	     Quem escolheu um idioma no botão PT/EN (localStorage tc:lang) nunca é redirecionado; robôs de busca também não. -->
+	<script>
+	(function () {
+		try {
+			if (localStorage.getItem('tc:lang')) return;
+			if (/bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(navigator.userAgent || '')) return;
+			if (document.referrer && new URL(document.referrer).origin === location.origin) return;
+			var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+			if (!langs[0] || langs.some(function (l) { return /^pt\b/i.test(l); })) return;
+			location.replace('/en' + location.pathname.replace(/index\.html$/, '') + location.search + location.hash);
+		} catch (e) {}
+	})();
+	</script>
+	<!-- /i18n:redirect -->
 	<meta name="description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">
 	<meta name="keywords" content="desenvolvedor front-end, html, css, javascript, portfolio front-end, web developer">
 	<meta property="og:type" content="website">
@@ -11,11 +26,15 @@
 	<meta property="og:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
 	<meta property="og:url" content="https://thiagohnrster.github.io/">
 	<meta property="og:locale" content="pt_BR">
+	<meta property="og:locale:alternate" content="en_US">
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Portfólio • Thiago Celestino • Desenvolvedor Front-End">
 	<meta name="twitter:description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">
 	<meta name="twitter:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
 	<link rel="canonical" href="https://thiagohnrster.github.io/">
+	<link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/">
+	<link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/">
+	<link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/">
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -23,378 +42,242 @@
 	<link rel="preload" href="styles/fonts/PlusJakartaSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="styles/fonts/PlusJakartaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
-	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/basic/boxicons.min.css" />
-	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/filled/boxicons-filled.css" />
-	<link rel="stylesheet" type="text/css" href="styles/css/boxicons/fonts/brands/boxicons-brands.min.css" />
-	<link rel="stylesheet" type="text/css" href="styles/css/jquery-confirm/3.3.4/jquery-confirm.min.css" />
-	<link rel="stylesheet" type="text/css" href="styles/css/jquery-confirm-custom-theme.css" />
 	<link rel="stylesheet" type="text/css" href="styles/css/style.css" />
 	<script src="js/gsap.min.js" defer></script>
-	<script src="js/ScrollTrigger.js" defer></script>
-	<script src="js/split-type.min.js" defer></script>
-	<script src="js/jquery-3.7.1.min.js" defer></script>
-	<script src="js/jquery-migrate-3.4.1.min.js" defer></script>
-	<script src="js/jquery-confirm.min.js" defer></script>
+	<script src="js/ScrollTrigger.min.js" defer></script>
 	<script src="js/loader.js" defer></script>
 	<script src="js/site.js" defer></script>
-	<script src="js/scripts.js" defer></script>
+	<script>
+	// Sem View Transitions entre documentos (Firefox): se a página anterior saiu com a transição
+	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
+	try { if (!('onpagereveal' in window) && sessionStorage.getItem('tc:pt')) document.documentElement.classList.add('tc-pt-in'); } catch (e) {}
+	</script>
+	<!-- Precisa rodar antes do primeiro render (por isso inline e no <head>):
+	     1) já carregou nesta sessão → esconde o loader antes de ele aparecer num quadro;
+	     2) voltando de um case (link ou botão voltar) → dá os nomes da View Transition
+	        à linha do projeto de origem, pra imagem/título do case "voltarem" pra ela. -->
+	<link rel="expect" href="#rows" blocking="render">
+	<script>
+	(function () {
+		var ss = null; try { ss = window.sessionStorage; } catch (e) {}
+		try { if (ss && ss.getItem('tc:loaded') === '1') document.documentElement.classList.add('tc-seen'); } catch (e) {}
+		// voltando de um case: site.js não esconde as linhas de projeto (a animação de entrada
+		// com autoAlpha as deixaria invisíveis no 1º render e o navegador não teria onde pousar a transição)
+		try { if (ss && ss.getItem('tc:fromCase')) document.documentElement.classList.add('tc-return'); } catch (e) {}
+		window.addEventListener('pagereveal', function (e) {
+			var from = null; try { from = ss && ss.getItem('tc:fromCase'); ss && ss.removeItem('tc:fromCase'); } catch (err) {}
+			if (!e.viewTransition || !from) return;
+			var a = null, links = document.querySelectorAll('.row a[href]');
+			for (var i = 0; i < links.length; i++) if (links[i].pathname === from) a = links[i];
+			if (!a) return;
+			var r = a.getBoundingClientRect();
+			// fora da tela (ex.: "Todos os projetos" leva ao topo da seção): centraliza a linha
+			if (r.top < 0 || r.bottom > innerHeight) { window.scrollBy(0, r.top - (innerHeight - r.height) / 2); window.__tcRevealRow = a; }
+			var mobile = matchMedia('(max-width: 760px)').matches;
+			var hero = mobile ? a.querySelector('.thumb') : a;
+			var title = a.querySelector('.name strong');
+			if (hero) hero.style.viewTransitionName = 'case-hero';
+			if (title) title.style.viewTransitionName = 'case-title';
+			e.viewTransition.finished.finally(function () {
+				if (hero) hero.style.viewTransitionName = '';
+				if (title) title.style.viewTransitionName = '';
+			});
+		});
+	})();
+	</script>
+	<!-- Pré-renderiza o case ao passar o mouse/tocar num projeto (Chrome/Edge): a navegação fica instantânea e a transição não corre o risco de expirar esperando a página nova. -->
+	<script type="speculationrules">
+	{"prerender":[{"source":"document","where":{"href_matches":"/projetos/*"},"eagerness":"moderate"}]}
+	</script>
 	<title>Portfólio &bull; Thiago Celestino &bull; Desenvolvedor Front-End</title>
 </head>
 <body>
-	<div class="page-loader" id="pageLoader" role="status" aria-label="Carregando página">
-		<div class="page-loader-mark"><img src="images/layout/logo_tc.svg" alt="" aria-hidden="true" /></div>
-		<div class="pre-title page-loader-tag"><span><em class="accent">//</em>carregando<i class="page-loader-cursor"></i></span></div>
-		<div class="page-loader-meter-row">
-			<div class="page-loader-meter"><div class="page-loader-meter-fill" id="pageLoaderFill"></div></div>
-			<span class="page-loader-percent" id="pageLoaderPercent">0%</span>
-		</div>
-	</div>
-	<div class="master">
-		<header class="header">
-			<div class="container">
-				<a href="#intro" class="logo scroll-to"></a>
-				<button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menu">
-					<span class="nav-toggle-bar"></span>
-					<span class="nav-toggle-bar"></span>
-					<span class="nav-toggle-bar"></span>
-				</button>
-				<nav class="navigation" id="mainNav">
-					<ul>
-						<li><a href="#intro" class="nav-link"><span>Home</span></a></li>
-						<li><a href="#sobre" class="nav-link"><span>Sobre</span></a></li>
-						<li><a href="#projetos" class="nav-link"><span>Projetos</span></a></li>
-					</ul>
-					<a href="mailto:celesthiago@outlook.com" class="btn btn-contact"><span class="label">Entre em contato</span></a>
-				</nav>
-			</div>
-		</header>
-		<section id="intro" class="hero">
-			<canvas class="hero-atoms" aria-hidden="true"></canvas>
-			<div class="hero-atoms-vignette" aria-hidden="true"></div>
-			<div class="container">
-				<div class="hero-left">
-					<img title="" alt="Ilustração de programação front-end com código e interface" src="images/layout/programming.svg" />
-				</div>
-				<div class="hero-right">
-					<h6 class="hero-pre-title pre-title"><span><em class="accent">//</em>sou Thiago Celestino</span></h6>
-					<h1 class="hero-title main-title">Codifico interfaces <span class="accent">elegantes, ageis e pensadas nos mínimos detalhes.</span></h1>
-					<div class="btn-group">
-						<a href="#sobre" class="btn-descubra btn btn-primary scroll-to"><span class="label">Saiba mais<i class="icon bx bx-chevrons-down"></i></span></a>
-						<a href="cv/CVTHIAGO-2025.pdf" class="btn-download-cv btn btn-inverted btn-inverted-ghost btn-outline"><span class="label">Download CV<i class="bx bx-arrow-to-bottom"></i></span></a>
-					</div>
-					<ul class="hero-social">
-						<li><a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/thiagohnrster/"><i class="icon bxl bx-linkedin-square"></i></a></li>
-						<li><a target="_blank" rel="noopener noreferrer" href="https://github.com/thiagohnrster"><i class="icon bxl bx-github"></i></a></li>
-					</ul>
-				</div>
-			</div>
-		</section>
-		<section id="stats" class="stats-section">
-			<div class="container">
-				<ul class="stats-list">
-					<li class="stats-item">
-						<i class="stats-icon bxf bx-trophy-star"></i>
-						<div class="stats-item-content">
-							<strong class="stats-value">5+</strong>
-							<span class="stats-label">anos de experiência</span>
-						</div>
-					</li>
-					<li class="stats-item">
-						<i class="stats-icon bxf bx-component"></i>
-						<div class="stats-item-content">
-							<strong class="stats-value">4</strong>
-							<span class="stats-label">projetos entregues</span>
-						</div>
-					</li>
-					<li class="stats-item">
-						<i class="stats-icon bx bx-bracket-curly"></i>
-						<div class="stats-item-content">
-							<strong class="stats-value">95%</strong>
-							<span class="stats-label">HTML &middot; CSS &middot; JS</span>
-						</div>
-					</li>
-					<li class="stats-item">
-						<i class="stats-icon bxf bx-cup-hot"></i>
-						<div class="stats-item-content">
-							<strong class="stats-value">1000 +</strong>
-							<span class="stats-label">xícaras de café</span>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</section>
-		<section id="sobre" class="section about-section">
-			<div class="container">
-				<div class="content">
-					<h6 class="pre-title"><span><em class="accent">//</em>sobre mim</span></h6>
-					<h3 class="main-title">Design e código <span class="accent">a serviço da experiência do usuário</span></h3>
-					<div class="about-content-flex">
-						<div class="about-column-flex">
-							<pre class="about-column-pre-text">
-								<p>
-									Meu trabalho é dar vida a interfaces que não apenas funcionam bem, mas que também entregam sensações —
-									fluidez, clareza, impacto visual.
-								</p>
-								<p>
-									Utilizo tecnologias como <span class="highlighted highlighted-custom">Javascript, Angular JS, CSS moderno</span>,
-									animações com <span class="highlighted highlighted-custom">GSAP</span>, entre outras, para construir projetos que unem
-									estética e desempenho sempre com atenção aos mínimos detalhes de interação.
-								</p>
-								<p>
-									Gosto de unir design e código para criar experiências digitais que realmente fazem diferença — do primeiro
-									rascunho de layout até a última transição de interface.
-								</p>
-							</pre>
-						</div>
-						<div class="about-column-flex">
-							<div class="content-stats">
-								<div class="term" id="skillsTerm">
-									<div class="term-chrome">
-										<span class="term-dot term-dot-r"></span><span class="term-dot term-dot-y"></span><span class="term-dot term-dot-g"></span>
-										<span class="term-title">zsh &mdash; skills.js</span>
-									</div>
-									<div class="term-body">
-										<div class="term-line term-line-cmd"><span class="term-prompt">$ </span><span class="term-cmd">node skills.js</span></div>
-										<div class="term-line term-line-blank">&nbsp;</div>
-										<div class="term-line term-line-tech"><span class="term-label">HTML5</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
-										<div class="term-line term-line-tech"><span class="term-label">CSS / Sass</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
-										<div class="term-line term-line-tech"><span class="term-label">Javascript</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;&#9632;&#9632;</span></span><span class="term-count"># 4/4 projetos</span></div>
-										<div class="term-line term-line-tech"><span class="term-label">Angular JS</span><span class="term-bar"><span class="term-bar-on">&#9632;&#9632;</span><span class="term-bar-off">&#9632;&#9632;</span></span><span class="term-count"># 2/4 projetos</span></div>
-										<div class="term-line term-line-blank">&nbsp;</div>
-										<div class="term-line term-line-check"><span class="term-check">&#10003;</span><span class="term-label term-label-wide">UI / UX</span><span class="term-desc">da pesquisa ao protótipo funcional</span></div>
-										<div class="term-line term-line-check"><span class="term-check">&#10003;</span><span class="term-label term-label-wide">Design Responsivo</span><span class="term-desc">mobile &middot; tablet &middot; desktop</span></div>
-										<div class="term-line term-line-blank">&nbsp;</div>
-										<div class="term-line term-line-final"><span class="term-prompt">$ </span><span class="term-cursor"></span></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="content-skills content">
-					<h3 class="main-title">Ferramentas &amp; <span class="accent">bibliotecas</span></h3>
-					<ul class="cards-skills cards">
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-less"></i>
-								<h5 class="card-title">Less</h5>
-							</div>
-						</li>
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-sass"></i>
-								<h5 class="card-title">Sass</h5>
-							</div>
-						</li>
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-bootstrap"></i>
-								<h5 class="card-title">Bootstrap</h5>
-							</div>
-						</li>
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-angular"></i>
-								<h5 class="card-title">Angular JS</h5>
-							</div>
-						</li>
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-gsap"></i>
-								<h5 class="card-title">GSAP</h5>
-							</div>
-						</li>
-						<li class="card">
-							<div class="card-wrapper">
-								<div class="card-surface"></div>
-								<i class="bxl bx-jquery"></i>
-								<h5 class="card-title">jQuery</h5>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</section>
-		<section id="projetos" class="recent-works-section section">
-			<div class="container">
-				<div class="content">
-					<h6 class="pre-title"><span><em class="accent">//</em>projetos</span></h6>
-					<h3 class="main-title">Trabalhos <span class="accent">recentes</span></h3>
-					<ul class="cards recent-works-cards">
-						<li id="card_1" class="card">
-							<div class="card-wrapper">
-								<picture class="card-picture">
-									<div class="card-chrome">
-										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
-									</div>
-									<div class="card-art">
-										<img src="/images/layout/project_thumb_4.png" title="" alt="" />
-										<div class="card-duotone"></div>
-										<div class="card-picture-reveal">
-											<i class="icon bxl bx-html5"></i>
-											<i class="icon bxl bx-css3"></i>
-											<i class="icon bxl bx-javascript"></i>
-											<i class="icon bxl bx-angular"></i>
-											<i class="icon bxl bx-laravel"></i>
-										</div>
-									</div>
-								</picture>
-								<div class="card-content">
-									<div class="card-caption">
-										<h5 class="card-title">Grade</h5>
-										<small class="card-description">Plataforma de gestão de eventos · Full-stack</small>
-										<div class="card-description-status is-done">31 de Julho de 2026</div>
-									</div>
-									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
-								</div>
-							</div>
-						</li>
-						<li id="card_3" class="card">
-							<div class="card-wrapper">
-								<picture class="card-picture">
-									<div class="card-chrome">
-										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
-									</div>
-									<div class="card-art">
-										<img src="/images/layout/project_thumb_1.png" title="" alt="" />
-										<div class="card-duotone"></div>
-										<div class="card-picture-reveal">
-											<i class="icon bxl bx-html5"></i>
-											<i class="icon bxl bx-css3"></i>
-											<i class="icon bxl bx-javascript"></i>
-										</div>
-									</div>
-								</picture>
-								<div class="card-content">
-									<div class="card-caption">
-										<h5 class="card-title">Rubrum - Site Comercial V1</h5>
-										<small class="card-description">Landing page · Divulgação da plataforma web</small>
-										<div class="card-description-status is-done">05 de Agosto de 2020</div>
-									</div>
-									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
-								</div>
-							</div>
-						</li>
-						<li id="card_4" class="card">
-							<div class="card-wrapper">
-								<picture class="card-picture">
-									<div class="card-chrome">
-										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
-									</div>
-									<div class="card-art">
-										<img src="/images/layout/project_thumb_3.png" title="" alt="" />
-										<div class="card-duotone"></div>
-										<div class="card-picture-reveal">
-											<i class="icon bxl bx-html5"></i>
-											<i class="icon bxl bx-css3"></i>
-											<i class="icon bxl bx-javascript"></i>
-											<i class="icon bxl bx-angular"></i>
-											<i class="icon bxl bx-laravel"></i>
-										</div>
-									</div>
-								</picture>
-								<div class="card-content">
-									<div class="card-caption">
-										<h5 class="card-title">Rubrum</h5>
-										<small class="card-description">Gestão de embalagens · Plataforma web</small>
-										<div class="card-description-status is-done">24 de Julho de 2019</div>
-									</div>
-									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
-								</div>
-							</div>
-						</li>
-						<li id="card_2" class="card">
-							<div class="card-wrapper">
-								<picture class="card-picture">
-									<div class="card-chrome">
-										<span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url"></span>
-									</div>
-									<div class="card-art">
-										<img src="/images/layout/project_thumb_2.png" title="" alt="" />
-										<div class="card-duotone"></div>
-										<div class="card-picture-reveal">
-											<i class="icon bxl bx-html5"></i>
-											<i class="icon bxl bx-css3"></i>
-											<i class="icon bxl bx-javascript"></i>
-										</div>
-									</div>
-								</picture>
-								<div class="card-content">
-									<div class="card-caption">
-										<h5 class="card-title">Rubrum - Site Comercial V2</h5>
-										<small class="card-description">Landing page · Redesign</small>
-										<div class="card-description-status coming-soon">Prévia em breve</div>
-									</div>
-									<i data-title="Ver mais" class="view-more ui-tooltip top bx bx-arrow-out-up-right-stroke-square"></i>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</section>
-		<section id="contato" class="contact-section section">
-			<div class="container">
-				<div class="content">
-					<h6 class="pre-title"><span><em class="accent">//</em>contato</span></h6>
-					<h3 class="main-title">Vamos construir <span class="accent">seu próximo projeto</span></h3>
-					<ul class="contact-list">
-						<li>
-							<div class="contact-list-wp">
-								<a href="mailto:celesthiago@outlook.com"></a>
-								<i class="icon bxf bx-at"></i>
-								<strong class="contact-list-title">Email</strong>
-								<span class="contact-list-text">celesthiago@outlook.com</span>
-							</div>
-						</li>
-						<li>
-							<div class="contact-list-wp">
-								<a target="_blank" rel="noopener noreferrer" href="https://wa.me/5511975097733"></a>
-								<i class="icon bxl bx-whatsapp"></i>
-								<strong class="contact-list-title">Whatsapp</strong>
-								<span class="contact-list-text">(11) 97509-7733</span>
-							</div>
-						</li>
-						<li>
-							<div class="contact-list-wp">
-								<a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/thiagohnrster/"></a>
-								<i class="icon bxl bx-linkedin-square"></i>
-								<strong class="contact-list-title">Linkedin</strong>
-								<span class="contact-list-text">linkedin.com/in/thiagohnrster/</span>
-							</div>
-						</li>
-						<li>
-							<div class="contact-list-wp">
-								<a target="_blank" rel="noopener noreferrer" href="https://github.com/thiagohnrster"></a>
-								<i class="icon bxl bx-github"></i>
-								<strong class="contact-list-title">Github</strong>
-								<span class="contact-list-text">github.com/thiagohnrster</span>
-							</div>
-						</li>
-					</ul>
-					<div class="contact-btn-group">
-						<a href="mailto:celesthiago@outlook.com" id="btn-copy-email" data-email="celesthiago@outlook.com" class="btn btn-inverted-ghost btn-outline"><span class="label">Copiar e-mail</span></a>
-						<a href="https://wa.me/5511975097733" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span class="label">Chamar no Whatsapp</span></a>
-					</div>
-				</div>
-			</div>
-		</section>
-		<footer class="footer">
-			<div class="container">
-				<div class="footer-in">
-					<span class="footer-copy">&copy;&nbsp;Todos os direitos reservados&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span id="current-year"></span></span>
-					<span class="footer-design-by">Design by&nbsp;<strong class="highlighted">Thiago Celestino</strong></span>
-				</div>
-			</div>
-		</footer>
-	</div>
-	<script>
-		document.getElementById("current-year").textContent = new Date().getFullYear();	
-    </script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="tcg" x1="137.03" y1="486.02" x2="435.97" y2="313.42" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#003f77"/><stop offset=".25" stop-color="#005099"/><stop offset=".57" stop-color="#005bad"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 631.04 544.23">
+      <path class="lg-c" fill="#fff" d="M437,542c-121.33-9-208.3-117.37-197.99-237.49,5.74-66.83,42.47-125.91,97.99-162.51,31.85-16.66,64.59-31.530,101-34,66.37-4.51,135.88,21.95,182.03,69.47,1.43,1.48,10.18,10.84,10.51,11.55.35.77.72,1.41.36,2.28l-81.39,81.68c-32.45-54.18-102.18-71.37-155.22-35.2-56.23,38.34-60.68,122.32-9.75,167.19,51.41,45.3,129.86,31.98,164.97-25.96l81.43,81.35c-35.62,42.87-84.97,72.4-140.59,80.470-18.42,2.67-34.93,2.53-53.33,1.17Z"/>
+      <path fill="#1f8efe" d="M115,312c-.02-28.32.02-56.68,0-85H0v-119h115V0h130v108h193c-36.41,2.47-69.15,17.34-101,34-21.64,11.32-37.34,20.72-56.9,35.6-53.3,40.56-104.6,85.99-156.63,128.37-2.65,2.16-5.39,4.5-8.48,6.02Z"/>
+      <path fill="url(#tcg)" d="M337,142c-55.52,36.6-92.25,95.68-97.99,162.51-10.31,120.12,76.66,228.49,197.99,237.49l-5.49,1.02c-62.3-2.94-128.12,3.88-190-.03-63.43-4-122.64-54.36-126.55-119.45-2.14-35.57.07-75.47.04-111.54,3.08-1.53,5.83-3.87,8.48-6.02,52.03-42.38,103.33-87.81,156.63-128.37,19.56-14.88,35.26-24.29,56.9-35.6Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+
+
+<!-- Loader com progresso REAL (fontes + load da página) — controlado por js/loader.js -->
+<div class="loader page-loader" id="pageLoader" role="status" aria-label="Carregando página">
+  <svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg>
+  <div class="bar"><i id="pageLoaderFill"></i></div>
+  <span class="count" id="pageLoaderPercent">000</span>
+</div>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel">ver</span></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<header class="header nav wrap" id="nav">
+  <a href="#top" class="logo" data-scroll aria-label="Thiago Celestino — início"><svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg></a>
+  <nav aria-label="Principal">
+    <ul>
+      <li><a href="#top" data-scroll data-label="Home"><span>Home</span></a></li>
+      <li><a href="#sobre" data-scroll data-label="Sobre"><span>Sobre</span></a></li>
+      <li><a href="#projetos" data-scroll data-label="Projetos"><span>Projetos</span></a></li>
+    </ul>
+  </nav>
+  <div class="nav-right">
+    <a class="lang-switch mono" href="/en/" hreflang="en" lang="en" data-lang="en" aria-label="Read this page in English"><span class="is-on" aria-hidden="true">PT</span><span aria-hidden="true">EN</span></a>
+    <span class="mono muted status">São Paulo — <span class="clock" id="clock">--:--</span></span>
+    <a href="#contato" class="btn" data-scroll data-magnetic>Entre em contato</a>
+    <button type="button" class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  </div>
+</header>
+
+<div class="menu wrap" id="menu" aria-hidden="true">
+  <ol>
+    <li><a href="#top" data-scroll data-menu-link>Home <small>01</small></a></li>
+    <li><a href="#sobre" data-scroll data-menu-link>Sobre <small>02</small></a></li>
+    <li><a href="#projetos" data-scroll data-menu-link>Projetos <small>03</small></a></li>
+    <li><a href="#contato" data-scroll data-menu-link>Contato <small>04</small></a></li>
+  </ol>
+  <div class="m-foot">
+    <span class="mono muted">São Paulo — <span class="clock">--:--</span> · Disponível</span>
+    <span style="font-size:20px;font-weight:600;user-select:all">celesthiago@outlook.com</span>
+    <div class="row2 mono">
+      <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
+      <a href="/cv/CVTHIAGO-2025.pdf" download>Currículo ↓</a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <section class="hero wrap" id="top">
+    <div class="floaters" aria-hidden="true">
+      <div class="fl" data-depth="0.6" style="left:62%;top:18%;width:64px;height:64px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 8h18M6 6h.01M8 6h.01"/></svg></div>
+      <div class="fl" data-depth="1.2" style="left:84%;top:34%;width:48px;height:48px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+      <div class="fl" data-depth="0.9" style="left:44%;top:26%;width:40px;height:40px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 3l14 8-6 2-2 6z"/></svg></div>
+      <div class="fl" data-depth="1.5" style="left:74%;top:62%;width:56px;height:56px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></div>
+      <div class="fl" data-depth="0.7" style="left:8%;top:58%;width:44px;height:44px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></div>
+    </div>
+
+    <div class="hero-meta mono muted" data-intro="fade">
+      <span>Portfólio — Ed. 2026</span>
+      <span>Desenvolvedor Front-End</span>
+      <span>[ 23°32′S 46°38′W ]</span>
+    </div>
+
+    <h1 aria-label="Thiago Celestino, front-end">
+      <span class="l1" aria-hidden="true"><span data-split>Thiago</span><span class="tag" data-intro="fade">(front-end)</span></span>
+      <span class="l2" aria-hidden="true"><span class="code" data-intro="fade">&lt;html&gt; &lt;css&gt;<br>&lt;js&gt;</span><span data-split>Celestino</span><span class="caret"></span></span>
+    </h1>
+
+    <div class="hero-foot">
+      <p class="lead" data-intro="lines">Codifico interfaces <em>elegantes,</em> ágeis e pensadas nos mínimos detalhes.</p>
+      <p class="sub" data-intro="fade">Um híbrido de designer e desenvolvedor: estética e performance no mesmo commit, com interações fluidas e impacto visual.</p>
+      <div class="scroll-wrap" data-intro="fade">
+        <span class="scroll-holder">
+          <svg class="ring" viewBox="0 0 132 132" aria-hidden="true"><defs><path id="circ" d="M66,66 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs><text font-family="Source Code Pro, monospace" font-size="10.5" font-weight="500" letter-spacing="3.2" fill="#9db0c3"><textPath href="#circ">ROLE PARA EXPLORAR • ROLE PARA EXPLORAR • </textPath></text></svg>
+          <a href="#projetos" class="scroll-btn" data-scroll data-magnetic aria-label="Ir para os projetos">
+          
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2cb4ff" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+        </a>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" role="img" aria-label="Stack: HTML5, CSS/Sass, JavaScript, GSAP, Angular JS, UI/UX">
+    <div class="track" id="track" aria-hidden="true">
+      <div class="set"><span>HTML5</span><span class="plus">+</span><span>CSS / Sass</span><span class="plus">+</span><span>JavaScript</span><span class="plus">+</span><span>GSAP</span><span class="plus">+</span><span>Angular JS</span><span class="plus">+</span><span><em>UI / UX</em></span><span class="plus">+</span></div>
+      <div class="set"><span>HTML5</span><span class="plus">+</span><span>CSS / Sass</span><span class="plus">+</span><span>JavaScript</span><span class="plus">+</span><span>GSAP</span><span class="plus">+</span><span>Angular JS</span><span class="plus">+</span><span><em>UI / UX</em></span><span class="plus">+</span></div>
+    </div>
+  </div>
+
+  <section class="projects wrap" id="projetos">
+    <div class="sec-head">
+      <span class="mono muted">4 projetos — 2019/2026</span>
+      <h2 id="projTitle">Projetos <em>selecionados</em></h2>
+    </div>
+    <!-- cada linha abre a página do case em /projetos/ (transição: view-transition-name em js/site.js) -->
+    <ul class="rows recent-works-cards" id="rows">
+      <li class="row" id="card_1"><a href="/projetos/grade.html" data-cursor="ver case" data-index="0"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_4-720.webp" width="720" height="344" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(01)</span><span class="name"><strong>Grade</strong><span>Plataforma de gestão de eventos</span></span><span class="meta"><span class="pill">Full-stack</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_2"><a href="/projetos/rubrum-site-v2.html" data-cursor="ver" data-index="1"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_2-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(02)</span><span class="name"><strong>Rubrum Site V2</strong><span>Redesign da presença comercial</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_4"><a href="/projetos/rubrum.html" data-cursor="ver case" data-index="2"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_3-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(03)</span><span class="name"><strong>Rubrum</strong><span>Sistema de gestão de embalagens</span></span><span class="meta"><span class="pill">Plataforma web</span><span class="yr">2019</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_3"><a href="/projetos/rubrum-site-v1.html" data-cursor="ver case" data-index="3"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_1-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(04)</span><span class="name"><strong>Rubrum Site V1</strong><span>Promoção da plataforma comercial</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2020</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+    </ul>
+  </section>
+
+  <section class="about wrap" id="sobre">
+    <span class="label mono muted">Sobre</span>
+    <p class="manifesto" id="manifesto">Design e código a serviço de <em>quem usa</em>. Desenho as telas, penso no movimento e entrego o front-end, do primeiro rascunho <em>à última transição.</em></p>
+    <div class="stats">
+      <div class="stat"><b><span data-count="5" data-pad="2">05</span><sup>+</sup></b><span class="mono muted">Anos de experiência</span></div>
+      <div class="stat"><b><span data-count="4" data-pad="2">04</span></b><span class="mono muted">Projetos entregues</span></div>
+      <div class="stat"><b><span data-count="95">95</span><sup>%</sup></b><span class="mono muted">HTML · CSS · JavaScript</span></div>
+      <div class="stat"><b><span data-count="1000" data-k>1K</span><sup>+</sup></b><span class="mono muted">Xícaras de café</span></div>
+    </div>
+  </section>
+
+  <section class="services wrap" id="servicos">
+    <div class="left">
+      <span class="mono" style="font-weight:600">O que eu faço</span>
+      <h2>Design <em>&amp;</em> código</h2>
+      <ul class="svc">
+        <li><span class="n">/01</span><div><h3>Design de interface</h3><p>Do rascunho à tela final — como no Grade, desenhado do zero.</p></div></li>
+        <li><span class="n">/02</span><div><h3>Desenvolvimento front-end</h3><p>Desde 2019 construindo sozinho o front-end do Rubrum.</p></div></li>
+        <li><span class="n">/03</span><div><h3>Motion &amp; interação</h3><p>GSAP e microinterações — como as deste site.</p></div></li>
+      </ul>
+    </div>
+    <div class="term" id="term">
+      <div class="bar"><i></i><i></i><i></i><span>zsh — skills.js</span></div>
+<pre><span class="ln"><span class="k">const</span> <span class="v">thiago</span> = {</span><span class="ln">  papel: <span class="s">'Front-End Developer'</span>,</span><span class="ln">  base: <span class="s">'São Paulo, BR'</span>,</span><span class="ln">  stack: [<span class="s">'HTML5'</span>, <span class="s">'CSS/Sass'</span>, <span class="s">'Less'</span>,</span><span class="ln">          <span class="s">'JavaScript'</span>, <span class="s">'GSAP'</span>,</span><span class="ln">          <span class="s">'Angular JS'</span>, <span class="s">'jQuery'</span>,</span><span class="ln">          <span class="s">'Bootstrap'</span>],</span><span class="ln">  foco: <span class="s">'mínimos detalhes'</span>,</span><span class="ln">};</span><span class="ln">&nbsp;</span><span class="ln"><span class="cm">// ~ $</span> <span class="v">npm run surpreender</span> <span class="cur"></span></span></pre>
+    </div>
+  </section>
+
+  <footer class="contact wrap" id="contato">
+    <div class="top">
+      <span class="mono muted">Contato — Tem um projeto em mente?</span>
+      <h2 id="talk"><span data-split>Vamos</span><em data-split>conversar?</em></h2>
+      <div class="mail">
+        <span class="addr" id="addr">celesthiago@outlook.com</span>
+        <button type="button" class="copy" id="copyBtn" data-magnetic>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
+          Copiar e-mail
+        </button>
+        <a href="/cv/CVTHIAGO-2025.pdf" class="copy" download data-magnetic>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+          Baixar currículo (PDF)
+        </a>
+      </div>
+    </div>
+    <div class="foot">
+      <nav class="links mono" aria-label="Redes">
+        <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
+        <a href="#top" data-scroll>Voltar ao topo ↑</a>
+      </nav>
+      <div class="sig">
+        <div class="brand"><svg viewBox="0 0 631.04 544.23" id="footLogo" aria-hidden="true"><use href="#logo"/></svg><span class="ghost" id="ghost" aria-hidden="true">Celestino</span></div>
+        <div class="copyr mono muted"><span>© <span id="current-year">2026</span> Thiago Celestino</span><span>Feito à mão em São Paulo</span></div>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<div class="preview" id="preview" aria-hidden="true">
+  <div class="chrome"><i></i><i></i><i></i><b></b></div>
+  <div class="stage"><div class="slides" id="slides">
+    <div class="slide slide-img"><img src="/images/layout/project_thumb_4-720.webp" width="720" height="344" loading="lazy" decoding="async" alt="" /><span class="duo"></span></div>
+    <div class="slide slide-img"><img src="/images/layout/project_thumb_2-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></div>
+    <div class="slide slide-img"><img src="/images/layout/project_thumb_3-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></div>
+    <div class="slide slide-img"><img src="/images/layout/project_thumb_1-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></div>
+  </div></div>
+</div>
+<script>
+	document.getElementById("current-year").textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
