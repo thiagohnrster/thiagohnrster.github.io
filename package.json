@@ -4,6 +4,7 @@
   "description": "Portfólio Thiago Celestino - Desenvolvedor Front-End",
   "main": "index.js",
   "scripts": {
+    "dev": "live-server --entry-file=404.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Thiago Celestino",

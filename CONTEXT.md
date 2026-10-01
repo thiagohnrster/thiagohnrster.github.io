@@ -58,6 +58,8 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 - O card "HDC Eventos" (`modals/hdc-eventos.html`) foi substituído por **Grade**, outra plataforma de gestão de eventos (mesmo stack: HTML5, CSS3, JS, Angular JS, Laravel 5, PHP), publicada em 31 de Julho de 2026 com link de repositório no GitHub — `modals/hdc-eventos.html` foi removido do repo e `js/scripts.js` passou a apontar `card_1` para `modals/grade.html`. Como Grade tem data real de publicação, ela assumiu a 1ª posição visual, empurrando os outros cards uma posição adiante (Rubrum V1 → 2º, Rubrum → 3º, Rubrum V2 seguindo por último por ainda não ter link publicado). `images/layout/project_thumb_4.png` foi reexportado/otimizado (~530KB → ~249KB) como thumbnail do novo card.
 - Os arquivos da Plus Jakarta Sans em `styles/fonts/` foram substituídos por uma nova versão, com nomes no padrão `PlusJakartaSans-<Peso>.<ext>` (antes `plus_jakarta_sans_<peso>-webfont.<ext>`). Os `@font-face` em `style.css` e os `preload` em `index.html` foram reapontados para os novos arquivos; os nomes de `font-family` foram mantidos. O peso ExtraLight, que não tinha `@font-face`, não veio na nova versão.
 
+- **Redesign editorial (branch `feature/redesign-awwwards`, set/2026):** o site foi refeito igual ao protótipo aprovado — novas seções e textos (manifesto em "Sobre", bloco "Design & código", contato "Vamos conversar?"), projetos em linhas com prévia; saíram a ilustração, o fundo de átomos, o console de skills, a grade de ferramentas e o botão Download CV. O menu mobile passou a ter "Contato", e o CTA do header rola até a seção de contato (antes era `mailto:`). Detalhes técnicos em [CLAUDE.md](CLAUDE.md). Os projetos deixaram de abrir em modal: cada um tem uma página de case própria em `projetos/` (link compartilhável, preview próprio no WhatsApp/LinkedIn, botão voltar funcionando), aberta com uma transição que expande a prévia até o topo do case.
+
 ## Itens conhecidos / débito técnico
 
 - `styles/scss/` está vazia — preparada para um fluxo Sass que nunca foi adotado; o CSS é mantido diretamente em `styles/css/style.css`.
@@ -70,3 +72,18 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 
 - Stack tecnológica completa, paleta de cores e responsabilidades de cada script: [docs/DOCUMENTATION.md](docs/DOCUMENTATION.md).
 - Comandos de desenvolvimento e arquitetura de código: [CLAUDE.md](CLAUDE.md).
+
+### Assinatura: site "compilando" ao vivo
+- Em `js/site.js` (`liveBuild`): na 1ª vez que #projetos, #sobre, #servicos e #contato entram na tela (top 70%), cada bloco vira um esqueleto tracejado com a tag real (`<h2 #projTitle>`, `<li #card_1>`...) e o cursor azul em bloco passa revelando o visual final (clip-path). ~1s por seção; no canto aparece "render #secao" → "✓ compilado em 0,9s".
+- Substitui as entradas antigas das linhas de projeto, stats, serviços e "Vamos conversar?". Contadores e o terminal digitando continuam.
+- Voltando de um case (`tc-return`) a lista de projetos não é recompilada. Seção que passou fora da tela (âncora/menu) só é revelada. Sem animação com prefers-reduced-motion.
+- CSS: bloco `/* SITE COMPILANDO */` no fim de `styles/css/style.css` (classes `lb-*`).
+
+### Versão em inglês (/en/)
+- Português é a fonte. As páginas em inglês ficam em `en/` (mesmos caminhos com o prefixo `/en`: `/en/`, `/en/projetos/grade.html`...). Elas são GERADAS por `python tools/i18n/build_en.py` — mudou texto ou estrutura em PT, rode o script de novo. As traduções (pares PT → EN) ficam no próprio script; se um texto PT mudar, o script avisa qual par atualizar.
+- Botão PT/EN (`.lang-switch`, no `.nav-right`) leva para a mesma página no outro idioma e grava a escolha em `localStorage tc:lang`.
+- Redirecionamento automático: script `i18n:redirect` no `<head>` das páginas PT. Na 1ª página aberta vinda de fora, se o navegador não estiver em português, vai para a versão `/en/`. Não redireciona quem já escolheu idioma, robôs/headless nem navegação interna.
+- SEO: `hreflang` pt-BR / en / x-default (= en) em todas as páginas; canonical e og:url próprios em cada idioma.
+- JS: `site.js` usa `T(pt, en)` conforme `<html lang>` (toast do e-mail, menu, "compilado em").
+- 404: um arquivo só (`404.html`), bilíngue via atributos `data-en` + script no fim do body (inglês para `/en/...`, escolha EN ou navegador em outro idioma).
+- Currículo: PT em `cv/CVTHIAGO-2025.pdf`, EN em `cv/CVTHIAGO-2025-EN.pdf` (as páginas em /en/ e a 404 em inglês apontam para o EN).
