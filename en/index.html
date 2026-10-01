@@ -1,37 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- i18n:redirect — 1ª visita vinda de fora com o navegador em outro idioma (não português) → versão em inglês.
-	     Quem escolheu um idioma no botão PT/EN (localStorage tc:lang) nunca é redirecionado; robôs de busca também não. -->
-	<script>
-	(function () {
-		try {
-			if (localStorage.getItem('tc:lang')) return;
-			if (/bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(navigator.userAgent || '')) return;
-			if (document.referrer && new URL(document.referrer).origin === location.origin) return;
-			var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
-			if (!langs[0] || langs.some(function (l) { return /^pt\b/i.test(l); })) return;
-			location.replace('/en' + location.pathname.replace(/index\.html$/, '') + location.search + location.hash);
-		} catch (e) {}
-	})();
-	</script>
-	<!-- /i18n:redirect -->
-	<meta name="description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">
-	<meta name="keywords" content="desenvolvedor front-end, html, css, javascript, portfolio front-end, web developer">
+	<meta name="description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
+	<meta name="keywords" content="front-end developer, html, css, javascript, front-end portfolio, web developer, gsap">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="Portfólio • Thiago Celestino • Desenvolvedor Front-End">
-	<meta property="og:description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">
+	<meta property="og:title" content="Portfolio • Thiago Celestino • Front-End Developer">
+	<meta property="og:description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
 	<meta property="og:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
-	<meta property="og:url" content="https://thiagohnrster.github.io/">
-	<meta property="og:locale" content="pt_BR">
-	<meta property="og:locale:alternate" content="en_US">
+	<meta property="og:url" content="https://thiagohnrster.github.io/en/">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:locale:alternate" content="pt_BR">
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="Portfólio • Thiago Celestino • Desenvolvedor Front-End">
-	<meta name="twitter:description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">
+	<meta name="twitter:title" content="Portfolio • Thiago Celestino • Front-End Developer">
+	<meta name="twitter:description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
 	<meta name="twitter:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
-	<link rel="canonical" href="https://thiagohnrster.github.io/">
+	<link rel="canonical" href="https://thiagohnrster.github.io/en/">
 	<link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/">
 	<link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/">
 	<link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/">
@@ -39,14 +24,14 @@
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 	<link rel="manifest" href="/site.webmanifest">
-	<link rel="preload" href="styles/fonts/PlusJakartaSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
-	<link rel="preload" href="styles/fonts/PlusJakartaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
-	<link rel="preload" href="styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
-	<link rel="stylesheet" type="text/css" href="styles/css/style.css" />
-	<script src="js/gsap.min.js" defer></script>
-	<script src="js/ScrollTrigger.min.js" defer></script>
-	<script src="js/loader.js" defer></script>
-	<script src="js/site.js" defer></script>
+	<link rel="preload" href="/styles/fonts/PlusJakartaSans-ExtraBold.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/styles/fonts/PlusJakartaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" type="text/css" href="/styles/css/style.css" />
+	<script src="/js/gsap.min.js" defer></script>
+	<script src="/js/ScrollTrigger.min.js" defer></script>
+	<script src="/js/loader.js" defer></script>
+	<script src="/js/site.js" defer></script>
 	<script>
 	// Sem View Transitions entre documentos (Firefox): se a página anterior saiu com a transição
 	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
@@ -87,9 +72,9 @@
 	</script>
 	<!-- Pré-renderiza o case ao passar o mouse/tocar num projeto (Chrome/Edge): a navegação fica instantânea e a transição não corre o risco de expirar esperando a página nova. -->
 	<script type="speculationrules">
-	{"prerender":[{"source":"document","where":{"href_matches":"/projetos/*"},"eagerness":"moderate"}]}
+	{"prerender":[{"source":"document","where":{"href_matches":"/en/projetos/*"},"eagerness":"moderate"}]}
 	</script>
-	<title>Portfólio &bull; Thiago Celestino &bull; Desenvolvedor Front-End</title>
+	<title>Portfolio &bull; Thiago Celestino &bull; Front-End Developer</title>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -106,48 +91,48 @@
 
 
 <!-- Loader com progresso REAL (fontes + load da página) — controlado por js/loader.js -->
-<div class="loader page-loader" id="pageLoader" role="status" aria-label="Carregando página">
+<div class="loader page-loader" id="pageLoader" role="status" aria-label="Loading page">
   <svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg>
   <div class="bar"><i id="pageLoaderFill"></i></div>
   <span class="count" id="pageLoaderPercent">000</span>
 </div>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
-<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel">ver</span></div>
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel">view</span></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <header class="header nav wrap" id="nav">
-  <a href="#top" class="logo" data-scroll aria-label="Thiago Celestino — início"><svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg></a>
-  <nav aria-label="Principal">
+  <a href="#top" class="logo" data-scroll aria-label="Thiago Celestino — home"><svg viewBox="0 0 631.04 544.23" aria-hidden="true"><use href="#logo"/></svg></a>
+  <nav aria-label="Main">
     <ul>
       <li><a href="#top" data-scroll data-label="Home"><span>Home</span></a></li>
-      <li><a href="#sobre" data-scroll data-label="Sobre"><span>Sobre</span></a></li>
-      <li><a href="#projetos" data-scroll data-label="Projetos"><span>Projetos</span></a></li>
+      <li><a href="#sobre" data-scroll data-label="About"><span>About</span></a></li>
+      <li><a href="#projetos" data-scroll data-label="Projects"><span>Projects</span></a></li>
     </ul>
   </nav>
   <div class="nav-right">
-    <a class="lang-switch mono" href="/en/" hreflang="en" lang="en" data-lang="en" aria-label="Read this page in English"><span class="is-on" aria-hidden="true">PT</span><span aria-hidden="true">EN</span></a>
+    <a class="lang-switch mono" href="/" hreflang="pt-BR" lang="pt-BR" data-lang="pt" aria-label="Ler esta página em português"><span aria-hidden="true">PT</span><span class="is-on" aria-hidden="true">EN</span></a>
     <span class="mono muted status">São Paulo — <span class="clock" id="clock">--:--</span></span>
-    <a href="#contato" class="btn" data-scroll data-magnetic>Entre em contato</a>
-    <button type="button" class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+    <a href="#contato" class="btn" data-scroll data-magnetic>Get in touch</a>
+    <button type="button" class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
   </div>
 </header>
 
 <div class="menu wrap" id="menu" aria-hidden="true">
   <ol>
     <li><a href="#top" data-scroll data-menu-link>Home <small>01</small></a></li>
-    <li><a href="#sobre" data-scroll data-menu-link>Sobre <small>02</small></a></li>
-    <li><a href="#projetos" data-scroll data-menu-link>Projetos <small>03</small></a></li>
-    <li><a href="#contato" data-scroll data-menu-link>Contato <small>04</small></a></li>
+    <li><a href="#sobre" data-scroll data-menu-link>About <small>02</small></a></li>
+    <li><a href="#projetos" data-scroll data-menu-link>Projects <small>03</small></a></li>
+    <li><a href="#contato" data-scroll data-menu-link>Contact <small>04</small></a></li>
   </ol>
   <div class="m-foot">
-    <span class="mono muted">São Paulo — <span class="clock">--:--</span> · Disponível</span>
+    <span class="mono muted">São Paulo — <span class="clock">--:--</span> · Available</span>
     <span style="font-size:20px;font-weight:600;user-select:all">celesthiago@outlook.com</span>
     <div class="row2 mono">
       <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
       <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
-      <a href="/cv/CVTHIAGO-2025.pdf" download>Currículo ↓</a>
+      <a href="/cv/CVTHIAGO-2025-EN.pdf" download>Résumé ↓</a>
     </div>
   </div>
 </div>
@@ -163,8 +148,8 @@
     </div>
 
     <div class="hero-meta mono muted" data-intro="fade">
-      <span>Portfólio — Ed. 2026</span>
-      <span>Desenvolvedor Front-End</span>
+      <span>Portfolio — Ed. 2026</span>
+      <span>Front-End Developer</span>
       <span>[ 23°32′S 46°38′W ]</span>
     </div>
 
@@ -174,12 +159,12 @@
     </h1>
 
     <div class="hero-foot">
-      <p class="lead" data-intro="lines">Codifico interfaces <em>elegantes,</em> ágeis e pensadas nos mínimos detalhes.</p>
-      <p class="sub" data-intro="fade">Um híbrido de designer e desenvolvedor: estética e performance no mesmo commit, com interações fluidas e impacto visual.</p>
+      <p class="lead" data-intro="lines">I code <em>elegant,</em> fast interfaces, crafted down to the smallest detail.</p>
+      <p class="sub" data-intro="fade">Part designer, part developer: aesthetics and performance in the same commit, with fluid interactions and visual impact.</p>
       <div class="scroll-wrap" data-intro="fade">
         <span class="scroll-holder">
-          <svg class="ring" viewBox="0 0 132 132" aria-hidden="true"><defs><path id="circ" d="M66,66 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs><text font-family="Source Code Pro, monospace" font-size="10.5" font-weight="500" letter-spacing="3.2" fill="#9db0c3"><textPath href="#circ">ROLE PARA EXPLORAR • ROLE PARA EXPLORAR • </textPath></text></svg>
-          <a href="#projetos" class="scroll-btn" data-scroll data-magnetic aria-label="Ir para os projetos">
+          <svg class="ring" viewBox="0 0 132 132" aria-hidden="true"><defs><path id="circ" d="M66,66 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs><text font-family="Source Code Pro, monospace" font-size="10.5" font-weight="500" letter-spacing="3.2" fill="#9db0c3"><textPath href="#circ">SCROLL TO EXPLORE • SCROLL TO EXPLORE • </textPath></text></svg>
+          <a href="#projetos" class="scroll-btn" data-scroll data-magnetic aria-label="Go to projects">
           
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2cb4ff" stroke-width="1.8" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
         </a>
@@ -197,71 +182,71 @@
 
   <section class="projects wrap" id="projetos">
     <div class="sec-head">
-      <span class="mono muted">4 projetos — 2019/2026</span>
-      <h2 id="projTitle">Projetos <em>selecionados</em></h2>
+      <span class="mono muted">4 projects — 2019/2026</span>
+      <h2 id="projTitle">Selected <em>work</em></h2>
     </div>
     <!-- cada linha abre a página do case em /projetos/ (transição: view-transition-name em js/site.js) -->
     <ul class="rows recent-works-cards" id="rows">
-      <li class="row" id="card_1"><a href="/projetos/grade.html" data-cursor="ver case" data-index="0"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_4-720.webp" width="720" height="344" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(01)</span><span class="name"><strong>Grade</strong><span>Plataforma de gestão de eventos</span></span><span class="meta"><span class="pill">Full-stack</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
-      <li class="row" id="card_2"><a href="/projetos/rubrum-site-v2.html" data-cursor="ver" data-index="1"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_2-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(02)</span><span class="name"><strong>Rubrum Site V2</strong><span>Redesign da presença comercial</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
-      <li class="row" id="card_4"><a href="/projetos/rubrum.html" data-cursor="ver case" data-index="2"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_3-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(03)</span><span class="name"><strong>Rubrum</strong><span>Sistema de gestão de embalagens</span></span><span class="meta"><span class="pill">Plataforma web</span><span class="yr">2019</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
-      <li class="row" id="card_3"><a href="/projetos/rubrum-site-v1.html" data-cursor="ver case" data-index="3"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_1-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(04)</span><span class="name"><strong>Rubrum Site V1</strong><span>Promoção da plataforma comercial</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2020</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_1"><a href="/en/projetos/grade.html" data-cursor="view case" data-index="0"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_4-720.webp" width="720" height="344" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(01)</span><span class="name"><strong>Grade</strong><span>Event management platform</span></span><span class="meta"><span class="pill">Full-stack</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_2"><a href="/en/projetos/rubrum-site-v2.html" data-cursor="view" data-index="1"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_2-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(02)</span><span class="name"><strong>Rubrum Site V2</strong><span>Redesign of the commercial website</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2026</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_4"><a href="/en/projetos/rubrum.html" data-cursor="view case" data-index="2"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_3-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(03)</span><span class="name"><strong>Rubrum</strong><span>Packaging management system</span></span><span class="meta"><span class="pill">Web platform</span><span class="yr">2019</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
+      <li class="row" id="card_3"><a href="/en/projetos/rubrum-site-v1.html" data-cursor="view case" data-index="3"><span class="thumb" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b></b></span><span class="slide slide-img"><img src="/images/layout/project_thumb_1-720.webp" width="720" height="484" loading="lazy" decoding="async" alt="" /><span class="duo"></span></span></span><span class="fill"></span><span class="num">(04)</span><span class="name"><strong>Rubrum Site V1</strong><span>Marketing site for the platform</span></span><span class="meta"><span class="pill">Landing page</span><span class="yr">2020</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg></a></li>
     </ul>
   </section>
 
   <section class="about wrap" id="sobre">
-    <span class="label mono muted">Sobre</span>
-    <p class="manifesto" id="manifesto">Design e código a serviço de <em>quem usa</em>. Desenho as telas, penso no movimento e entrego o front-end, do primeiro rascunho <em>à última transição.</em></p>
+    <span class="label mono muted">About</span>
+    <p class="manifesto" id="manifesto">Design and code in service of <em>the people who use it</em>. I design the screens, think through the motion and ship the front-end, from the first sketch <em>to the last transition.</em></p>
     <div class="stats">
-      <div class="stat"><b><span data-count="5" data-pad="2">05</span><sup>+</sup></b><span class="mono muted">Anos de experiência</span></div>
-      <div class="stat"><b><span data-count="4" data-pad="2">04</span></b><span class="mono muted">Projetos entregues</span></div>
+      <div class="stat"><b><span data-count="5" data-pad="2">05</span><sup>+</sup></b><span class="mono muted">Years of experience</span></div>
+      <div class="stat"><b><span data-count="4" data-pad="2">04</span></b><span class="mono muted">Projects delivered</span></div>
       <div class="stat"><b><span data-count="95">95</span><sup>%</sup></b><span class="mono muted">HTML · CSS · JavaScript</span></div>
-      <div class="stat"><b><span data-count="1000" data-k>1K</span><sup>+</sup></b><span class="mono muted">Xícaras de café</span></div>
+      <div class="stat"><b><span data-count="1000" data-k>1K</span><sup>+</sup></b><span class="mono muted">Cups of coffee</span></div>
     </div>
   </section>
 
   <section class="services wrap" id="servicos">
     <div class="left">
-      <span class="mono" style="font-weight:600">O que eu faço</span>
-      <h2>Design <em>&amp;</em> código</h2>
+      <span class="mono" style="font-weight:600">What I do</span>
+      <h2>Design <em>&amp;</em> code</h2>
       <ul class="svc">
-        <li><span class="n">/01</span><div><h3>Design de interface</h3><p>Do rascunho à tela final — como no Grade, desenhado do zero.</p></div></li>
-        <li><span class="n">/02</span><div><h3>Desenvolvimento front-end</h3><p>Desde 2019 construindo sozinho o front-end do Rubrum.</p></div></li>
-        <li><span class="n">/03</span><div><h3>Motion &amp; interação</h3><p>GSAP e microinterações — como as deste site.</p></div></li>
+        <li><span class="n">/01</span><div><h3>Interface design</h3><p>From the first sketch to the final screen — like Grade, designed from scratch.</p></div></li>
+        <li><span class="n">/02</span><div><h3>Front-end development</h3><p>Building Rubrum’s front-end on my own since 2019.</p></div></li>
+        <li><span class="n">/03</span><div><h3>Motion &amp; interaction</h3><p>GSAP and micro-interactions — like the ones on this site.</p></div></li>
       </ul>
     </div>
     <div class="term" id="term">
       <div class="bar"><i></i><i></i><i></i><span>zsh — skills.js</span></div>
-<pre><span class="ln"><span class="k">const</span> <span class="v">thiago</span> = {</span><span class="ln">  papel: <span class="s">'Front-End Developer'</span>,</span><span class="ln">  base: <span class="s">'São Paulo, BR'</span>,</span><span class="ln">  stack: [<span class="s">'HTML5'</span>, <span class="s">'CSS/Sass'</span>, <span class="s">'Less'</span>,</span><span class="ln">          <span class="s">'JavaScript'</span>, <span class="s">'GSAP'</span>,</span><span class="ln">          <span class="s">'Angular JS'</span>, <span class="s">'jQuery'</span>,</span><span class="ln">          <span class="s">'Bootstrap'</span>],</span><span class="ln">  foco: <span class="s">'mínimos detalhes'</span>,</span><span class="ln">};</span><span class="ln">&nbsp;</span><span class="ln"><span class="cm">// ~ $</span> <span class="v">npm run surpreender</span> <span class="cur"></span></span></pre>
+<pre><span class="ln"><span class="k">const</span> <span class="v">thiago</span> = {</span><span class="ln">  role: <span class="s">'Front-End Developer'</span>,</span><span class="ln">  base: <span class="s">'São Paulo, BR'</span>,</span><span class="ln">  stack: [<span class="s">'HTML5'</span>, <span class="s">'CSS/Sass'</span>, <span class="s">'Less'</span>,</span><span class="ln">          <span class="s">'JavaScript'</span>, <span class="s">'GSAP'</span>,</span><span class="ln">          <span class="s">'Angular JS'</span>, <span class="s">'jQuery'</span>,</span><span class="ln">          <span class="s">'Bootstrap'</span>],</span><span class="ln">  focus: <span class="s">'the smallest details'</span>,</span><span class="ln">};</span><span class="ln">&nbsp;</span><span class="ln"><span class="cm">// ~ $</span> <span class="v">npm run surprise</span> <span class="cur"></span></span></pre>
     </div>
   </section>
 
   <footer class="contact wrap" id="contato">
     <div class="top">
-      <span class="mono muted">Contato — Tem um projeto em mente?</span>
-      <h2 id="talk"><span data-split>Vamos</span><em data-split>conversar?</em></h2>
+      <span class="mono muted">Contact — Got a project in mind?</span>
+      <h2 id="talk"><span data-split>Let’s</span><em data-split>talk?</em></h2>
       <div class="mail">
         <span class="addr" id="addr">celesthiago@outlook.com</span>
         <button type="button" class="copy" id="copyBtn" data-magnetic>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
-          Copiar e-mail
+          Copy e-mail
         </button>
-        <a href="/cv/CVTHIAGO-2025.pdf" class="copy" download data-magnetic>
+        <a href="/cv/CVTHIAGO-2025-EN.pdf" class="copy" download data-magnetic>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
-          Baixar currículo (PDF)
+          Download résumé (PDF)
         </a>
       </div>
     </div>
     <div class="foot">
-      <nav class="links mono" aria-label="Redes">
+      <nav class="links mono" aria-label="Social">
         <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
         <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
-        <a href="#top" data-scroll>Voltar ao topo ↑</a>
+        <a href="#top" data-scroll>Back to top ↑</a>
       </nav>
       <div class="sig">
         <div class="brand"><svg viewBox="0 0 631.04 544.23" id="footLogo" aria-hidden="true"><use href="#logo"/></svg><span class="ghost" id="ghost" aria-hidden="true">Celestino</span></div>
-        <div class="copyr mono muted"><span>© <span id="current-year">2026</span> Thiago Celestino</span><span>Feito à mão em São Paulo</span></div>
+        <div class="copyr mono muted"><span>© <span id="current-year">2026</span> Thiago Celestino</span><span>Handmade in São Paulo</span></div>
       </div>
     </div>
   </footer>
