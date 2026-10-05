@@ -89,8 +89,6 @@ HOME = [
      'Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.'),
     ('Thiago Celestino • Desenvolvedor Front-End em São Paulo', 'Thiago Celestino • Front-End Developer in São Paulo'),
     ('Thiago Celestino &bull; Desenvolvedor Front-End em São Paulo', 'Thiago Celestino &bull; Front-End Developer in São Paulo'),
-    ('<meta name="keywords" content="desenvolvedor front-end, html, css, javascript, portfolio front-end, web developer">',
-     '<meta name="keywords" content="front-end developer, html, css, javascript, front-end portfolio, web developer, gsap">'),
     ('aria-label="Carregando página"', 'aria-label="Loading page"'),
     ('<span>Portfólio — Ed. 2026</span>', '<span>Portfolio — Ed. 2026</span>'),
     ('<span>Desenvolvedor Front-End</span>', '<span>Front-End Developer</span>'),
