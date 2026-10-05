@@ -83,7 +83,9 @@ for i in range(1, 6):
 # --------------------------------------------------------------------------
 HOME = [
     # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
-    ('content="Tela do Rubrum, sistema de gestão de embalagens com front-end de Thiago Celestino"', 'content="Screen from Rubrum, a packaging management system with front-end by Thiago Celestino"'),
+    ('content="Thiago Celestino, desenvolvedor front-end — Codifico interfaces elegantes, ágeis e pensadas nos mínimos detalhes."', 'content="Thiago Celestino, front-end developer — I code elegant, fast interfaces, crafted down to the smallest detail."'),
+    # imagem de compartilhamento própria da versão em inglês (og:image, twitter:image, JSON-LD)
+    ('/images/layout/og-home.png', '/images/layout/og-home-en.png'),
     # título e descrição (<title>, og/twitter, JSON-LD)
     ('Thiago Celestino, desenvolvedor front-end e designer de interface em São Paulo. Interfaces em HTML, CSS e JavaScript, com motion em GSAP e atenção aos detalhes.',
      'Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.'),
