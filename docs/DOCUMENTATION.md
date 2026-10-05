@@ -58,7 +58,8 @@ styles/
   fonts/                    → Plus Jakarta Sans e Source Code Pro self-hosted
 
 images/
-  layout/                   → logo e thumbnails dos projetos (WebP 720/1280/1600 + PNG original, usado no og:image)
+  layout/                   → logo, thumbnails dos projetos (WebP 720/1280/1600 + PNG original, usado no og:image dos cases)
+                              e og-home.png / og-home-en.png (imagem de compartilhamento da home)
   projetos/<slug>/          → telas de cada case (WebP, com versão -800)
 
 cv/
@@ -234,11 +235,12 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 - **Dados estruturados (JSON-LD, schema.org)** no `<head>`, antes do `<title>`: na home, `Person` (com `sameAs` LinkedIn/GitHub), `WebSite` e `ProfilePage`; nos cases, `WebPage` + `CreativeWork` (descrição, ano, data de publicação, link, stack) + `BreadcrumbList`. A versão EN é gerada pelo `build_en.py` (dicionário `LD_TEXT`).
 - **Títulos e descrições (out/2026):** nome primeiro na home (`Thiago Celestino • Desenvolvedor Front-End em São Paulo`); nos cases, `<Projeto>: <o que é> • Thiago Celestino`. Descrições com 140–160 caracteres dizendo o que o Thiago fez em cada projeto. O mesmo texto vai em `<title>`, `og:title`/`twitter:title`, `og:description`/`twitter:description` e no `name` do JSON-LD — ao mudar um, mude todos e atualize o par PT → EN no topo da lista da página em `build_en.py` (a home usa `&bull;` no `<title>`, os cases usam `•`).
 - **Open Graph completo:** `og:site_name`, `og:image:type`/`width`/`height`/`alt` e `twitter:image:alt` em todas as páginas (dimensões reais dos PNG: 1280×860; Grade 1903×909).
+- **Imagem de compartilhamento da home:** `images/layout/og-home.png` (PT) e `og-home-en.png` (EN), 1200×630, no visual do hero (nome gigante, "(front-end)", `<html> <css> <js>`, frase de abertura, endereço do site). Antes a home usava a thumb do Rubrum e o link compartilhado parecia ser de um projeto. Foram geradas a partir de uma página HTML com o `style.css` e as fontes do site, fotografada com Playwright — se o texto do hero mudar, refazer as duas. O `build_en.py` troca `og-home.png` → `og-home-en.png`. Os cases continuam com a imagem do próprio projeto.
 - **Manifest e cor do navegador:** `site.webmanifest` com nome, descrição, `start_url` e cores `#001833` (= `--bg`); `<meta name="theme-color" content="#001833">` logo após o `viewport` em todas as páginas — no celular a barra do navegador fica da cor do fundo do site (aprovado pelo Thiago). O `meta keywords` foi removido (o Google ignora); não reintroduzir.
 - **Google Search Console:** verificado pelo arquivo `google3b6b93f13d9fc1e3.html` na raiz — não apagar, senão a propriedade perde a verificação.
 - Lighthouse (set/2026): SEO 100; desempenho mobile 95/93 (home/case), desktop 100.
 - `<html lang="pt-BR">` (estava `en`, embora todo o conteúdo seja em português).
-- `index.html` tem Open Graph/Twitter Card (`og:title`, `og:description`, `og:image` apontando pro thumbnail da Rubrum, `og:url`) e `<link rel="canonical">` pra `https://thiagohnrster.github.io/` — sem isso o link saía sem preview decente ao compartilhar no WhatsApp/LinkedIn.
+- `index.html` tem Open Graph/Twitter Card (`og:title`, `og:description`, `og:image` com a imagem própria `og-home.png`, `og:url`) e `<link rel="canonical">` pra `https://thiagohnrster.github.io/` — sem isso o link saía sem preview decente ao compartilhar no WhatsApp/LinkedIn.
 - Todos os `<script>` externos no `<head>` (GSAP, ScrollTrigger, `loader.js`, `site.js`) têm `defer`.
 - Links externos `target="_blank"`: LinkedIn, GitHub e WhatsApp do menu/rodapé usam `rel="noopener"` — LinkedIn e GitHub com `rel="me noopener"` (identidade, junto com o `sameAs` do JSON-LD); os botões de link dos cases usam `rel="noopener noreferrer"`.
 
