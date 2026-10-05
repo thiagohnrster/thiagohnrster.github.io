@@ -43,7 +43,7 @@ en/                         → versão em inglês — GERADA por tools/i18n/bui
 robots.txt, sitemap.xml     → SEO (sitemap mantido à mão, PT + EN)
 google3b6b93f13d9fc1e3.html → verificação do Google Search Console — não apagar
 _config.yml                 → só o `exclude` do Jekyll (arquivos internos fora do site publicado)
-site.webmanifest            → ícones para "adicionar à tela inicial"
+site.webmanifest            → nome, cores e ícones para "adicionar à tela inicial"
 favicon.ico, favicon-*.png, apple-touch-icon.png, android-chrome-*.png
 README.md, CLAUDE.md, CONTEXT.md, docs/DOCUMENTATION.md → documentação (não publicada)
 package.json                → só declara live-server (preview local)
@@ -234,6 +234,7 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 - **Dados estruturados (JSON-LD, schema.org)** no `<head>`, antes do `<title>`: na home, `Person` (com `sameAs` LinkedIn/GitHub), `WebSite` e `ProfilePage`; nos cases, `WebPage` + `CreativeWork` (descrição, ano, data de publicação, link, stack) + `BreadcrumbList`. A versão EN é gerada pelo `build_en.py` (dicionário `LD_TEXT`).
 - **Títulos e descrições (out/2026):** nome primeiro na home (`Thiago Celestino • Desenvolvedor Front-End em São Paulo`); nos cases, `<Projeto>: <o que é> • Thiago Celestino`. Descrições com 140–160 caracteres dizendo o que o Thiago fez em cada projeto. O mesmo texto vai em `<title>`, `og:title`/`twitter:title`, `og:description`/`twitter:description` e no `name` do JSON-LD — ao mudar um, mude todos e atualize o par PT → EN no topo da lista da página em `build_en.py` (a home usa `&bull;` no `<title>`, os cases usam `•`).
 - **Open Graph completo:** `og:site_name`, `og:image:type`/`width`/`height`/`alt` e `twitter:image:alt` em todas as páginas (dimensões reais dos PNG: 1280×860; Grade 1903×909).
+- **Manifest e cor do navegador:** `site.webmanifest` com nome, descrição, `start_url` e cores `#001833` (= `--bg`); `<meta name="theme-color" content="#001833">` logo após o `viewport` em todas as páginas — no celular a barra do navegador fica da cor do fundo do site (aprovado pelo Thiago). O `meta keywords` foi removido (o Google ignora); não reintroduzir.
 - **Google Search Console:** verificado pelo arquivo `google3b6b93f13d9fc1e3.html` na raiz — não apagar, senão a propriedade perde a verificação.
 - Lighthouse (set/2026): SEO 100; desempenho mobile 95/93 (home/case), desktop 100.
 - `<html lang="pt-BR">` (estava `en`, embora todo o conteúdo seja em português).
@@ -244,4 +245,3 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 ## Itens conhecidos / débito técnico
 
 - **`styles/scss/` vazia** — pasta preparada para um fluxo com Sass que não está em uso; o CSS é escrito e mantido diretamente em `style.css`.
-- **`site.webmanifest`** tem `name` e `short_name` vazios.
