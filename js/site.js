@@ -431,8 +431,6 @@
   var heroChars = [];
   $$('.hero [data-split]').forEach(function (el) { heroChars = heroChars.concat(split(el, 'chars')); });
   var leadEl = $('[data-intro="lines"]'), leadWords = leadEl ? split(leadEl, 'words') : [];
-  var talkChars = [];
-  $$('#talk [data-split]').forEach(function (el) { talkChars = talkChars.concat(split(el, 'chars')); });
   var manifestoEl = $('#manifesto'), manifestoWords = manifestoEl ? split(manifestoEl, 'words') : [];
 
   /* LOADER → INTRO */

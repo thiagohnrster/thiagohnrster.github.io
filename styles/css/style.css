@@ -165,7 +165,8 @@ main{overflow-x:clip}
 
 /* split helpers */
 .w{display:inline-block;white-space:nowrap;overflow:hidden;vertical-align:top;padding:0 .1em .14em 0;margin:0 -.1em -.14em 0}
-/* itálico sintetizado inclina o topo das letras pra direita (o "?" de "conversar?" é o caso mais largo): folga maior na máscara */
+/* itálico sintetizado inclina o topo das letras pra direita: folga maior na máscara.
+   O #talk ("conversar?") NÃO passa pelo split: no Safari/macOS a inclinação é maior e o "?" era cortado mesmo com essa folga. */
 em .w,.w em{padding-right:.28em;margin-right:-.28em} /* folga: descendentes (g, ç) e o itálico não são cortados pela máscara */
 .c{display:inline-block;will-change:transform}
 
@@ -310,7 +311,8 @@ body.has-cursor .cursor{display:flex}
 /* CONTACT */
 .contact{padding-top:clamp(100px,10vw,140px);padding-bottom:40px;display:flex;flex-direction:column;gap:clamp(80px,10vw,140px);overflow:hidden}
 .contact .top{display:flex;flex-direction:column;gap:48px}
-.contact h2{margin:0;font-size:clamp(64px,13.9vw,200px);font-weight:800;letter-spacing:-.06em;line-height:.86;text-transform:uppercase}
+/* piso de 64px, mas nunca maior que a largura útil / 5,4: "conversar?" tem ~4,7em + a inclinação do itálico sintetizado (maior no macOS) — sem isso o "?" saía da tela em 320px */
+.contact h2{margin:0;font-size:clamp(min(64px,calc((100vw - 2 * var(--gutter)) / 5.4)),13.9vw,200px);font-weight:800;letter-spacing:-.06em;line-height:.86;text-transform:uppercase}
 .contact h2 em{display:block;text-transform:none;letter-spacing:-.05em;color:var(--accent)}
 .mail{display:flex;flex-wrap:wrap;align-items:center;gap:20px 28px}
 .mail .addr{font-size:clamp(24px,3.6vw,52px);font-weight:600;letter-spacing:-.035em;border-bottom:2px solid var(--accent);padding-bottom:10px;user-select:all;overflow-wrap:anywhere}
