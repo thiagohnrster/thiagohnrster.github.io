@@ -232,12 +232,14 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 - **`robots.txt` e `sitemap.xml`** na raiz. O sitemap lista as 10 páginas (home + 4 cases, em PT e EN), cada uma com `xhtml:link` para pt-BR / en / x-default; é mantido à mão — case novo entra nas duas versões.
 - **`hreflang`** pt-BR / en / x-default (= en), canonical e `og:url` próprios em cada página e idioma.
 - **Dados estruturados (JSON-LD, schema.org)** no `<head>`, antes do `<title>`: na home, `Person` (com `sameAs` LinkedIn/GitHub), `WebSite` e `ProfilePage`; nos cases, `WebPage` + `CreativeWork` (descrição, ano, data de publicação, link, stack) + `BreadcrumbList`. A versão EN é gerada pelo `build_en.py` (dicionário `LD_TEXT`).
+- **Títulos e descrições (out/2026):** nome primeiro na home (`Thiago Celestino • Desenvolvedor Front-End em São Paulo`); nos cases, `<Projeto>: <o que é> • Thiago Celestino`. Descrições com 140–160 caracteres dizendo o que o Thiago fez em cada projeto. O mesmo texto vai em `<title>`, `og:title`/`twitter:title`, `og:description`/`twitter:description` e no `name` do JSON-LD — ao mudar um, mude todos e atualize o par PT → EN no topo da lista da página em `build_en.py` (a home usa `&bull;` no `<title>`, os cases usam `•`).
+- **Open Graph completo:** `og:site_name`, `og:image:type`/`width`/`height`/`alt` e `twitter:image:alt` em todas as páginas (dimensões reais dos PNG: 1280×860; Grade 1903×909).
 - **Google Search Console:** verificado pelo arquivo `google3b6b93f13d9fc1e3.html` na raiz — não apagar, senão a propriedade perde a verificação.
 - Lighthouse (set/2026): SEO 100; desempenho mobile 95/93 (home/case), desktop 100.
 - `<html lang="pt-BR">` (estava `en`, embora todo o conteúdo seja em português).
 - `index.html` tem Open Graph/Twitter Card (`og:title`, `og:description`, `og:image` apontando pro thumbnail da Rubrum, `og:url`) e `<link rel="canonical">` pra `https://thiagohnrster.github.io/` — sem isso o link saía sem preview decente ao compartilhar no WhatsApp/LinkedIn.
 - Todos os `<script>` externos no `<head>` (GSAP, ScrollTrigger, `loader.js`, `site.js`) têm `defer`.
-- Todo link `target="_blank"` (ícones sociais do hero, lista de Contato, botão "Chamar no Whatsapp") tem `rel="noopener noreferrer"`.
+- Links externos `target="_blank"`: LinkedIn, GitHub e WhatsApp do menu/rodapé usam `rel="noopener"` — LinkedIn e GitHub com `rel="me noopener"` (identidade, junto com o `sameAs` do JSON-LD); os botões de link dos cases usam `rel="noopener noreferrer"`.
 
 ## Itens conhecidos / débito técnico
 
