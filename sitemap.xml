@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mantido à mão: página nova (ou case novo) → adicione as duas versões (PT e /en) com os três xhtml:link. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://thiagohnrster.github.io/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/en/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/projetos/grade.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/grade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/grade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/grade.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/en/projetos/grade.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/grade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/grade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/grade.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/projetos/rubrum-site-v2.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum-site-v2.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v2.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v2.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/en/projetos/rubrum-site-v2.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum-site-v2.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v2.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v2.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/projetos/rubrum.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/en/projetos/rubrum.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/projetos/rubrum-site-v1.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum-site-v1.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html"/>
+  </url>
+  <url>
+    <loc>https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/projetos/rubrum-site-v1.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://thiagohnrster.github.io/en/projetos/rubrum-site-v1.html"/>
+  </url>
+</urlset>
