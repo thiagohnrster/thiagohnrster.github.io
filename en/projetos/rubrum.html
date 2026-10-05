@@ -38,6 +38,14 @@
 	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
 	try { if (!('onpagereveal' in window) && sessionStorage.getItem('tc:pt')) document.documentElement.classList.add('tc-pt-in'); } catch (e) {}
 	</script>
+	<!-- Dados estruturados (schema.org). A versão /en/ é gerada pelo tools/i18n/build_en.py (textos em LD_TEXT). -->
+	<script type="application/ld+json">
+	{"@context":"https://schema.org","@graph":[
+		{"@type":"WebPage","@id":"https://thiagohnrster.github.io/en/projetos/rubrum.html","url":"https://thiagohnrster.github.io/en/projetos/rubrum.html","name":"Rubrum • Case Study • Thiago Celestino","inLanguage":"en","isPartOf":{"@id":"https://thiagohnrster.github.io/#website"},"about":{"@id":"https://thiagohnrster.github.io/en/projetos/rubrum.html#projeto"},"breadcrumb":{"@id":"https://thiagohnrster.github.io/en/projetos/rubrum.html#breadcrumb"},"primaryImageOfPage":"https://thiagohnrster.github.io/images/layout/project_thumb_3.png"},
+		{"@type":"CreativeWork","@id":"https://thiagohnrster.github.io/en/projetos/rubrum.html#projeto","name":"Rubrum","description":"Packaging management system","dateCreated":"2019","datePublished":"2019-07-24","url":"http://modelo.rubrum.com.br","image":"https://thiagohnrster.github.io/images/layout/project_thumb_3.png","creator":{"@id":"https://thiagohnrster.github.io/#thiago"},"keywords":"HTML5, LESS, CSS3, JavaScript, AngularJS, Laravel 5"},
+		{"@type":"BreadcrumbList","@id":"https://thiagohnrster.github.io/en/projetos/rubrum.html#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://thiagohnrster.github.io/en/"},{"@type":"ListItem","position":2,"name":"Projects","item":"https://thiagohnrster.github.io/en/#projetos"},{"@type":"ListItem","position":3,"name":"Rubrum","item":"https://thiagohnrster.github.io/en/projetos/rubrum.html"}]}
+	]}
+	</script>
 	<title>Rubrum • Case Study • Thiago Celestino</title>
 </head>
 <body class="page-case">

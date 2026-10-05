@@ -13,7 +13,7 @@ par não for mais encontrado, o script para e avisa qual par precisa ser atualiz
 A 404 (404.html) é uma página só, bilíngue: os textos em inglês ficam nos
 atributos data-en do próprio 404.html.
 """
-import io, os, re, sys
+import io, json, os, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 BASE = 'https://thiagohnrster.github.io'
@@ -258,6 +258,66 @@ PER_PAGE = {
 }
 
 
+# --------------------------------------------------------------------------
+# Dados estruturados (<script type="application/ld+json">). Textos PT → EN;
+# todo "jobTitle"/"description"/"name" em PT precisa estar aqui (o script avisa).
+# Os links de página ganham /en; Person e WebSite são os mesmos nas duas línguas.
+# --------------------------------------------------------------------------
+LD_TEXT = {
+    'Desenvolvedor Front-End': 'Front-End Developer',
+    'Portfólio • Thiago Celestino • Desenvolvedor Front-End': 'Portfolio • Thiago Celestino • Front-End Developer',
+    'Projetos': 'Projects',
+    'Plataforma de gestão de eventos': 'Event management platform',
+    'Redesign da presença comercial': 'Redesign of the commercial website',
+    'Sistema de gestão de embalagens': 'Packaging management system',
+    'Promoção da plataforma comercial': 'Marketing site for the platform',
+}
+LD_KEEP = ('Person', 'WebSite')
+LD_TEXT_KEYS = ('jobTitle', 'description', 'name')
+
+
+def ld_to_en(block, errors):
+    data = json.loads(block)
+    keep_ids = {n.get('@id') for n in data['@graph'] if n.get('@type') in LD_KEEP}
+    keep_ids |= {BASE + '/#thiago', BASE + '/#website'}  # referenciados pelos cases, definidos na home
+
+    def link(v):
+        if v in keep_ids:
+            return v
+        path = v[len(BASE):] if v.startswith(BASE + '/') else None
+        if path and (path == '/' or path.startswith('/#') or path.startswith('/projetos/')):
+            return BASE + '/en' + path
+        return v
+
+    def walk(o, key=None):
+        if isinstance(o, dict):
+            return {k: walk(v, k) for k, v in o.items()}
+        if isinstance(o, list):
+            return [walk(v, key) for v in o]
+        if isinstance(o, str):
+            if key == 'inLanguage' and o == 'pt-BR':
+                return 'en'
+            if key in LD_TEXT_KEYS and o in LD_TEXT:
+                return LD_TEXT[o]
+            if key in ('description', 'jobTitle'):
+                errors.append('ld+json sem tradução em LD_TEXT: ' + o)
+            return link(o)
+        return o
+
+    graph = []
+    for node in data['@graph']:
+        if node.get('@type') in LD_KEEP:
+            node = dict(node)
+            if node.get('jobTitle') in LD_TEXT:
+                node['jobTitle'] = LD_TEXT[node['jobTitle']]
+            graph.append(node)
+        else:
+            graph.append(walk(node))
+    data['@graph'] = graph
+    nodes = ',\n\t\t'.join(json.dumps(n, ensure_ascii=False, separators=(',', ':')) for n in graph)
+    return '{"@context":"%s","@graph":[\n\t\t%s\n\t]}' % (data['@context'], nodes)
+
+
 def lang_switch_pt(pt_path):
     return ('<a class="lang-switch mono" href="%s" hreflang="pt-BR" lang="pt-BR" data-lang="pt" '
             'aria-label="Ler esta página em português"><span aria-hidden="true">PT</span>'
@@ -300,6 +360,10 @@ def build(rel, pt_path):
         if a not in s:
             errors.append('texto PT não encontrado: ' + a[:90])
         s = s.replace(a, b)
+
+    # 6) dados estruturados (depois dos textos: o nome dos cases já vem como "Case Study")
+    s = re.sub(r'(<script type="application/ld\+json">\s*)(.*?)(\s*</script>)',
+               lambda m: m.group(1) + ld_to_en(m.group(2), errors) + m.group(3), s, flags=re.S)
 
     if errors:
         print('ERRO em %s:\n  - %s' % (rel, '\n  - '.join(errors)))

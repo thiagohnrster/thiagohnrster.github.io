@@ -4,7 +4,7 @@ Contexto de negócio e conteúdo do site — complementa [CLAUDE.md](CLAUDE.md) 
 
 ## O que é este projeto
 
-Portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Site estático de página única (`index.html`), em português, hospedado no GitHub Pages, sem back-end nem etapa de build.
+Portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Site estático (home em `index.html` + uma página por case em `projetos/`), em português com versão em inglês gerada em `/en/`, hospedado no GitHub Pages, sem back-end nem etapa de build.
 
 - **Repositório:** `thcelestino`
 - **Branch de produção:** `main` (deploy automático a cada push via `.github/workflows/jekyll-gh-pages.yml`)
@@ -12,33 +12,35 @@ Portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Site estát
 
 ## Objetivo do site
 
-Apresentar Thiago como desenvolvedor front-end para potenciais clientes/empregadores: quem ele é, principais habilidades (HTML, CSS, JavaScript, UI/UX, Design Responsivo), ferramentas/bibliotecas que domina (Less, Sass, Bootstrap, Angular JS, GSAP, jQuery) e um portfólio de projetos recentes com cases detalhados em modal.
+Apresentar Thiago como desenvolvedor front-end (e designer de interface) para potenciais clientes/empregadores: quem ele é, o que faz (design de interface, desenvolvimento front-end, motion), a stack (HTML5, CSS/Sass, JavaScript, GSAP, Angular JS, UI/UX) e um portfólio de projetos com uma página de case para cada um.
 
 ## Estrutura de conteúdo da página
 
-Nessa ordem, todas dentro de `index.html`:
+Home (`index.html`), nesta ordem (redesign editorial, set/2026):
 
-0. **Loading inicial (`#pageLoader`)** — tela cheia sobre tudo (inclusive o header) enquanto a página carrega de verdade: logo, tag `// carregando` com cursor piscando, barra de progresso e percentual. Some assim que fontes, ilustração do hero e o `load` da página terminam, e só então a animação de entrada do hero é liberada. Ver detalhes técnicos em [CLAUDE.md](CLAUDE.md).
-1. **Header** — logo, navegação (Home / Sobre / Projetos) e CTA "Entre em contato" (`mailto:`). *(Não adicionar um link "Contato" separado no menu — o CTA já cobre isso.)* Abaixo de ~900px de largura, a navegação vira um botão hambúrguer que abre um painel cheio com os mesmos 3 links + CTA, centralizados.
-2. **Hero (`#intro`)** — headline, ilustração, botões "Saiba mais" e "Download CV" (`cv/CVTHIAGO-2025.pdf`), ícones sociais, cursor customizado (bloco azul piscando, estilo terminal) e um fundo animado de ícones de UI à deriva atrás do conteúdo. Ver detalhes técnicos em [CLAUDE.md](CLAUDE.md).
-3. **Stats (`#stats`)** — 4 indicadores animados: 5+ anos de experiência, 4 projetos entregues, 95% HTML/CSS/JS, 1000+ xícaras de café.
-4. **Sobre (`#sobre`)** — texto de apresentação e um console de skills (visual de terminal, `node skills.js`): HTML5/CSS·Sass/Javascript/Angular JS mostram em quantos dos 4 projetos reais foram usados (em vez de uma porcentagem inventada), UI/UX e Design Responsivo ganham uma frase qualitativa. Grade de ferramentas/bibliotecas abaixo, sem mudança.
-5. **Projetos (`#projetos`)** — 4 cards que abrem modais de case (ver tabela abaixo), com thumbnail em frame unificado (barra de chrome + duotone) e reordenados pra mostrar os projetos com data real primeiro.
-6. **Contato (`#contato`)** — lista de canais + botões "Copiar e-mail" e "Chamar no Whatsapp".
-7. **Footer** — copyright com ano dinâmico, assinatura "Design by Thiago Celestino".
+0. **Loading (`#pageLoader`)** — logo + barra fina + contador `000`–`100`, com progresso real; só na primeira visita da sessão. Sai como cortina e libera a entrada do hero.
+1. **Header (`#nav`)** — logo, navegação Home / Sobre / Projetos, botão PT/EN, relógio de São Paulo e CTA "Entre em contato" (rola até o contato). No mobile vira menu (cortina) com Home / Sobre / Projetos / Contato, relógio, e-mail, redes e currículo.
+2. **Hero (`#top`)** — nome gigante "Thiago (front-end) / Celestino", frase "Codifico interfaces elegantes…", texto de apoio e botão circular "role para explorar".
+3. **Faixa da stack** — HTML5 + CSS/Sass + JavaScript + GSAP + Angular JS + UI/UX, em loop.
+4. **Projetos (`#projetos`)** — "Projetos selecionados": 4 linhas com prévia que segue o cursor (no mobile, cards com a imagem); cada linha abre a página do case (tabela abaixo).
+5. **Sobre (`#sobre`)** — manifesto ("Design e código a serviço de quem usa…") e 4 números: 05+ anos de experiência, 04 projetos entregues, 95% HTML · CSS · JavaScript, 1K+ xícaras de café.
+6. **Serviços (`#servicos`)** — bloco azul "Design & código": design de interface, desenvolvimento front-end, motion & interação, e um terminal (`skills.js`) digitando.
+7. **Contato / rodapé (`#contato`)** — "Vamos conversar?", e-mail com "Copiar e-mail" e "Baixar currículo (PDF)", links LinkedIn / GitHub / WhatsApp / Voltar ao topo e o "CELESTINO" gigante decorativo.
 
-## Projetos exibidos (cards → modal)
+Ao entrar na tela pela primeira vez, Projetos, Sobre, Serviços e Contato aparecem "compilando" (esqueleto de código + cursor revelando o visual).
 
-Ordem de exibição no site (reordenados por data de publicação, mais recente primeiro):
+## Projetos exibidos (linha → página de case)
 
-| Ordem visual | Card | Modal | Projeto | Contexto exibido | Status exibido no site |
-|---|---|---|---|---|---|
-| 1º | `card_1` | `modals/grade.html` | Grade — plataforma de gestão de eventos (HTML5, CSS3, JS, Angular JS, Laravel 5, PHP) | Plataforma de gestão de eventos · Full-stack | Publicado — 31 de Julho de 2026 |
-| 2º | `card_3` | `modals/rubrum-site-v1.html` | Rubrum — Site Comercial V1 | Landing page · Divulgação da plataforma web | Publicado — 05 de Agosto de 2020 |
-| 3º | `card_4` | `modals/rubrum.html` | Rubrum — plataforma de gestão de embalagens | Gestão de embalagens · Plataforma web | Publicado — 24 de Julho de 2019 |
-| 4º | `card_2` | `modals/rubrum-site-v2.html` | Rubrum — Site Comercial V2 | Landing page · Redesign | "Prévia em breve" |
+Ordem de exibição na home:
 
-Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias (pills coloridas) e, quando disponível, link para o projeto publicado. Os `id`s (`card_1`…`card_4`) não mudaram de significado — `hdc-eventos.html` foi removido do repo e `card_1` passou a apontar para `modals/grade.html`, o projeto mais recente.
+| Ordem | Página | Projeto | Linha na home | Ano | Status no case | Link |
+|---|---|---|---|---|---|---|
+| 01 | `projetos/grade.html` | Grade | Plataforma de gestão de eventos · Full-stack | 2026 | Publicado em 31 de julho de 2026 | repositório no GitHub |
+| 02 | `projetos/rubrum-site-v2.html` | Rubrum Site V2 | Redesign da presença comercial · Landing page | 2026 | Publicado — em evolução | v2.rubrum.com.br |
+| 03 | `projetos/rubrum.html` | Rubrum | Sistema de gestão de embalagens · Plataforma web | 2019 | Publicado em 24 de julho de 2019 | modelo.rubrum.com.br |
+| 04 | `projetos/rubrum-site-v1.html` | Rubrum Site V1 | Promoção da plataforma comercial · Landing page | 2020 | Publicado em 05 de agosto de 2020 | www.rubrum.com.br |
+
+Cada case traz: voltar para a lista, título, imagem principal, ficha (Ano / Tipo / Status / Link), "Sobre o projeto" + stack, telas (quando houver), "Próximo projeto" (em loop) e o mesmo rodapé de contato. Os antigos modais (`modals/*.html`) foram apagados do repo.
 
 ## Decisões e histórico relevantes
 
@@ -60,12 +62,12 @@ Cada modal traz: vídeo de preview, descrição do projeto, lista de tecnologias
 
 - **Redesign editorial (branch `feature/redesign-awwwards`, set/2026):** o site foi refeito igual ao protótipo aprovado — novas seções e textos (manifesto em "Sobre", bloco "Design & código", contato "Vamos conversar?"), projetos em linhas com prévia; saíram a ilustração, o fundo de átomos, o console de skills, a grade de ferramentas e o botão Download CV. O menu mobile passou a ter "Contato", e o CTA do header rola até a seção de contato (antes era `mailto:`). Detalhes técnicos em [CLAUDE.md](CLAUDE.md). Os projetos deixaram de abrir em modal: cada um tem uma página de case própria em `projetos/` (link compartilhável, preview próprio no WhatsApp/LinkedIn, botão voltar funcionando), aberta com uma transição que expande a prévia até o topo do case.
 - **"Vamos conversar?" cortado no macOS (out/2026):** reportado pelo Vitor — o "?" do título do contato aparecia cortado no Mac. Corrigido (o título não é mais quebrado em caixas por palavra) e, junto, o título deixou de sair da tela em celulares de 320px (a fonte agora se limita à largura da tela). Detalhes em [CLAUDE.md](CLAUDE.md).
+- **SEO técnico (out/2026):** o site ganhou `robots.txt`, `sitemap.xml` (PT + EN, com as versões de idioma ligadas) e dados estruturados schema.org em todas as páginas (quem é o Thiago, perfis do LinkedIn/GitHub, cada case como projeto com ano/stack/link, trilha Home → Projetos → case). Arquivos internos do projeto (`CLAUDE.md`, `CONTEXT.md`, `docs/`, `tools/`, `package.json`) deixaram de ser publicados no site. Nada visual mudou. Google Search Console: verificação pelo arquivo `google3b6b93f13d9fc1e3.html` na raiz (não apagar). Depois do deploy: clicar em "Verificar", enviar o `sitemap.xml` e importar a propriedade no Bing Webmaster Tools.
 
 ## Itens conhecidos / débito técnico
 
 - `styles/scss/` está vazia — preparada para um fluxo Sass que nunca foi adotado; o CSS é mantido diretamente em `styles/css/style.css`.
 - `site.webmanifest` tem `name` e `short_name` vazios.
-- O card 2 (Rubrum V2) ainda não tem link de projeto publicado — status "Prévia em breve".
 - `plus_jakarta_sanslight` e `plus_jakarta_sansmedium` (fonte + `@font-face`) não são usados em nenhuma regra de `style.css` — mantidos por enquanto a pedido do usuário, sem custo de performance (arquivo não referenciado não é baixado).
 - O cursor customizado esconde o ponteiro nativo do sistema em todo o site — texto selecionável (parágrafos do "Sobre", contato) perde o indicador visual de "aqui dá pra selecionar" (I-beam), embora a seleção em si continue funcionando. Trade-off aceito, não um bug.
 

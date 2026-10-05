@@ -1,0 +1,12 @@
+# Só para o build do GitHub Pages (.github/workflows/jekyll-gh-pages.yml).
+# O site não usa nada do Jekyll; isto apenas impede que arquivos internos
+# do projeto sejam publicados (e indexados) junto com o site.
+exclude:
+  - CLAUDE.md
+  - CONTEXT.md
+  - README.md
+  - docs/
+  - tools/
+  - package.json
+  - package-lock.json
+  - node_modules/

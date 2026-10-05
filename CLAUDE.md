@@ -20,7 +20,7 @@ O `--entry-file=404.html` faz o servidor local responder qualquer endereço inex
 
 Sobe um servidor local com auto-reload ao salvar qualquer arquivo. `live-server` é a única dependência do projeto.
 
-Deploy é automático: qualquer push em `main` dispara `.github/workflows/jekyll-gh-pages.yml`, que publica os arquivos estáticos no GitHub Pages via `actions/jekyll-build-pages`. Não existe `_config.yml` nem nada específico do Jekyll — o workflow apenas repassa os arquivos como estão.
+Deploy é automático: qualquer push em `main` dispara `.github/workflows/jekyll-gh-pages.yml`, que publica os arquivos estáticos no GitHub Pages via `actions/jekyll-build-pages`. Nada específico do Jekyll é usado — o workflow apenas repassa os arquivos como estão; o `_config.yml` só tem o `exclude` dos arquivos internos (ver "SEO técnico").
 
 ## Redesign editorial (branch `feature/redesign-awwwards`)
 
@@ -118,3 +118,11 @@ O site foi refeito para ficar **igual ao protótipo aprovado** (visual editorial
 - JS: `site.js` usa `T(pt, en)` conforme `<html lang>` (toast do e-mail, menu, "compilado em").
 - 404: um arquivo só (`404.html`), bilíngue via atributos `data-en` + script no fim do body (inglês para `/en/...`, escolha EN ou navegador em outro idioma).
 - Currículo: PT em `cv/CVTHIAGO-2025.pdf`, EN em `cv/CVTHIAGO-2025-EN.pdf` (as páginas em /en/ e a 404 em inglês apontam para o EN).
+- JSON-LD: o `build_en.py` lê o `<script type="application/ld+json">` das páginas PT, traduz `jobTitle`/`description`/`name` pelo dicionário `LD_TEXT` (falha se faltar tradução de `description`/`jobTitle`) e põe `/en` nos links de página. `Person` e `WebSite` (`#thiago`, `#website`) ficam idênticos nas duas línguas — são a mesma entidade.
+- O script roda com Python 3 puro (sem dependências). Se a máquina não tiver Python, a versão "embeddable" do python.org (zip, sem instalar) serve.
+
+### SEO técnico (out/2026)
+- **`robots.txt` + `sitemap.xml` na raiz.** O sitemap é **mantido à mão**: 10 URLs (home + 4 cases, PT e EN), cada uma com os três `xhtml:link` (pt-BR / en / x-default = en). Case novo → adicionar as duas versões e atualizar `lastmod`.
+- **JSON-LD (schema.org) no `<head>`, logo antes do `<title>`.** Home: `Person` (`#thiago`, com `sameAs` LinkedIn/GitHub), `WebSite` (`#website`) e `ProfilePage`. Cases: `WebPage` + `CreativeWork` (`#projeto`: descrição, ano, data de publicação quando há, link do projeto, stack em `keywords`) + `BreadcrumbList` (Home → Projetos → case). Os cases referenciam `#thiago`/`#website` definidos na home. Ao mudar ficha/stack/link de um case, atualizar o JSON-LD da página PT e rodar o `build_en.py`. Não mexe em nada visual.
+- **`_config.yml` existe só para o `exclude`** do Jekyll do workflow: sem ele `CLAUDE.md`, `CONTEXT.md`, `README.md`, `docs/`, `tools/` e `package*.json` eram publicados (e indexáveis). No Jekyll 3 do GitHub Pages um `exclude` próprio **substitui** a lista padrão — por isso `node_modules/` está lá. O site continua sem usar nada do Jekyll.
+- **`google3b6b93f13d9fc1e3.html` na raiz = verificação do Google Search Console.** Não apagar nem renomear: o Google checa periodicamente e, sem o arquivo, a propriedade perde a verificação.
