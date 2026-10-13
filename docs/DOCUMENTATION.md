@@ -54,7 +54,7 @@ styles/
   fonts/                    → Plus Jakarta Sans e Source Code Pro self-hosted
 
 images/
-  layout/                   → thumbnails dos projetos em WebP (720/1280/1600) e logo_tc.svg (sem uso no site)
+  layout/                   → thumbnails dos projetos em WebP (720/1280/1600)
   projetos/<slug>/          → telas de cada case (WebP, com versão -800)
 
 public/                     → copiado como está para a raiz do site (sem passar pelo Vite)
