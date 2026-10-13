@@ -4,10 +4,10 @@ Contexto de negócio e conteúdo do site — complementa [CLAUDE.md](CLAUDE.md) 
 
 ## O que é este projeto
 
-Portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Site estático (home em `index.html` + uma página por case em `projetos/`), em português com versão em inglês gerada em `/en/`, hospedado no GitHub Pages, sem back-end nem etapa de build.
+Portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Site estático (home em `index.html` + uma página por case em `projetos/`), em português com versão em inglês gerada em `/en/`, hospedado no GitHub Pages, sem back-end. Desde out/2026 usa Vite para importar dependências do npm (GSAP) e gerar o site final em `dist/`.
 
 - **Repositório:** `thcelestino`
-- **Branch de produção:** `main` (deploy automático a cada push via `.github/workflows/jekyll-gh-pages.yml`)
+- **Branch de produção:** `main` (deploy automático a cada push via `.github/workflows/jekyll-gh-pages.yml`, que roda `npm run build` e publica o `dist/`)
 - **Contato exibido no site:** e-mail `celesthiago@outlook.com`, WhatsApp `+55 11 97509-7733`, LinkedIn `linkedin.com/in/thiagohnrster`, GitHub `github.com/thiagohnrster`
 
 ## Objetivo do site

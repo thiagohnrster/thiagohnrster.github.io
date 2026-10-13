@@ -1,8 +1,8 @@
 # Portfólio Thiago Celestino — Documentação
 
-> **Atenção (out/2026):** o site foi refeito no redesign editorial (set/2026). A *estrutura de pastas*, o *deploy* e *SEO* abaixo estão atualizados; as seções sobre modais, `js/scripts.js`, jQuery, fundo de átomos, console de skills, cards de projeto e cursor de terminal descrevem a **versão anterior** e ficam só como histórico. A referência do código atual é o [CLAUDE.md](../CLAUDE.md).
+> **Atenção (out/2026):** o site foi refeito no redesign editorial (set/2026) e passou a usar Vite (out/2026). A *estrutura de pastas*, *Rodando localmente*, o *deploy* e *SEO* abaixo estão atualizados; as seções sobre modais, `js/scripts.js`, jQuery, fundo de átomos, console de skills, cards de projeto e cursor de terminal descrevem a **versão anterior** e ficam só como histórico. A referência do código atual é o [CLAUDE.md](../CLAUDE.md).
 
-Site estático de portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Página única (single-page), em português, sem back-end, banco de dados ou etapa de build — HTML, CSS e JS servidos diretamente.
+Site estático de portfólio pessoal de **Thiago Celestino**, desenvolvedor front-end. Home + páginas de case, em português (com versão em inglês), sem back-end nem banco de dados. Build com **Vite** (out/2026): dependências vêm do npm e o site final é gerado em `dist/`.
 
 ## Sumário
 
@@ -27,7 +27,7 @@ Site estático de portfólio pessoal de **Thiago Celestino**, desenvolvedor fron
 | **Tipo** | Site estático, uma página só, sem framework |
 | **Idioma** | Português (pt-BR) |
 | **Autor / conteúdo** | Thiago Celestino — dev front-end |
-| **Build step** | Nenhum — CSS e JS já estão em sua forma final, sem compilador |
+| **Build step** | Vite (`npm run build` → `dist/`) — junta o `site.js` com o GSAP do npm e põe hash nos arquivos; o CSS continua escrito à mão |
 | **Hospedagem** | GitHub Pages |
 | **Navegação interna** | Âncoras (`#intro`, `#sobre`, `#projetos`, `#contato`) com scroll suave |
 
@@ -40,36 +40,38 @@ projetos/                   → páginas de case (substituíram os modais)
 en/                         → versão em inglês — GERADA por tools/i18n/build_en.py, não editar à mão
   index.html, projetos/*.html
 404.html                    → página 404 bilíngue (servida pelo GitHub Pages para qualquer endereço inexistente)
-robots.txt, sitemap.xml     → SEO (sitemap mantido à mão, PT + EN)
-google3b6b93f13d9fc1e3.html → verificação do Google Search Console — não apagar
-_config.yml                 → só o `exclude` do Jekyll (arquivos internos fora do site publicado)
-site.webmanifest            → nome, cores e ícones para "adicionar à tela inicial"
-favicon.ico, favicon-*.png, apple-touch-icon.png, android-chrome-*.png
+favicon-*.png, apple-touch-icon.png → ícones citados no <head> (o Vite processa)
 README.md, CLAUDE.md, CONTEXT.md, docs/DOCUMENTATION.md → documentação (não publicada)
-package.json                → só declara live-server (preview local)
+package.json                → scripts dev/build/preview; dependências: gsap (+ vite em dev)
+vite.config.js              → lista das 11 páginas do build — case novo entra aqui (PT e EN)
 
 js/
-  loader.js                 → próprio — tela de carregamento (só na 1ª visita da sessão)
-  site.js                   → próprio — animações, cursor, menu, transições, "site compilando" (home, cases e 404)
-  gsap.min.js, ScrollTrigger.min.js → terceiros (GSAP 3.13)
+  site.js                   → próprio, módulo — animações, cursor, menu, transições, "site compilando" (home, cases e 404);
+                              importa gsap e gsap/ScrollTrigger do npm
 
 styles/
   css/style.css             → CSS do site, escrito à mão
   fonts/                    → Plus Jakarta Sans e Source Code Pro self-hosted
 
 images/
-  layout/                   → logo, thumbnails dos projetos (WebP 720/1280/1600 + PNG original, usado no og:image dos cases)
-                              e og-home.png / og-home-en.png (imagem de compartilhamento da home)
+  layout/                   → thumbnails dos projetos em WebP (720/1280/1600) e logo_tc.svg (sem uso no site)
   projetos/<slug>/          → telas de cada case (WebP, com versão -800)
 
-cv/
-  CVTHIAGO-2025.pdf, CVTHIAGO-2025-EN.pdf → currículo PT / EN
+public/                     → copiado como está para a raiz do site (sem passar pelo Vite)
+  js/loader.js              → próprio — tela de carregamento (só na 1ª visita da sessão); script comum, não módulo
+  cv/CVTHIAGO-2025.pdf, CVTHIAGO-2025-EN.pdf → currículo PT / EN
+  images/layout/            → og-home.png / og-home-en.png e project_thumb_N.png (só usados em og:image / JSON-LD)
+  robots.txt, sitemap.xml   → SEO (sitemap mantido à mão, PT + EN)
+  google3b6b93f13d9fc1e3.html → verificação do Google Search Console — não apagar
+  site.webmanifest, android-chrome-*.png, favicon.ico
 
 tools/i18n/build_en.py      → gera a pasta en/ a partir das páginas em português
 
 .github/workflows/
-  jekyll-gh-pages.yml       → deploy automático no GitHub Pages
+  jekyll-gh-pages.yml       → deploy automático no GitHub Pages (npm ci + npm run build, publica dist/)
 ```
+
+**Onde colocar um arquivo novo:** se ele tem `import` ou é carregado como módulo, ou se aparece em `<img>`/`<link>`/CSS, fica fora de `public/` (o Vite processa). Se só é citado por endereço completo, `<a href>`, `<meta>` ou pedido direto pelo navegador, vai em `public/`.
 
 ## Stack tecnológica
 
@@ -135,7 +137,7 @@ Cada fragmento de modal é um `<div>` isolado (sem `<html>`/`<head>` próprios) 
 
 ## Scripts JavaScript próprios
 
-### `js/loader.js`
+### `public/js/loader.js`
 Controla a tela de carregamento inicial (`#pageLoader`), primeiro elemento do `<body>`. O progresso da barra reflete carregamento real — soma ponderada de `document.fonts.ready`, load da ilustração do hero e o evento `window.load` — suavizado por interpolação, nunca um timer fixo. Ao terminar, resolve a promise `window.__pageLoader.ready`, que `site.js` aguarda (`whenPageReady()`) antes de armar a animação de entrada do hero.
 
 ### `js/site.js`
@@ -169,14 +171,17 @@ Responsável pela interação de clique:
 ## Rodando localmente
 
 ```bash
-npx live-server
+npm install       # primeira vez
+npm run dev       # http://localhost:5173, recarga automática
+npm run build     # gera dist/
+npm run preview   # serve o dist/ em http://localhost:4173 — teste antes de publicar
 ```
 
-Não há script `start` configurado em `package.json` — `live-server` é a única dependência declarada, usada apenas para pré-visualização local (auto-reload ao salvar arquivos).
+No `dev` e no `preview`, um endereço inexistente devolve a home (não a `404.html`); no GitHub Pages a 404 funciona normalmente.
 
 ## Deploy
 
-`.github/workflows/jekyll-gh-pages.yml` publica o site no **GitHub Pages** a cada push na branch `main`, usando o template padrão `actions/jekyll-build-pages`. Nenhum recurso do Jekyll é usado — o build só repassa os arquivos estáticos como estão. O `_config.yml` existe apenas para o `exclude`: impede que `CLAUDE.md`, `CONTEXT.md`, `README.md`, `docs/`, `tools/`, `package*.json` e `node_modules/` sejam publicados. No Jekyll 3 do GitHub Pages, um `exclude` próprio substitui a lista padrão — por isso `node_modules/` precisa estar listado.
+`.github/workflows/jekyll-gh-pages.yml` publica o site no **GitHub Pages** a cada push na branch `main`: roda `npm ci` e `npm run build` e envia só a pasta `dist/` (o nome do arquivo é antigo; o Jekyll não é mais usado e o `_config.yml` foi apagado). Documentação, `tools/` e `package*.json` não vão para o ar porque não estão no `dist/`. Acompanhe pela aba **Actions** do repositório.
 
 ## Detalhes de interação do hero e cursor
 
@@ -230,18 +235,18 @@ Gotchas já corrigidos durante o desenvolvimento — mais de um já voltou por e
 
 ## SEO, performance e segurança
 
-- **`robots.txt` e `sitemap.xml`** na raiz. O sitemap lista as 10 páginas (home + 4 cases, em PT e EN), cada uma com `xhtml:link` para pt-BR / en / x-default; é mantido à mão — case novo entra nas duas versões.
+- **`robots.txt` e `sitemap.xml`** em `public/` (raiz do site publicado). O sitemap lista as 10 páginas (home + 4 cases, em PT e EN), cada uma com `xhtml:link` para pt-BR / en / x-default; é mantido à mão — case novo entra nas duas versões.
 - **`hreflang`** pt-BR / en / x-default (= en), canonical e `og:url` próprios em cada página e idioma.
 - **Dados estruturados (JSON-LD, schema.org)** no `<head>`, antes do `<title>`: na home, `Person` (com `sameAs` LinkedIn/GitHub), `WebSite` e `ProfilePage`; nos cases, `WebPage` + `CreativeWork` (descrição, ano, data de publicação, link, stack) + `BreadcrumbList`. A versão EN é gerada pelo `build_en.py` (dicionário `LD_TEXT`).
 - **Títulos e descrições (out/2026):** nome primeiro na home (`Thiago Celestino • Desenvolvedor Front-End em São Paulo`); nos cases, `<Projeto>: <o que é> • Thiago Celestino`. Descrições com 140–160 caracteres dizendo o que o Thiago fez em cada projeto. O mesmo texto vai em `<title>`, `og:title`/`twitter:title`, `og:description`/`twitter:description` e no `name` do JSON-LD — ao mudar um, mude todos e atualize o par PT → EN no topo da lista da página em `build_en.py` (a home usa `&bull;` no `<title>`, os cases usam `•`).
 - **Open Graph completo:** `og:site_name`, `og:image:type`/`width`/`height`/`alt` e `twitter:image:alt` em todas as páginas (dimensões reais dos PNG: 1280×860; Grade 1903×909).
-- **Imagem de compartilhamento da home:** `images/layout/og-home.png` (PT) e `og-home-en.png` (EN), 1200×630, no visual do hero (nome gigante, "(front-end)", `<html> <css> <js>`, frase de abertura, endereço do site). Antes a home usava a thumb do Rubrum e o link compartilhado parecia ser de um projeto. Foram geradas a partir de uma página HTML com o `style.css` e as fontes do site, fotografada com Playwright — se o texto do hero mudar, refazer as duas. O `build_en.py` troca `og-home.png` → `og-home-en.png`. Os cases continuam com a imagem do próprio projeto.
+- **Imagem de compartilhamento da home:** `public/images/layout/og-home.png` (PT) e `og-home-en.png` (EN), 1200×630, no visual do hero (nome gigante, "(front-end)", `<html> <css> <js>`, frase de abertura, endereço do site). Antes a home usava a thumb do Rubrum e o link compartilhado parecia ser de um projeto. Foram geradas a partir de uma página HTML com o `style.css` e as fontes do site, fotografada com Playwright — se o texto do hero mudar, refazer as duas. O `build_en.py` troca `og-home.png` → `og-home-en.png`. Os cases continuam com a imagem do próprio projeto.
 - **Manifest e cor do navegador:** `site.webmanifest` com nome, descrição, `start_url` e cores `#001833` (= `--bg`); `<meta name="theme-color" content="#001833">` logo após o `viewport` em todas as páginas — no celular a barra do navegador fica da cor do fundo do site (aprovado pelo Thiago). O `meta keywords` foi removido (o Google ignora); não reintroduzir.
-- **Google Search Console:** verificado pelo arquivo `google3b6b93f13d9fc1e3.html` na raiz — não apagar, senão a propriedade perde a verificação.
+- **Google Search Console:** verificado pelo arquivo `public/google3b6b93f13d9fc1e3.html` (raiz do site publicado) — não apagar, senão a propriedade perde a verificação.
 - Lighthouse (set/2026): SEO 100; desempenho mobile 95/93 (home/case), desktop 100.
 - `<html lang="pt-BR">` (estava `en`, embora todo o conteúdo seja em português).
 - `index.html` tem Open Graph/Twitter Card (`og:title`, `og:description`, `og:image` com a imagem própria `og-home.png`, `og:url`) e `<link rel="canonical">` pra `https://thiagohnrster.github.io/` — sem isso o link saía sem preview decente ao compartilhar no WhatsApp/LinkedIn.
-- Todos os `<script>` externos no `<head>` (GSAP, ScrollTrigger, `loader.js`, `site.js`) têm `defer`.
+- No `<head>`: `loader.js` com `defer` e `site.js` como `type="module"` (adiado por padrão). O GSAP entra por `import` dentro do `site.js`.
 - Links externos `target="_blank"`: LinkedIn, GitHub e WhatsApp do menu/rodapé usam `rel="noopener"` — LinkedIn e GitHub com `rel="me noopener"` (identidade, junto com o `sameAs` do JSON-LD); os botões de link dos cases usam `rel="noopener noreferrer"`.
 
 ## Itens conhecidos / débito técnico
