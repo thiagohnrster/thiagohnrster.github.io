@@ -2,6 +2,9 @@
 // Portfólio TC — tudo que é decorativo/scroll (modais de projeto continuam em
 // js/scripts.js). Espelha o protótipo aprovado; ver CLAUDE.md → "Redesign".
 // ==========================================================================
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";   // não "ScrollTrigger"
+
 (function () {
   // Hash de entrada (ex.: /#sobre vindo de uma página de case) — lido antes de limpar a URL.
   var initialHash = location.hash;
@@ -33,7 +36,7 @@
   var toastTl;
   function toast(msg) {
     var t = $('#toast'); t.textContent = msg;
-    if (window.gsap) {
+    if (gsap) {
       if (toastTl) toastTl.kill();
       toastTl = gsap.timeline().to(t, { yPercent: 0, y: 0, xPercent: -50, duration: .5, ease: 'expo.out' }).to(t, { yPercent: 160, duration: .4, ease: 'power2.in' }, '+=1.6');
     }
@@ -55,7 +58,7 @@
      render para a transição de volta do case (script inline no <head> do index.html). */
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+  var hasGsap = true;
 
   // Adia a entrada do hero até o loader (js/loader.js, progresso real) liberar a página.
   function whenPageReady(cb) {
