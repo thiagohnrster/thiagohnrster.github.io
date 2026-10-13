@@ -4,12 +4,17 @@
   "description": "Portfólio Thiago Celestino - Desenvolvedor Front-End",
   "main": "index.js",
   "scripts": {
-    "dev": "live-server --entry-file=404.html",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "author": "Thiago Celestino",
   "license": "ISC",
   "dependencies": {
+    "gsap": "^3.15.0",
     "live-server": "^1.2.2"
+  },
+  "devDependencies": {
+    "vite": "^6.4.4"
   }
 }

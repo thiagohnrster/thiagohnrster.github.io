@@ -3,19 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
-	<meta name="keywords" content="front-end developer, html, css, javascript, front-end portfolio, web developer, gsap">
+	<meta name="theme-color" content="#001833">
+	<meta name="description" content="Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.">
 	<meta property="og:type" content="website">
-	<meta property="og:title" content="Portfolio • Thiago Celestino • Front-End Developer">
-	<meta property="og:description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
-	<meta property="og:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
+	<meta property="og:site_name" content="Thiago Celestino">
+	<meta property="og:title" content="Thiago Celestino • Front-End Developer in São Paulo">
+	<meta property="og:description" content="Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.">
+	<meta property="og:image" content="https://thiagohnrster.github.io/images/layout/og-home-en.png">
+	<meta property="og:image:type" content="image/png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="Thiago Celestino, front-end developer — I code elegant, fast interfaces, crafted down to the smallest detail.">
 	<meta property="og:url" content="https://thiagohnrster.github.io/en/">
 	<meta property="og:locale" content="en_US">
 	<meta property="og:locale:alternate" content="pt_BR">
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="Portfolio • Thiago Celestino • Front-End Developer">
-	<meta name="twitter:description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">
-	<meta name="twitter:image" content="https://thiagohnrster.github.io/images/layout/project_thumb_3.png">
+	<meta name="twitter:title" content="Thiago Celestino • Front-End Developer in São Paulo">
+	<meta name="twitter:description" content="Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.">
+	<meta name="twitter:image" content="https://thiagohnrster.github.io/images/layout/og-home-en.png">
+	<meta name="twitter:image:alt" content="Thiago Celestino, front-end developer — I code elegant, fast interfaces, crafted down to the smallest detail.">
 	<link rel="canonical" href="https://thiagohnrster.github.io/en/">
 	<link rel="alternate" hreflang="pt-BR" href="https://thiagohnrster.github.io/">
 	<link rel="alternate" hreflang="en" href="https://thiagohnrster.github.io/en/">
@@ -28,10 +34,8 @@
 	<link rel="preload" href="/styles/fonts/PlusJakartaSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="/styles/fonts/SourceCodePro-Medium.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="stylesheet" type="text/css" href="/styles/css/style.css" />
-	<script src="/js/gsap.min.js" defer></script>
-	<script src="/js/ScrollTrigger.min.js" defer></script>
 	<script src="/js/loader.js" defer></script>
-	<script src="/js/site.js" defer></script>
+	<script type="module" src="/js/site.js" defer></script>
 	<script>
 	// Sem View Transitions entre documentos (Firefox): se a página anterior saiu com a transição
 	// própria (site.js → pageMorph), esta nasce com o conteúdo escondido e o site.js faz a entrada.
@@ -74,7 +78,15 @@
 	<script type="speculationrules">
 	{"prerender":[{"source":"document","where":{"href_matches":"/en/projetos/*"},"eagerness":"moderate"}]}
 	</script>
-	<title>Portfolio &bull; Thiago Celestino &bull; Front-End Developer</title>
+	<!-- Dados estruturados (schema.org). A versão /en/ é gerada pelo tools/i18n/build_en.py (textos em LD_TEXT). -->
+	<script type="application/ld+json">
+	{"@context":"https://schema.org","@graph":[
+		{"@type":"Person","@id":"https://thiagohnrster.github.io/#thiago","name":"Thiago Celestino","jobTitle":"Front-End Developer","url":"https://thiagohnrster.github.io/","email":"mailto:celesthiago@outlook.com","address":{"@type":"PostalAddress","addressLocality":"São Paulo","addressRegion":"SP","addressCountry":"BR"},"sameAs":["https://www.linkedin.com/in/thiagohnrster/","https://github.com/thiagohnrster"],"knowsAbout":["HTML","CSS","Sass","JavaScript","GSAP","AngularJS","UI/UX"]},
+		{"@type":"WebSite","@id":"https://thiagohnrster.github.io/#website","url":"https://thiagohnrster.github.io/","name":"Thiago Celestino","inLanguage":["pt-BR","en"],"author":{"@id":"https://thiagohnrster.github.io/#thiago"}},
+		{"@type":"ProfilePage","@id":"https://thiagohnrster.github.io/en/","url":"https://thiagohnrster.github.io/en/","name":"Thiago Celestino • Front-End Developer in São Paulo","inLanguage":"en","isPartOf":{"@id":"https://thiagohnrster.github.io/#website"},"mainEntity":{"@id":"https://thiagohnrster.github.io/#thiago"},"primaryImageOfPage":"https://thiagohnrster.github.io/images/layout/og-home-en.png"}
+	]}
+	</script>
+	<title>Thiago Celestino &bull; Front-End Developer in São Paulo</title>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -129,8 +141,8 @@
     <span class="mono muted">São Paulo — <span class="clock">--:--</span> · Available</span>
     <span style="font-size:20px;font-weight:600;user-select:all">celesthiago@outlook.com</span>
     <div class="row2 mono">
-      <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="me noopener">LinkedIn ↗</a>
+      <a href="https://github.com/thiagohnrster" target="_blank" rel="me noopener">GitHub ↗</a>
       <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
       <a href="/cv/CVTHIAGO-2025-EN.pdf" download>Résumé ↓</a>
     </div>
@@ -239,8 +251,8 @@
     </div>
     <div class="foot">
       <nav class="links mono" aria-label="Social">
-        <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a href="https://github.com/thiagohnrster" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/thiagohnrster/" target="_blank" rel="me noopener">LinkedIn ↗</a>
+        <a href="https://github.com/thiagohnrster" target="_blank" rel="me noopener">GitHub ↗</a>
         <a href="https://wa.me/5511975097733" target="_blank" rel="noopener">WhatsApp ↗</a>
         <a href="#top" data-scroll>Back to top ↑</a>
       </nav>

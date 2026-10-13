@@ -13,7 +13,7 @@ par não for mais encontrado, o script para e avisa qual par precisa ser atualiz
 A 404 (404.html) é uma página só, bilíngue: os textos em inglês ficam nos
 atributos data-en do próprio 404.html.
 """
-import io, os, re, sys
+import io, json, os, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 BASE = 'https://thiagohnrster.github.io'
@@ -71,8 +71,6 @@ CASE = [
     ('Próximo projeto — (', 'Next project — ('),
     ('Acessar projeto ↗</a>', 'Visit project ↗</a>'),
     ('Acessar repositório ↗</a>', 'View repository ↗</a>'),
-    (' • Case • Thiago Celestino', ' • Case Study • Thiago Celestino'),
-    ('. Case do portfólio de Thiago Celestino, ', '. Case study from the portfolio of Thiago Celestino, '),
     ('(01) Case — ', '(01) Case study — '), ('(02) Case — ', '(02) Case study — '),
     ('(03) Case — ', '(03) Case study — '), ('(04) Case — ', '(04) Case study — '),
 ]
@@ -84,14 +82,15 @@ for i in range(1, 6):
 # Por página — todos os pares são obrigatórios (o script falha se não achar).
 # --------------------------------------------------------------------------
 HOME = [
-    ('<meta name="description" content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas.">',
-     '<meta name="description" content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces.">'),
-    ('<meta name="keywords" content="desenvolvedor front-end, html, css, javascript, portfolio front-end, web developer">',
-     '<meta name="keywords" content="front-end developer, html, css, javascript, front-end portfolio, web developer, gsap">'),
-    ('content="Portfólio • Thiago Celestino • Desenvolvedor Front-End"', 'content="Portfolio • Thiago Celestino • Front-End Developer"'),
-    ('content="Portfólio de Thiago Celestino, desenvolvedor front-end especializado em HTML, CSS e JavaScript. Criação de interfaces modernas, performáticas e responsivas."',
-     'content="Portfolio of Thiago Celestino, a front-end developer specializing in HTML, CSS and JavaScript. Modern, fast and responsive interfaces."'),
-    ('<title>Portfólio &bull; Thiago Celestino &bull; Desenvolvedor Front-End</title>', '<title>Portfolio &bull; Thiago Celestino &bull; Front-End Developer</title>'),
+    # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
+    ('content="Thiago Celestino, desenvolvedor front-end — Codifico interfaces elegantes, ágeis e pensadas nos mínimos detalhes."', 'content="Thiago Celestino, front-end developer — I code elegant, fast interfaces, crafted down to the smallest detail."'),
+    # imagem de compartilhamento própria da versão em inglês (og:image, twitter:image, JSON-LD)
+    ('/images/layout/og-home.png', '/images/layout/og-home-en.png'),
+    # título e descrição (<title>, og/twitter, JSON-LD)
+    ('Thiago Celestino, desenvolvedor front-end e designer de interface em São Paulo. Interfaces em HTML, CSS e JavaScript, com motion em GSAP e atenção aos detalhes.',
+     'Thiago Celestino, front-end developer and interface designer in São Paulo. Interfaces in HTML, CSS and JavaScript, with GSAP motion and attention to detail.'),
+    ('Thiago Celestino • Desenvolvedor Front-End em São Paulo', 'Thiago Celestino • Front-End Developer in São Paulo'),
+    ('Thiago Celestino &bull; Desenvolvedor Front-End em São Paulo', 'Thiago Celestino &bull; Front-End Developer in São Paulo'),
     ('aria-label="Carregando página"', 'aria-label="Loading page"'),
     ('<span>Portfólio — Ed. 2026</span>', '<span>Portfolio — Ed. 2026</span>'),
     ('<span>Desenvolvedor Front-End</span>', '<span>Front-End Developer</span>'),
@@ -130,7 +129,12 @@ HOME = [
 ]
 
 GRADE = [
-    ('Grade — Plataforma de gestão de eventos.', 'Grade — Event management platform.'),
+    # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
+    ('content="Tela inicial do Grade, plataforma de gestão de eventos"', 'content="Home screen of Grade, an event management platform"'),
+    # título e descrição (<title>, og/twitter, JSON-LD)
+    ('Grade, plataforma de gestão de eventos feita do zero por Thiago Celestino: design das telas, front-end em AngularJS e back-end em Laravel, da ideia ao ar.',
+     'Grade, an event management platform built from scratch by Thiago Celestino: screen design, AngularJS front-end and Laravel back-end, from idea to launch.'),
+    ('Grade: plataforma de gestão de eventos • Thiago Celestino', 'Grade: event management platform • Thiago Celestino'),
     ('<p class="case-lead">Plataforma de gestão de eventos</p>', '<p class="case-lead">Event management platform</p>'),
     ('alt="Tela do projeto Grade"', 'alt="Screen from the Grade project"'),
     ('<dd>Publicado em 31 de julho de 2026</dd>', '<dd>Published on July 31, 2026</dd>'),
@@ -162,7 +166,12 @@ GRADE = [
 ]
 
 V2 = [
-    ('Rubrum Site V2 — Redesign da presença comercial.', 'Rubrum Site V2 — Redesign of the commercial website.'),
+    # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
+    ('content="Tela do novo site comercial do Rubrum"', 'content="Screen from the new Rubrum commercial website"'),
+    # título e descrição (<title>, og/twitter, JSON-LD)
+    ('Redesign do site comercial do Rubrum, plataforma de gestão de embalagens: nova identidade visual com foco em conversão. Front-end de Thiago Celestino.',
+     'Redesign of the commercial website for Rubrum, a packaging management platform: a new visual identity focused on conversion. Front-end by Thiago Celestino.'),
+    ('Rubrum Site V2: novo site comercial • Thiago Celestino', 'Rubrum Site V2: website redesign • Thiago Celestino'),
     ('<p class="case-lead">Redesign da presença comercial</p>', '<p class="case-lead">Redesign of the commercial website</p>'),
     ('alt="Tela do projeto Rubrum Site V2"', 'alt="Screen from the Rubrum Site V2 project"'),
     ('<dd>Publicado — em evolução</dd>', '<dd>Live — still evolving</dd>'),
@@ -190,7 +199,12 @@ V2 = [
 ]
 
 RUBRUM = [
-    ('Rubrum — Sistema de gestão de embalagens.', 'Rubrum — Packaging management system.'),
+    # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
+    ('content="Tela do Rubrum, sistema de gestão de embalagens"', 'content="Screen from Rubrum, a packaging management system"'),
+    # título e descrição (<title>, og/twitter, JSON-LD)
+    ('Rubrum, sistema SaaS de gestão de embalagens. Thiago Celestino é o único desenvolvedor front-end do produto desde 2019, com back-end em Laravel.',
+     'Rubrum, a SaaS packaging management system. Thiago Celestino has been the product’s only front-end developer since 2019, working with a Laravel back-end.'),
+    ('Rubrum: sistema de gestão de embalagens • Thiago Celestino', 'Rubrum: packaging management system • Thiago Celestino'),
     ('<p class="case-lead">Sistema de gestão de embalagens</p>', '<p class="case-lead">Packaging management system</p>'),
     ('Case study — Plataforma web</span>', 'Case study — Web platform</span>'),
     ('<dd>Plataforma web</dd>', '<dd>Web platform</dd>'),
@@ -222,7 +236,12 @@ RUBRUM = [
 ]
 
 V1 = [
-    ('Rubrum Site V1 — Promoção da plataforma comercial.', 'Rubrum Site V1 — Marketing site for the platform.'),
+    # texto alternativo da imagem de compartilhamento (og:image:alt, twitter:image:alt)
+    ('content="Tela do primeiro site comercial do Rubrum"', 'content="Screen from the first Rubrum commercial website"'),
+    # título e descrição (<title>, og/twitter, JSON-LD)
+    ('Primeiro site comercial do Rubrum, plataforma de gestão de embalagens, publicado em 2020. Front-end de Thiago Celestino em HTML, LESS e jQuery.',
+     'The first marketing website for Rubrum, a packaging management platform, launched in 2020. Front-end by Thiago Celestino in HTML, LESS and jQuery.'),
+    ('Rubrum Site V1: site comercial • Thiago Celestino', 'Rubrum Site V1: marketing website • Thiago Celestino'),
     ('<p class="case-lead">Promoção da plataforma comercial</p>', '<p class="case-lead">Marketing site for the platform</p>'),
     ('alt="Tela do projeto Rubrum Site V1"', 'alt="Screen from the Rubrum Site V1 project"'),
     ('<dd>Publicado em 05 de agosto de 2020</dd>', '<dd>Published on August 5, 2020</dd>'),
@@ -256,6 +275,65 @@ PER_PAGE = {
     'projetos/rubrum.html': RUBRUM,
     'projetos/rubrum-site-v1.html': V1,
 }
+
+
+# --------------------------------------------------------------------------
+# Dados estruturados (<script type="application/ld+json">). Textos PT → EN;
+# todo "jobTitle"/"description"/"name" em PT precisa estar aqui (o script avisa).
+# Os links de página ganham /en; Person e WebSite são os mesmos nas duas línguas.
+# --------------------------------------------------------------------------
+LD_TEXT = {
+    'Desenvolvedor Front-End': 'Front-End Developer',
+    'Projetos': 'Projects',
+    'Plataforma de gestão de eventos': 'Event management platform',
+    'Redesign da presença comercial': 'Redesign of the commercial website',
+    'Sistema de gestão de embalagens': 'Packaging management system',
+    'Promoção da plataforma comercial': 'Marketing site for the platform',
+}
+LD_KEEP = ('Person', 'WebSite')
+LD_TEXT_KEYS = ('jobTitle', 'description', 'name')
+
+
+def ld_to_en(block, errors):
+    data = json.loads(block)
+    keep_ids = {n.get('@id') for n in data['@graph'] if n.get('@type') in LD_KEEP}
+    keep_ids |= {BASE + '/#thiago', BASE + '/#website'}  # referenciados pelos cases, definidos na home
+
+    def link(v):
+        if v in keep_ids:
+            return v
+        path = v[len(BASE):] if v.startswith(BASE + '/') else None
+        if path and (path == '/' or path.startswith('/#') or path.startswith('/projetos/')):
+            return BASE + '/en' + path
+        return v
+
+    def walk(o, key=None):
+        if isinstance(o, dict):
+            return {k: walk(v, k) for k, v in o.items()}
+        if isinstance(o, list):
+            return [walk(v, key) for v in o]
+        if isinstance(o, str):
+            if key == 'inLanguage' and o == 'pt-BR':
+                return 'en'
+            if key in LD_TEXT_KEYS and o in LD_TEXT:
+                return LD_TEXT[o]
+            if key in ('description', 'jobTitle'):
+                errors.append('ld+json sem tradução em LD_TEXT: ' + o)
+            return link(o)
+        return o
+
+    graph = []
+    for node in data['@graph']:
+        if node.get('@type') in LD_KEEP:
+            node = dict(node)
+            if node.get('jobTitle') in LD_TEXT:
+                node['jobTitle'] = LD_TEXT[node['jobTitle']]
+            graph.append(node)
+        else:
+            graph.append(walk(node))
+    data['@graph'] = graph
+    nodes = ',\n\t\t'.join(json.dumps(n, ensure_ascii=False, separators=(',', ':')) for n in graph)
+    return '{"@context":"%s","@graph":[\n\t\t%s\n\t]}' % (data['@context'], nodes)
 
 
 def lang_switch_pt(pt_path):
@@ -300,6 +378,10 @@ def build(rel, pt_path):
         if a not in s:
             errors.append('texto PT não encontrado: ' + a[:90])
         s = s.replace(a, b)
+
+    # 6) dados estruturados (depois dos textos: títulos já vêm traduzidos pelos pares de cada página)
+    s = re.sub(r'(<script type="application/ld\+json">\s*)(.*?)(\s*</script>)',
+               lambda m: m.group(1) + ld_to_en(m.group(2), errors) + m.group(3), s, flags=re.S)
 
     if errors:
         print('ERRO em %s:\n  - %s' % (rel, '\n  - '.join(errors)))
